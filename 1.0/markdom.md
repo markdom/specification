@@ -315,31 +315,31 @@ The Domain Object API uses the following classes:
 
 #### Interfaces {#api-dom-interfaces}
 
-The Domain Object API has the following interfaces:
+The Domain Object API contains the following interfaces:
 
-* `Block` objects represent Markdom block nodes.  
+* `Block` objects represent [*Markdom blocks*](#domain-block).  
   `Block` objects are a [`Node`](#api-dom-node) objects.
-* `BlockParent` objects represent Markdom nodes that contain `Block` objects.  
+* `BlockParent` objects represent *Markdom blocks* that contain other *Markdom blocks*.  
   `BlockParent` objects are a [`Node`](#api-dom-node) objects.
-* `CodeBlock` objects represent Markdom code blocks.  
+* `CodeBlock` objects represent [*Markdom code blocks*](#domain-codeblock).  
   `CodeBlock` objects are `Block` objects.
-* `CodeContent` objects represent Markdom code content.  
+* `CodeContent` objects represent [*Markdom code content*](#domain-codecontent).  
   `CodeContent` objects are `Content` objects.
-* `Content` objects represent Markdom content nodes.  
+* `Content` objects represent [*Markdom contents*](#domain-content)  
   `Content` objects are [`Node`](#api-dom-node) objects.
-* `ContentBlock` objects represent Markdom blocks that contain Markdom content.  
+* `ContentBlock` objects represent *Markdom blocks* that contain *Markdom content*.  
   `ContentBlock` objects are `Block` object and `ContentParent` objects.
-* `ContentContent` objects represent Markdom contents that contain Markdom content.  
+* `ContentContent` objects represent *Markdom contents* that contain *Markdom content*.  
   `ContentContent` objects are `Content` object and `ContentParent` object.
-* `ContentParent` objects represent Markdom nodes that contain Markdom content.  
+* `ContentParent` objects represent *Markdom nodes* that contain *Markdom content*.  
   `ContentParent` objects are [`Node`](#api-dom-node) objects.
-* `DivisionBlock` objects represent Markdom division blocks.  
+* `DivisionBlock` objects represent [*Markdom division blocks*](#domain-divisionblock).  
   `DivisionBlock` are `Block` objects.
-* `Document` objects represent Markdom documents.  
+* `Document` objects represent [*Markdom documents*](#domain-document).  
   `Document` objects are `BlockParent` objects.
-* `EmphasisContent` objects represent Markdom emphasis contents.  
+* `EmphasisContent` objects represent [*Markdom emphasis content*](#domain-emphasiscontent).  
   `EmphasisContent` objects are `ContentContent` objects.
-* `HeadingBlock` objects represent Markdom heading blocks.  
+* `HeadingBlock` objects represent [*Markdom documents*](#domain-document).  
   `HeadingBlock` objects are `ContentBlock` objects.
 * `ImageContent` objects represent Markdom image contents.  
   `ImageContent` objects are `Content` objects.
