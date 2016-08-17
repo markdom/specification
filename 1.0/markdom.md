@@ -339,28 +339,28 @@ The Domain Object API contains the following interfaces:
   `Document` objects are `BlockParent` objects.
 * `EmphasisContent` objects represent [*Markdom emphasis content*](#domain-emphasiscontent).  
   `EmphasisContent` objects are `ContentContent` objects.
-* `HeadingBlock` objects represent [*Markdom documents*](#domain-document).  
+* `HeadingBlock` objects represent [*Markdom heading blocks*](#domain-headingblock).  
   `HeadingBlock` objects are `ContentBlock` objects.
-* `ImageContent` objects represent Markdom image contents.  
+* `ImageContent` objects represent [*Markdom image contents*](#domain-imagecontent).  
   `ImageContent` objects are `Content` objects.
-* `LineBreakContent` objects represent Markdom line break contents.  
+* `LineBreakContent` objects represent [*Markdom line break contents*](#domain-linebreakcontent).  
   `LineBreakContent` objects are `Content` objects.
-* `LinkContent` objects represent Markdom link contents.  
+* `LinkContent` objects represent [*Markdom link contents*](#domain-linkcontent).  
   `LinkContent` objects are `ContentContent` objects.
-* `ListBlock` objects represent Markdom list blocks.  
+* `ListBlock` objects represent *Markdom list blocks*  
   `ListBlock` objects are `Block` objects.
-* `ListItem` objects represent Markdom list items.  
+* `ListItem` objects represent [*Markdom list items*](#domain-listitem).  
   `ListItem` objects represent are `BlockParent` objects.
-* [`Node`](#api-dom-node) objects represent [Markdom nodes](#domain-node).
-* `OrderedListBlock` objects represent an ordered Markdom list blocks.  
+* [`Node`](#api-dom-node) objects represent [*Markdom nodes*](#domain-node).
+* `OrderedListBlock` objects represent [*ordered Markdom list blocks*](#domain-orderedlistblock).  
   `OrderedListBlock` objects are `ListBlock` objects.
-* `ParagraphBlock` objects represent Markdom paragraph blocks.  
+* `ParagraphBlock` objects represent [*Markdom paragraph blocks*](#domain-paragraphblock).  
   `ParagraphBlock` objects are `ContentBlock` objects.
-* `QuoteBlock` objects represent Markdom quote blocks.  
+* `QuoteBlock` objects represent [*Markdom quote blocks*](#domain-quoteblock).  
   `QuoteBlock` objects are `BlockParent` objects.
-* `TextContent` objects represent Markdom text contents.  
+* `TextContent` objects represent [*Markdom text contents*](#domain-textcontent).  
   `TextContent` objects are `Content` objects.
-* `UnorderedListBlock` object represent an unordered Markdom list blocks.  
+* `UnorderedListBlock` object represent an [*unordered Markdom list block*](#domain-unorderedlistblock).  
   `UnorderedListBlock` object are `ListBlock` objects.
 
 The methods of theese interfaces are specified [below](#api-dom-block).
