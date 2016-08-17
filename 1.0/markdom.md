@@ -1,4 +1,8 @@
-# ![logo](resource/markdom-mark-negative-inline.png) Markdom
+![logo](resource/markdom-mark-positive-inline.png)
+
+---
+
+# Markdom
 
 Markdom is lightweight specification for a rich text domain model.
 
