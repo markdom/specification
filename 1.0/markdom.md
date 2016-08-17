@@ -980,6 +980,8 @@ The `NodeType` enum represents the node type of a [`Node`](#api-dom-node) object
 
 ### Handler API
 
+![](resource/markdom-events.png)
+
 ### Combining the Domain Object API and the Handler API
 
 // document is dispatcher, 
