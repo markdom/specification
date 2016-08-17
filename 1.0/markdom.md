@@ -251,18 +251,17 @@ Values of the `text` parameter should not contain any [control](http://www.filef
 
 This CommonMark text describes a rich text document that serves as an example document throughout the rest of this specification:
 
-````
-# Markdom
+    # Markdom
+    
+    1. [Foo](#Bar)
+    2. *Lorem ipsum*\
+       `goto 11`
+    3. > Baz
+    
+    ```
+    goto 11
+    ```
 
-1. [Foo](#Bar)
-2. *Lorem ipsum*\
-   `goto 11`
-3. > Baz
-
-```
-goto 11
-```
-````
 
 The rich text document consists of a heading, an ordered list with three list items and some plain text. The first list item of the ordered list contains a link. the second list item of the unordered list contains emphasized text, a hard line break and some plain text. The third list item of the ordered list contains a quoted text.
 
@@ -315,61 +314,15 @@ The Domain Object API uses the following classes:
 
 #### Interfaces {#api-dom-interfaces}
 
-The Domain Object API contains the following interfaces:
-
-* `Block` objects represent [*Markdom blocks*](#domain-block).  
-  `Block` objects are a [`Node`](#api-dom-node) objects.
-* `BlockParent` objects represent *Markdom blocks* that contain other *Markdom blocks*.  
-  `BlockParent` objects are a [`Node`](#api-dom-node) objects.
-* `CodeBlock` objects represent [*Markdom code blocks*](#domain-codeblock).  
-  `CodeBlock` objects are `Block` objects.
-* `CodeContent` objects represent [*Markdom code content*](#domain-codecontent).  
-  `CodeContent` objects are `Content` objects.
-* `Content` objects represent [*Markdom contents*](#domain-content)  
-  `Content` objects are [`Node`](#api-dom-node) objects.
-* `ContentBlock` objects represent *Markdom blocks* that contain *Markdom content*.  
-  `ContentBlock` objects are `Block` object and `ContentParent` objects.
-* `ContentContent` objects represent *Markdom contents* that contain *Markdom content*.  
-  `ContentContent` objects are `Content` object and `ContentParent` object.
-* `ContentParent` objects represent *Markdom nodes* that contain *Markdom content*.  
-  `ContentParent` objects are [`Node`](#api-dom-node) objects.
-* `DivisionBlock` objects represent [*Markdom division blocks*](#domain-divisionblock).  
-  `DivisionBlock` are `Block` objects.
-* `Document` objects represent [*Markdom documents*](#domain-document).  
-  `Document` objects are `BlockParent` objects.
-* `EmphasisContent` objects represent [*Markdom emphasis content*](#domain-emphasiscontent).  
-  `EmphasisContent` objects are `ContentContent` objects.
-* `HeadingBlock` objects represent [*Markdom heading blocks*](#domain-headingblock).  
-  `HeadingBlock` objects are `ContentBlock` objects.
-* `ImageContent` objects represent [*Markdom image contents*](#domain-imagecontent).  
-  `ImageContent` objects are `Content` objects.
-* `LineBreakContent` objects represent [*Markdom line break contents*](#domain-linebreakcontent).  
-  `LineBreakContent` objects are `Content` objects.
-* `LinkContent` objects represent [*Markdom link contents*](#domain-linkcontent).  
-  `LinkContent` objects are `ContentContent` objects.
-* `ListBlock` objects represent *Markdom list blocks*  
-  `ListBlock` objects are `Block` objects.
-* `ListItem` objects represent [*Markdom list items*](#domain-listitem).  
-  `ListItem` objects represent are `BlockParent` objects.
-* [`Node`](#api-dom-node) objects represent [*Markdom nodes*](#domain-node).
-* `OrderedListBlock` objects represent [*ordered Markdom list blocks*](#domain-orderedlistblock).  
-  `OrderedListBlock` objects are `ListBlock` objects.
-* `ParagraphBlock` objects represent [*Markdom paragraph blocks*](#domain-paragraphblock).  
-  `ParagraphBlock` objects are `ContentBlock` objects.
-* `QuoteBlock` objects represent [*Markdom quote blocks*](#domain-quoteblock).  
-  `QuoteBlock` objects are `BlockParent` objects.
-* `TextContent` objects represent [*Markdom text contents*](#domain-textcontent).  
-  `TextContent` objects are `Content` objects.
-* `UnorderedListBlock` object represent an [*unordered Markdom list block*](#domain-unorderedlistblock).  
-  `UnorderedListBlock` object are `ListBlock` objects.
-
-The methods of theese interfaces are specified [below](#api-dom-block).
-
-The following image shows the interfaces that are part of the Domain Object API as well as the specified interface inheritances and the specified compositions:
+The following image shows the interfaces that are part of the Domain Object API:
 
 ![](resource/markdom-nodes.png)
 
+*Interfaces with bold names are eminently suitable to be implmented as final classes, interfaces with italic names are eminently suitable to be implmented as abstract classes and interfaces with normal names are eminently suitable to be implmented as traits or mixins.*
+
 ##### `Block` {#api-dom-block}
+
+A `Block` object is a [`Node`](#api-dom-node) object that represents a [*Markdom block*](#domain-block).
 
 ###### Constructors {api-dom-block-constructor}
 
@@ -383,30 +336,30 @@ This method must return the `BlockType` value that correspondes to the type of t
 
 ##### `BlockParent` {#api-dom-blockparent}
 
+A `BlockParent` object is a [`Node`](#api-dom-node) object that represents a [*Markdom node*](#domain-node) that contains [*Markdom blocks*](#domain-block).
+
 An implementation of `BlockParent` must have a final and initially empty `Sequence` of `Block` objects that is associated with the `BlockParent` object.
 
-Any structural modification (insert, remove, clear, replace) to the associated `Sequence` of `Block` objects must reflect the fact, that a `Block` objcets that is added to the associated `Sequence` object is attached to the `BlockParent` object until is is removed from the associated `Sequence` of `Block` objects.
+Any structural modification (insert, remove, clear, replace) to the associated `Sequence` of `Block` objects must reflect the fact, that a `Block` object that is added to the associated `Sequence` object is attached to the `BlockParent` object until is is removed from the associated `Sequence` of `Block` objects.
 
-If a `Block` object is attached to the `BlockParent` object, the `BlockParent` object is returned by `Block#getParent()`. 
-
-Attaching a `Block` object to the `BlockParent` object (i.e. adding the `Block` object to the associated `Sequence` of `Block` objects) must fail
+Attaching a `Block` object to the `BlockParent` object  must fail
 * if the `Block` object is not present, or  
 * if the `Block` object is already attached to a `BlockParent` object, or 
 * if attaching the `Block` object to the `BlockParent` object would create a cycle in the tree of Markdom nodes that the `BlockParent` object is part of.
 
-###### Constructors
+###### Constructors {api-dom-blockparent-constructor}
 
 An implementation of `BlockParent` should have a constructor with signature `BlockParent()`.
 
 For convenience, an implementation of `BlockParent` should have a constructor with signature `BlockParent(Block... blocks)` that takes that takes an array of `Block` objects named `blocks` and delegates to `addBlocks(Block... blocks)`.
 
-###### `getBlocks` 
+###### `getBlocks` {api-dom-blockparent-getblocks}
 
 A `Block` object must have a method with signature `Sequence getBlocks()`.
 
 This method must return the associated `Sequence` of `Block` objects.
 
-###### `addBlock`
+###### `addBlock` {api-dom-blockparent-addblock}
 
 For convenience, a `BlockParent` object should have a method with signature `addBlock(Block block)` that takes a `Block` object named `block`.
 
@@ -414,7 +367,7 @@ This method must add `block` at the end of the associated `Sequence` of `Block` 
 
 This method must fail if add `block` to the  associated `Sequence` of `Block` objects failed.
 
-###### `addBlocks`
+###### `addBlocks` {api-dom-blockparent-addblocks}
 
 For convenience, a `BlockParent` object should have a method with signature `addBlocks(Block... blocks)` that takes an array of `Block` objects named `blocks`.
 
@@ -427,7 +380,9 @@ Because this method is a short hand for repeated calls to `addBlock(Block block)
 
 ##### `CodeBlock` {#api-dom-codeblock}
 
-###### Constructors
+A `CodeBlock` objects is a `Block` object that represents a [*Markdom code block*](#domain-codeblock).
+
+###### Constructors {api-dom-codeblock-constructor}
 
 An implementation of `CodeBlock` should have a constructor with signature `CodeBlock()` that set the code of the `CodeBlock` object to the empty string ant the hint of the `Code` object to be not present.
 
@@ -435,13 +390,13 @@ For convenience, an implementation of `CodeBlock` should have a constructor with
 
 For convenience, an implementation of `CodeBlock` should have a constructor with signature `CodeBlock(String code, String hint)` that takes a `String` named `code` and a `String` named `hint` and delegates to `setCode(String code)` and `setHint(String hint)`.
 
-###### `getCode`
+###### `getCode` {api-dom-codeblock-getcode}
 
 A `CodeBlock` object must have a method with signature `String getCode()`.
 
 The method must return the code of the `CodeBlock` object.
 
-###### `setCode`
+###### `setCode` {api-dom-codeblock-setcode}
 
 A `CodeBlock` object must have a method with signature `setCode(String code)` that takes a `String` named `code`.
 
@@ -449,13 +404,13 @@ This method must set the code of the `CodeBlock` object.
   
 This method must fail if `code` is not present.
 
-###### `getHint`
+###### `getHint` {api-dom-codeblock-gethint}
 
 A `CodeBlock` object must have a method with signature `String? getHint()`.
 
 The method must return the optional hint of the `CodeBlock` object.
 
-###### `setHint`
+###### `setHint` {api-dom-codeblock-sethint}
   
 A `CodeBlock` object must have a method with signature `setHint(String? hint)` that takes an optional `String` named `hint`.
 
@@ -463,13 +418,21 @@ This method must set the hint of the `CodeBlock` object.
  	
 ##### `CodeContent` {#api-dom-codecontent}
 
-###### Constructors
+A `CodeContent` object is a `Content` object that represents a [*Markdom code content*](#domain-codecontent).
+
+###### Constructors {#api-dom-codecontent-constructors}
 
 An implementation of `CodeContent` should have a constructor with signature `CodeContent()` that set the code of the `CodeContent` object to the empty string.
 
 For convenience, an implementation of `CodeContent` should have a constructor with signature `CodeContent(String code)` that takes a `String` named `code` and delegates to `setCode(String code)`.
 
-###### `setCode`
+###### `getCode` {#api-dom-codecontent-getcode}
+
+A `CodeContent` object must have a method with signature `String getCode()`.
+
+The method must return the code of the `CodeContent` object.
+
+###### `setCode` {#api-dom-codecontent-setcode}
 
 A `CodeContent` object must have a method with signature `setCode(String code)` that takes a `String` named `code`.
 
@@ -479,88 +442,111 @@ This method must fail if `code` is not present.
 
 ##### `Content` {#api-dom-content}
 
-###### Constructors 
+A Content` object is a `Node` object that represents a [*Markdom content*](#domain-content).
+
+###### Constructors {#api-dom-content-constructor} 
 
 An implementation of `Content` should have a constructor with signature `Content()`.
 
-###### `getContentType`
+###### `getContentType` {#api-dom-content-getcontenttype}
 
 A `Content` object must have a method with signature `ContentType getContentType()`.  
 
 This method must return the `ContentType` value that correspondes to the type of the `Content` object.
 
-###### `getParent`
-
-A `Content` object must have a method with signature `ContentParent getParent()`.
-
-This method specializes the corresponding method from the `Node` interface.  
-This method must return the `ContentParent` object the `Content` object is currently added to.
-
-This method must fail if the `Content` object is currently not added to a `ContentParent` object.
-
-###### `getBlock`
+###### `getBlock` {#api-dom-content-getblock}
 
 A `Content` object must have a method with signature `Block getBlock()`.
 
-This method must return the nearest `Block` object object the `Content` in the tree of Markdom nodes  the `Content` object is part of, which is the `Block` object of the `ContentParent` this `Content` object is currently added to.
+This method must return the nearest `Block` object object the `Content` in the tree of Markdom nodes  the `Content` object is part of, which is the `Block` object of the `ContentParent` this `Content` object is currently attached to.
 
-This method must fail if the `Content` object is currently not added to a `ContentParent` object.
+This method must fail if the `Content` object doesn't [have](#api-dom-node-hasparent) a [parent](#api-dom-node-getparent) [`ContentParent`](#api-dom-node) object.
    
-##### `ContentBlock` {#api-dom-contentblock}
+##### `ContentParentBlock` {#api-dom-contentblock}
 
-###### Constructors
+A `ContentParentBlock` object is a `Block` object and a `ContentParent` object that represents a [*Markdom block*](#domain-block) that contains [*Markdom content*](#domain-content).
 
-An implementation of `ContentBlock` should have a constructor with signature `ContentBlock()`.
+###### Constructors {#api-dom-contentblock-constructor}
 
-For convenience, an implementation of `ContentBlock` should have a constructor with signature `ContentBlock(Content... contents)` that takes that takes an array of `Content` objects named `contents` and delegates to `ContentParent#addContents(Content... content)`.
+An implementation of `ContentParentBlock` should have a constructor with signature `ContentParentBlock()`.
 
-##### `ContentContent` {#api-dom-contentcontent}
+For convenience, an implementation of `ContentParentBlock` should have a constructor with signature `ContentParentBlock(Content... contents)` that takes that takes an array of `Content` objects named `contents` and delegates to `ContentParent#addContents(Content... content)`.
 
-###### Constructors
+##### `ContentParentContent` {#api-dom-contentcontent}
 
-An implementation of `ContentParent` should have a constructor with signature `ContentContent()`.
+A `ContentParentContent` object is a `Content` object and a `ContentParent` object that represents a [*Markdom content*](#domain-content) that contains [*Markdom content*](#domain-content).
 
-For convenience, an implementation of `ContentContent` should have a constructor with signature `ContentContent(Content... contents)` that takes that takes an array of `Content` objects named `contents` and delegates to `ContentParent#addContents(Content... content)`.
-	
+###### Constructors {#api-dom-contentcontent-constructor}
+
+An implementation of `ContentParent` should have a constructor with signature `ContentParentContent()`.
+
+For convenience, an implementation of `ContentParentContent` should have a constructor with signature `ContentParentContent(Content... contents)` that takes that takes an array of `Content` objects named `contents` and delegates to `ContentParent#addContents(Content... content)`.
+
 ##### `ContentParent` {#api-dom-contentparent}
 
-###### Constructors
+A `ContentParent` object is a [`Node`](#api-dom-node) object that represents a [*Markdom node*](#domain-node) that contains [*Markdom contents*](#domain-content).
+
+An implementation of `ContentParent` must have a final and initially empty `Sequence` of `Content` objects that is associated with the `ContentParent` object.
+
+Any structural modification (insert, remove, clear, replace) to the associated `Sequence` of `Content` objects must reflect the fact, that a `Content` object that is added to the associated `Sequence` object is attached to the `ContentParent` object until is is removed from the associated `Sequence` of `Content` objects.
+
+Attaching a `Content` object to the `ContentParent` object  must fail
+* if the `Content` object is not present, or  
+* if the `Content` object is already attached to a `ContentParent` object, or 
+* if attaching the `Content` object to the `ContentParent` object would create a cycle in the tree of Markdom nodes that the `ContentParent` object is part of.
+
+###### Constructors {api-dom-contentparent-constructor}
 
 An implementation of `ContentParent` should have a constructor with signature `ContentParent()`.
 
-For convenience, an implementation of `ContentParent` should have a constructor with signature `ContentParent(Content... contents)` that takes that takes an array of `Content` objects named `contents` and delegates to `addContents(Content... content)`.
+For convenience, an implementation of `ContentParent` should have a constructor with signature `ContentParent(Content... contents)` that takes that takes an array of `Content` objects named `contents` and delegates to `addContents(Content... contents)`.
 
-###### `addContent`
+###### `getContents` {api-dom-contentparent-getcontents}
+
+A `Content` object must have a method with signature `Sequence getContents()`.
+
+This method must return the associated `Sequence` of `Content` objects.
+
+###### `addContent` {api-dom-contentparent-addcontent}
 
 For convenience, a `ContentParent` object should have a method with signature `addContent(Content content)` that takes a `Content` object named `content`.
 
-This method must add `content` as the last Markdom content of the `ContentParent` object.
+This method must add `content` at the end of the associated `Sequence` of `Content` objects. This attaches `content` to the `ContentParent` object.
 
-This method must fail if `content` is not present.  
-This method must fail if `content` is already added to a `ContentParent` object.  
-This method must fail if adding `content` to the `ContentParent` object would create a cycle in the tree of Markdom nodes that the `ContentParent` object is part of.
+This method must fail if add `content` to the  associated `Sequence` of `Content` objects failed.
 
-###### `addContents`
+###### `addContents` {api-dom-contentparent-addcontents}
 
 For convenience, a `ContentParent` object should have a method with signature `addContents(Content... contents)` that takes an array of `Content` objects named `contents`.
 
-This method must add all `Content` objects from `contents` to the `ContentParent` object.  
-This method is a short hand for repeated calls to `addContent(Content content)` and should call `addContent(Content content)` for all `Content` objects from `contents` to the `ContentParent` object.
+This method must add all `Content` objects from `contents` in the given order at the end of the `Sequence` of `Content` objects of the `ContentParent` object, as if `addContent(Content content)` has been called repeatedly for all `Content` objects from `contents`.  This attaches all `Content` objects from `contents` to the `ContentParent` object.
   
-This method must fail if `contents` is not present.  
-This method must fail if any of the `Content` objects from `contents` is not present.  
-This method must fail if any of the `Content` objects from `contents` is already added to a `ContentParent` object.  
-This method must fail if adding any of the `Content` objects from `contents` to the `ContentParent` object would create a cycle in the tree of Markdom nodes that the `ContentParent` object is part of.
+This method must fail if `contents` is not present.
+This method must fail if adding any `Content` object from `contents` to the  associated `Sequence` of `Content` objects failed.
   
-Because this method is a short hand for repeated calls to `addContent(Content content)`, it must add all prior `Content` objects from `contents` to the `ContentParent` object, if it fails beacause of a violating `Content` object from `contents`.
+Because this method is a short hand for repeated calls to `addContent(Content content)`, it must add all prior `Content` objects from `contents` to the  associated `Sequence` of `Content` objects, if it fails beacause of a violating `Content` object from `contents`.
+  
+##### `DivisionBlock` {#api-dom-divisionblock}
+
+A `DivisionBlock` object is a `Block` object that represents a [*Markdom division block*](#domain-divisionblock)
+
+###### Constructors {#api-dom-divisionblock-constructors}
+
+An implementation of `DivisionBlock` should have a constructor with signature `DivisionBlock()` 
   
 ##### `Document` {#api-dom-document}
 
-###### Constructors
+A `Document` object is a `BlockParent` object that represents a [*Markdom document*](#domain-document).
+
+###### Constructors {#api-dom-document-constructor}
 
 For convenience, an implementation of `Document` should have a constructor with signature `Document(Block... blocks)` that takes that takes an array of `Block` objects and delegates to `BlockParent#addBlocks(Block... blocks)`.
 
 ##### `EmphasisContent` {#api-dom-emphasiscontent}
+
+An `EmphasisContent` object is a `ContentParentContent` object that represents a [*Markdom emphasis content*](#domain-emphasiscontent).  
+
+###### Constructors {#api-dom-emphasiscontent-constructor}
 
 An implementation of `EmphasisContent` should have a constructor with signature `EmphasisContent()` that sets the level of the `EmphasisContent` object to `LEVEL_1`.
 
@@ -568,7 +554,13 @@ For convenience, an implementation of `EmphasisContent` should have a constructo
 
 For convenience, an implementation of `EmphasisContent` should have a constructor with signature `EmphasisContent(EmphasisLevel level, Content... contents)` that takes an `EmphasisLevel` named `level` and an array of `Content` objects named `contents` and delegates to `setLevel(EmphasisLevel level)` and `ContentParent#addContents(Content... contents)`.
 
-###### `setLevel`
+###### `getLevel` {#api-dom-emphasiscontent-getlevel}
+
+An `EmphasisContent` object must have a method with signature `EmphasisLevel getLevel()`.
+
+This method must return the level of the `EmphasisContent` object.
+
+###### `setLevel` {#api-dom-emphasiscontent-setlevel}
 
 An `EmphasisContent` object must have a method with signature `setLevel(EmphasisLevel level)` that takes an `EmphasisLevel` named `level`.
 
@@ -576,9 +568,11 @@ This method must set the level of the `EmphasisContent` object.
   
 This method must fail if `level` is not present.
    
-##### `HeadingBlock` {#api-dom-hedingblock}
+##### `HeadingBlock` {#api-dom-headingblock}
 
-###### Constructors
+A `HeadingBlock` object is a `ContentParentBlock` object that represents a [*Markdom heading blocks*](#domain-headingblock).  
+
+###### Constructors {#api-dom-headingblock-constructor}
 
 An implementation of `HeadingBlock` should have a constructor with signature `HeadingBlock()` that sets the level of the `HeadingBlock` object to `LEVEL_1`.
 
@@ -586,18 +580,25 @@ For convenience, an implementation of `HeadingBlock` should have a constructor w
 
 For convenience, an implementation of `HeadingBlock` should have a constructor with signature `HeadingBlock(HeadingLevel level, Content... contents)` that takes a `HeadingLevel` named `level` and an array of `Content` objects named `contents` and delegates to `setLevel(HeadingLevel level)` and `ContentParent#addContents(Contents... contents)`.
 
-###### `setLevel`
+###### `getLevel` {#api-dom-headingblock-getlevel}
+
+A `HeadingBlock` object must have a method with signature `HeadingLevel getLevel()`.
+
+This method must return the level of the `HeadingBlock` object.
+
+###### `setLevel` {#api-dom-headingblock-setlevel}
 
 A `HeadingBlock` object must have a method with signature `setLevel(HeadingLevel level)` that takes a `HeadingLevel` named `level`.
 
 This method must set the level of the `HeadingBlock` object. 
   
 This method must fail if `level` is not present.
-
    
 ##### `ImageContent` {#api-dom-imagecontent}
 
-###### Constructors 
+An `ImageContent` object is a `Content` object that represents a [*Markdom image content*](#domain-imagecontent).  
+
+###### Constructors {#api-dom-imagecontent-constructor}
 
 An implementation of `LinkContent` should have a constructor with signature `LinkContent()` that sets the uri of the `ImageContent` object to the empty string and the title of the `ImageContent` object to be not present and the alternative text of the `ImageContent` object to be not present.
 
@@ -605,7 +606,13 @@ For convenience, an implementation of `ImageContent` should have a constructor w
 
 For convenience, an implementation of `ImageContent` should have a constructor with signature `ImageContent(String uri, String? title, String? alternative)` that takes a `String` named `uri` and an optional `String` named `title` and an optional `String` named `alternative `and delegates to `setUri(String uri)` and `setTitle(String? title)` and `setAlternative(String? alternative)`.
 
-###### `setUri`
+###### `getUri` {#api-dom-imagecontent-geturi}
+
+A `ImageContent` object must have a method with signature `String getUri()`.
+
+This method must return the uri of the `ImageContent` object.
+
+###### `setUri` {#api-dom-imagecontent-seturi}
 
 An `ImageContent` object must have a method with signature `setUri(String uri)` that takes a `String` named `level`.
 
@@ -613,13 +620,25 @@ This method must set the uri of the `ImageContent` object.
   
 This method must fail if `uri` is not present.
 
-###### `setTitle`
+###### `getTitle` {#api-dom-imagecontent-gettitle}
+
+A `ImageContent` object must have a method with signature `String getTitle()`.
+
+This method must return the title of the `ImageContent` object.
+
+###### `setTitle`{#api-dom-imagecontent-settitle}
   
 An `ImageContent` object must have a method with signature `setTitle(String? title)` that takes an optional `String` named `title`.
 
-This method must set the title of the `ImageContent` object. 
+This method must set the title of the `ImageContent` object.
 
-###### `setAlternative`
+###### `getAlternative` {#api-dom-imagecontent-getalternative}
+
+A `ImageContent` object must have a method with signature `String getAlternative()`.
+
+This method must return the alternative text of the `ImageContent` object. 
+
+###### `setAlternative` {#api-dom-imagecontent-setalternative}
 
 An `ImageContent` object must have a method with signature `setAlternative(String? alternative)` that takes an optional `String` named `alternative`.
 
@@ -627,23 +646,33 @@ This method must set the alternative text of the `ImageContent` object.
 
 ##### `LineBreakContent` {#api-dom-linebreakcontent}
 
-###### Constructors
+A `LineBreakContent` object is a `Content` object that represents a [*Markdom line break content*](#domain-linebreakcontent).  
+
+###### Constructors {#api-dom-linebreakcontent-constructor}
 
 An implementation of `LineBreakContent` should have a constructor with signature `LineBreakContent()` that sets the `LinkContent` object to represent a soft line break.
 
 For convenience, an implementation of `LineBreakContent` should have a constructor with signature `LinkContent(Boolean hard)` that takes a `Boolean` named `hard` and delegates to `setHard(Boolean hard)`.
 
-###### `setHard`
+###### `isHard` {#api-dom-linebreakcontent-ishard}
+
+A `LineBreakContent` object must have a method with signature `Boolean isHard()`.
+
+This method must return whether the `LinkContent` object represents a hard line break or a soft line break.
+
+###### `setHard` {#api-dom-linebreakcontent-sethard}
 
 A `LineBreakContent` object must have a method with signature `setHard(Boolean hard)` that takes a `Boolean` named `hard`.
 
-This method must set whether the `LinkContent` object represents a hard line break or a soft line break.. 
+This method must set whether the `LinkContent` object represents a hard line break or a soft line break.
   
 This method must fail if `hard` is not present.
    
 ##### `LinkContent` {#api-dom-linkcontent}
 
-###### Constructors
+A `LinkContent` object is a `ContentParentContent` object that represents a [*Markdom link content*](#domain-linkcontent).
+
+###### Constructors {#api-dom-linkcontent-constructor}
 
 An implementation of `LinkContent` should have a constructor with signature `LinkContent()` that sets the uri of the `LinkContent` object to the empty string.
 
@@ -651,7 +680,13 @@ For convenience, an implementation of `LinkContent` should have a constructor wi
 
 For convenience, an implementation of `LinkContent` should have a constructor with signature `LinkContent(String uri, Content... contents)` that takes a `String` named `uri` and an array of `Content` objects named `contents` and delegates to `setUri(String uri)` and `ContentParent#addContents(Content... contents)`.
 
-###### `setUri`
+###### `getUri` {#api-dom-imagecontent-geturi}
+
+A `LinkContent` object must have a method with signature `String getUri()`.
+
+This method must return the uri of the `LinkContent` object.
+
+###### `setUri` {#api-dom-linkcontent-seturi}
 
 A `LinkContent` object must have a method with signature `setUri(String uri)` that takes a `String` named `level`.
 
@@ -661,45 +696,61 @@ This method must fail if `uri` is not present.
    
 ##### `ListBlock` {#api-dom-listblock}
 
-###### Constructors 
+A `ListBlock` object is a `Block` object that represents a [*Markdom list block*](#domain-listblock)  
+
+An implementation of `ListBlock` must have a final and initially empty `Sequence` of `ListItem` objects that is associated with the `ListBlock` object.
+
+Any structural modification (insert, remove, clear, replace) to the associated `Sequence` of `ListItem` objects must reflect the fact, that a `ListItem` object that is added to the associated `Sequence` object is attached to the `ListBlock` object until is is removed from the associated `Sequence` of `ListItem` objects.
+
+Attaching a `ListItem` object to the `ListBlock` object  must fail
+* if the `ListItem` object is not present, or  
+* if the `ListItem` object is already attached to a `ListBlock` object, or 
+* if attaching the `ListItem` object to the `ListBlock` object would create a cycle in the tree of Markdom nodes that the `ListBlock` object is part of.
+
+###### Constructors {api-dom-listblock-constructor}
 
 An implementation of `ListBlock` should have a constructor with signature `ListBlock()`.
 
 For convenience, an implementation of `ListBlock` should have a constructor with signature `ListBlock(ListItem... items)` that takes that takes an array of `ListItem` objects named `items` and delegates to `addItems(ListItem... items)`.
 
-###### `addItem`
+###### `getListItems` {api-dom-listblock-getitems}
 
-For convenience, a `ListItem` object should have a method with signature `addItem(ListItem item)` that takes a `ListItem` object named `item`.
+A `ListItem` object must have a method with signature `Sequence getListItems()`.
 
-This method must add `item` as the last Markdom item of the `ListItem` object.
+This method must return the associated `Sequence` of `ListItem` objects.
 
-This method must fail if `item` is not present.  
-This method must fail if `item` is already added to a `ListItem` object.  
-This method must fail if adding `item` to the `ListItem` object would create a cycle in the tree of Markdom nodes that the `ListItem` object is part of.
+###### `addItem` {api-dom-listblock-additem}
 
-###### `addItems`
+For convenience, a `ListBlock` object should have a method with signature `addItem(ListItem item)` that takes a `ListItem` object named `item`.
 
-For convenience, a `ListItem` object should have a method with signature `addItems(ListItem... items)` that takes an array of `ListItem` objects named `items`.
+This method must add `item` at the end of the associated `Sequence` of `ListItem` objects. This attaches `item` to the `ListBlock` object.
 
-This method must add all `ListItem` objects from `items` to the `ListItem` object.  
-This method is a short hand for repeated calls to `ListItem(ListItem item)` and should call `ListItem(ListItem item)` for all `ListItem` objects from `items` to the `ListItem` object.
+This method must fail if add `item` to the  associated `Sequence` of `ListItem` objects failed.
+
+###### `addItems` {api-dom-listblock-additems}
+
+For convenience, a `ListBlock` object should have a method with signature `addItems(ListItem... items)` that takes an array of `ListItem` objects named `items`.
+
+This method must add all `ListItem` objects from `items` in the given order at the end of the `Sequence` of `ListItem` objects of the `ListBlock` object, as if `addItem(ListItem item)` has been called repeatedly for all `ListItem` objects from `items`.  This attaches all `ListItem` objects from `items` to the `ListBlock` object.
   
-This method must fail if `items` is not present.  
-This method must fail if any of the `ListItem` objects from `items` is not present`.  
-This method must fail if any of the `ListItem` objects from `items` is already added to a `ListItem` object.  
-This method must fail if adding any of the `ListItem` objects from `items` to the `ListItem` object would create a cycle in the tree of Markdom nodes that the `ListItem` object is part of.
+This method must fail if `items` is not present.
+This method must fail if adding any `ListItem` object from `items` to the  associated `Sequence` of `ListItem` objects failed.
   
-Because this method is a short hand for repeated calls to `ListItem(ListItem item)`, it must add all prior `ListItem` objects from `items` to the `ListItem` object, if it fails beacause of a violating `ListItem` object from `items`.
+Because this method is a short hand for repeated calls to `addItem(ListItem item)`, it must add all prior `ListItem` objects from `items` to the  associated `Sequence` of `ListItem` objects, if it fails beacause of a violating `ListItem` object from `items`.
 
 ##### `ListItem` {#api-dom-listitem}
 
-###### Constructors
+A `ListItem` object is a `BlockParent` object that represents a [*Markdom list item*](#domain-listitem).
+
+###### Constructors {#api-dom-listitem- constructor}
 
 An implementation of `ListItem` should have a constructor with signature `ListItem()`.
 
 For convenience, an implementation of `ListItem` should have a constructor with signature `ListItem(Block... blocks)` that takes an array of `Block` objects named `blocks` and delegates to `BlockParent#addBlocks(Block... blocks)`.
 
 ##### `Node` {#api-dom-node}
+
+A [`Node`](#api-dom-node) object represents a [*Markdom node*](#domain-node).
 
 ###### `getNodeType` {#api-dom-node-getnodetype}
 
@@ -724,7 +775,6 @@ Specifically, this method must return `false`
 * if the [`Node`](#api-dom-node) object is a `ListItem` object and currently not attached to a `ListBlock` object, or
 * if the [`Node`](#api-dom-node) object is a `Content` object and currently not attached to a `ContentParent` object.
 
-
 ###### `getParent` {#api-dom-node-getparent}
 
 A [`Node`](#api-dom-node) object must have a method with signature `Node getParent()`.
@@ -736,7 +786,7 @@ Specifically, this method must return
 * the `ListBlock` object it is currently attached to, if the [`Node`](#api-dom-node) object is a `ListItem` object, or
 * the `ContentParent` object it is currently attached, if the [`Node`](#api-dom-node) object is a `Content` object.
 
-This method must fail if the `Node` doesn't [have](#api-dom-node-hasparent) a [parent](#api-dom-node-getparent) [`Node`](#api-dom-node) object.
+This method must fail if the `Node` object doesn't [have](#api-dom-node-hasparent) a [parent](#api-dom-node-getparent) [`Node`](#api-dom-node) object.
 
 ###### `getDocument` {#api-dom-node-getdocument}
 
@@ -748,7 +798,7 @@ Specifically, this method must return
 * the `Node` object, if the [`Node`](#api-dom-node) object is a `Document` object, or
 * the `Document` object of the parent `Node` object, if the `Node` object has a parent `Node` object.
   
-This method must fail if the `Node` doesn't [have](#api-dom-node-hasparent) a [parent](#api-dom-node-getparent) [`Node`](#api-dom-node) object.
+This method must fail if the `Node` object doesn't [have](#api-dom-node-hasparent) a [parent](#api-dom-node-getparent) [`Node`](#api-dom-node) object.
 
 ###### `getIndex` {#api-dom-node-getindex}
 
@@ -761,7 +811,7 @@ Specifically, this method must return
 * the index in the attached `Sequence` of `ListItem` objects of the `ListBlock` object it is currently attached to, if the [`Node`](#api-dom-node) object is a `ListItem` object, or
 * the index in the attached `Sequence` of `Content` objects of the `ContentParent` object it is currently attached to, if the [`Node`](#api-dom-node) object is a `Content` object, or
 
-This method must fail if the `Node` doesn't [have](#api-dom-node-hasparent) a [parent](#api-dom-node-getparent) [`Node`](#api-dom-node) object.
+This method must fail if the `Node` object doesn't [have](#api-dom-node-hasparent) a [parent](#api-dom-node-getparent) [`Node`](#api-dom-node) object.
 
 ###### `hasChildren`
 
@@ -792,10 +842,11 @@ Specifically, this method must return `true`
 * the attached `Sequence` of `Content` objects, if the [`Node`](#api-dom-node) object is a `ContentParent` object, or
 * an emty `Source` object, if the [`Node`](#api-dom-node) object is a `CodeBlock` object or a `CodeContent` object or a `DivisionBlock` object or an `ImageContent` object or a `LineBreakContent` object or a `TextContent` object.
 
-
 ##### `OrderedListBlock` {#api-dom-orderedlistblock}
 
-###### Constructors
+An `OrderedListBlock` object is a `ListBlock` object that represents an [*ordered Markdom list block*](#domain-orderedlistblock).
+
+###### Constructors {#api-dom-orderedlistblock-constructor}
 
 An implementation of `OrderedListBlock` should have a constructor with signature `OrderedListBlock()` that sets the start index of the `OrderedListBlock` object to `1`.
 
@@ -803,7 +854,13 @@ For convenience, an implementation of `OrderedListBlock` should have a construct
 
 For convenience, an implementation of `OrderedListBlock` should have a constructor with signature `OrderedListBlock(Integer startIndex, ListItem... items)` that takes an `Integer` named `startIndex` and an array of `ListItem` objects named `items` and delegates to `setStartINdex(Integer startIndex)` and `ContentParent#addContents(Content... contents)`.
 
-###### setStartIndex
+###### getStartIndex {#api-dom-orderedlistblock-getstartindex}
+
+An `OrderedListBlock` object must have a method with signature `Integer getStratIndex()`.
+
+This method must return the start index of the `OrderedListBlock` object.
+
+###### setStartIndex {#api-dom-orderedlistblock-setstartindex}
 
 An `OrderedListBlock` object must have a method with signature `setStartIndex(Integer startIndex)` that takes an `INteger` named `startIndex`.
 
@@ -814,15 +871,19 @@ This method must fail if `startIndex` is negative.
   
 ##### `ParagraphBlock` {#api-dom-paragraphblock}
 
-###### Constructors
+A `ParagraphBlock` object is a `ContentParentBlock` object that represents a [*Markdom paragraph block*](#domain-paragraphblock).
+
+###### Constructors {#api-dom-paragraphblock-constructor}
 
 An implementation of `ParagraphBlock` should have a constructor with signature `ParagraphBlock()`.
 
-For convenience, an implementation of `ParagraphBlock` should have a constructor with signature `ParagraphBlock(Content... contents)` that takes an array of `Content` objects named `contents` and delegates to `ContentBlock#addContents(Contents... contents)`.
+For convenience, an implementation of `ParagraphBlock` should have a constructor with signature `ParagraphBlock(Content... contents)` that takes an array of `Content` objects named `contents` and delegates to `ContentParentBlock#addContents(Contents... contents)`.
 
 ##### `QuoteBlock` {#api-dom-quoteblock}
 
-###### Constructors
+A `QuoteBlock` object is a `Block` object and a `BlockParent` object that represents a [*Markdom quote block*](#domain-quoteblock).
+
+###### Constructors {#api-dom-quoteblock-paragraphblock}
 
 An implementation of `QuoteBlock` should have a constructor with signature `QuoteBlock()`.
 
@@ -830,13 +891,21 @@ For convenience, an implementation of `QuoteBlock` should have a constructor wit
     
 ##### `TextContent` {#api-dom-textcontent}
 
-###### Constructors
+A `TextContent` object is `ContentParentContent` object that represents a [*Markdom text content*](#domain-textcontent).
+
+###### Constructors {#api-dom-textcontent-constructor}
 
 An implementation of `TextContent` should have a constructor with signature `TextContent()` that sets the text of the `TextContent` object to the empty string.
    
 For convenience, an implementation of `TextContent` should have a constructor with signature `TextContent(String text)` that takes a `String` named `text` and delegates to `setText(String text)`.
 
-###### `setText`
+###### `getText` {#api-dom-textcontent-gettext}
+
+A `TextContent` object must have a method with signature `String getText()`.
+
+This method must return the text of the `TextContent` object.
+
+###### `setText` {#api-dom-textcontent-settext}
 
 A `TextContent` object must have a method with signature `setText(String text)` that takes a `String` named `text`.
 
@@ -846,12 +915,13 @@ This method must fail if `text` is not present.
    
 ##### `UnorderedListBlock` {#api-dom-unorderedlistblock}
 
-###### Constructors
+An `UnorderedListBlock` object is a `ListBlock` object that represents an [*unordered Markdom list block*](#domain-unorderedlistblock).
+
+###### Constructors {#api-dom-unorderedlistblock-constructor}
 
 An implementation of `UnorderedListBlock` should have a constructor with signature `UnorderedListBlock()`.
    
 For convenience, an implementation of `UnorderedListBlock` should have a constructor with signature `UnorderedListBlock(ListItem... items)` that takes an array of `ListItem` objects named `items` and delegates to  `ListBlock#addItems(ListItem... items)`.
-
 
 #### Enumerations {#api-dom-enumerations}
 
