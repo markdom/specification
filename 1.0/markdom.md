@@ -308,11 +308,11 @@ This specification describes two distinct APIs:
 
    The Domain Model API allows to create a representation of a Markdom document in the memory, which can then be examined, modified and further processed.
    
-2. The [Handler API](#handler-api) describes a `Handler` interface that describes how a Markdom document is represented as a sequence of events.
+2. The [Handler API](#api-dom) describes a `Handler` interface that describes how a Markdom document is represented as a sequence of events.
 
    The Handler API allows to process a Markdom document on the fly without the necessity to create an object graph.
    
-### Common
+### Common {#api-common}
 
 #### Dependencies {#api-common-dependencies}
 
@@ -603,7 +603,7 @@ An implementation of `DivisionBlock` should have a constructor with signature `D
   
 ##### `Document` {#api-dom-document}
 
-A [`Document`](#api-dom-document) object is a [`BlockParent`](#api-dom-blockparent) object that represents a [*Markdom document*](#domain-document).
+A [`Document`](#api-dom-document) object is a [`BlockParent`](#api-dom-blockparent) object and a [`Dispatcher`](#api-handler-dispatcher) object that represents a [*Markdom document*](#domain-document).
 
 ###### Constructors {#api-dom-document-constructor}
 
@@ -1069,11 +1069,48 @@ If the [*Markdom content*](#domain-content) is a [*Markdom line break content*](
 
 ![](resource/markdom-events-content.png)
 
-#### Interfaces
+#### Interfaces {#api-handler-interface}
 
-##### Handler
+##### `Dispatcher` {#api-handler-dispatcher}
+A `Dispatcher` is a component that is able to describe a [*Markdom document*](#domain-document) to a [`Handler`](#api-handler-handler) by dispatching a sequence of [*Markdom events*](#api-handler-event).
 
-##### Dispatcher
+###### `handle` {#api-handler-dispatcher-handle}
+
+A [`Dispatcher`](#api-handler-dispatcher) object must have a method with signature `Object handle(Handler handler)` that takes a [`Handler`](#api-handler-handler) object named `handler`.
+
+This method must dispatch [*Markdom events*](#api-handler-event) that describe the [*Markdom document*](#domain-document) to `handler` in the correct order.
+  
+This method must return the [result](#api-handler-handler-getresult) of `handler`.
+
+Calling this method multiple times on a [`Dispatcher`](#api-handler-dispatcher) that is not [repeatable](#api-handler-isrepeatable) has an undefined behavior, unless explicitly stated otherwise.
+  
+This method must fail if `handler` is not present.
+
+###### `isRepeatable` {#api-handler-isrepeatable}
+
+A [`Dispatcher`](#api-handler-dispatcher) object must have a method with signature `Boolean isRepeatable()`.
+  
+This method must return whether the [`Dispatcher`](#api-handler-dispatcher) object is able to describe a [*Markdom document*](#domain-document) multiple times (e.g. a [`Document`](#api-dom-document) object can describe itself multiple times, but a CommonMark parsing [`Handler`](#api-handler-handler) object that consumes its input can't).
+  
+##### `Handler` {#api-handler-handler}
+
+A `Handler` is a component that is able to receive a a sequence of [*Markdom events*](#api-handler-event) that describe a [*Markdom document*](#domain-document) from a [`Dispatcher`](#api-handler-dispatcher) and calculate a result or causes side effects that corresponds to the described [*Markdom document*](#domain-document) (e.g. a [`Handler`](#api-handler-dispatcher) object can generate a [`Document`](#api-dom-document) object or write CommonMark text into a file).
+
+###### `getResult` {#api-handler-handler-getresult}
+
+A [`Handler`](#api-handler-dispatcher) object must have a method with signature `Object getResult()`.
+
+This method must return the calculated result that corresponds to the described [*Markdom document*](#domain-document) (e.g. a [`Handler`](#api-handler-dispatcher) object that generates a [`Document`](#api-dom-document) object returns that [`Document`](#api-dom-document) object and a [`Handler`](#api-handler-dispatcher) object that writes CommonMark text into a file returns `null`).
+
+Calling this method before the [`onDocumentEnd`](#api-handler-handler-ondocumentend) event has been received yields an undefined result, unless explicitly stated otherwise.
+
+#### Classes {#api-handler-classs}
+
+##### `SimpleHandler`
+
+##### `ValidatingHandler`
+
+##### `VerifyingHandler`
 
 ### Combining the Domain Model API and the Handler API
 
@@ -1081,10 +1118,10 @@ If the [*Markdom content*](#domain-content) is a [*Markdom line break content*](
 
 // markdom document markdom handler
 
-## Data representations
+## Data representations {#datex}
 
-### JSON
+### JSON {#datex-json}
 
-### YAML
+### YAML {#datex-yaml}
 
-### XML
+### XML {#datex-xml}
