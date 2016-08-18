@@ -75,27 +75,27 @@ A typical application of Markdom may involve the following use cases.
 
 When an editor uses a backend to create content:
 
-  * The server allows an editor to enter CommonMark text.
-  * The server parses the markup with any suitable parser (i.e. with an actual parser, not just a regex-based converter) that is available for the language the server is written in, and creates a Markdom document.
-  * The server generates a HTML representation of the Markdom document and delivers it to the editor.
-  * The server generates a XML representation of the Markdom document and stores is for later use.
+* The server allows an editor to enter CommonMark text.
+* The server parses the markup with any suitable parser (i.e. with an actual parser, not just a regex-based converter) that is available for the language the server is written in, and creates a Markdom document.
+* The server generates a HTML representation of the Markdom document and delivers it to the editor.
+* The server generates a XML representation of the Markdom document and stores is for later use.
 
 When the editor returns to review the content:
 
-  * The server loads the previously stored XML representation and creates a Markdom document.
-  * The server creates a CommonMark representation of the Markdom document and delivers it to the editor.
+* The server loads the previously stored XML representation and creates a Markdom document.
+* The server creates a CommonMark representation of the Markdom document and delivers it to the editor.
 
 When a visitor uses the frontend to view the content:
 
-  * The server loads the previously stored XML representation and creates a Markdom document.
-  * The server creates a HTML representation of the Markdom document and delivers it to the visitor.
+* The server loads the previously stored XML representation and creates a Markdom document.
+* The server creates a HTML representation of the Markdom document and delivers it to the visitor.
 
 When a visitor uses a smartphone app to view the content:
 
-  * The server loads the previously stored XML representation and creates a Markdom document.
-  * The server creates a JSON representation of the Markdom document and delivers it to the app.
-  * The app receives the JSON representation and creates a Markdom document.
-  * The app creates a native representation of the Markdom document and displays it.
+* The server loads the previously stored XML representation and creates a Markdom document.
+* The server creates a JSON representation of the Markdom document and delivers it to the app.
+* The app receives the JSON representation and creates a Markdom document.
+* The app creates a native representation of the Markdom document and displays it.
   
 Other use cases might include to interpret other sources of rich text (e.g. an uploaded HTML or DOC file) to create a Markdom document or generate other representations (e.g. a PDF file) of a Markdom document.
   
@@ -312,11 +312,9 @@ This specification describes two distinct APIs:
 
    The Handler API allows to process a Markdom document on the fly without the necessity to create an object graph.
    
-### Implementation guideline
+### Common
 
-### Domain Model API {#api-dom}
-
-#### Dependencies {#api-dom-dependencies}
+#### Dependencies {#api-common-dependencies}
 
 *This section lists the interfaces, enumerations and classes that are used by the Domain Model API.*
 
@@ -330,8 +328,56 @@ The Domain Model API uses the following classes:
 
 // sequence
 
-// primitives (int, ), unicode string, 
+// primitives (int, ), unicode string,
 
+#### Enumerations {#api-common-enumerations}
+
+Markdom APIs have the following enumerations:
+
+##### `BlockType` {#api-common-blocktype}
+
+The `BlockType` enum represents the node type of a [*Markdom block*](#domain-block) and has the following constants:
+
+* `CODE`,
+* `DIVISION`,
+* `HEADING`,
+* `ORDERED_LIST`,
+* `PARAGRAPH`,
+* `QUOTE`,
+* `UNORDERED_LIST`.
+  
+##### `ContentType` {#api-common-contenttype}  
+
+The `ContentType` enum represents the node type of a [*Markdom content*](#domain-content) and has the following constants:
+
+* `CODE`,
+* `EMPHASIS`,
+* `IMAGE`,
+* `LINE_BERAK`,
+* `LINK`,
+* `TEXT`.
+
+##### `EmphasisLevel` {#api-common-emphasislevel}
+
+The `EmphasisLevel` enum represents the level of a [*Markdom emphasis content*](#domain-emphasiscontent) object and has the following constants:
+
+* `LEVEL_1`,
+* `LEVEL_2`.
+
+##### `HeadingLevel` {#api-common-headinglevel}
+
+The `HeadingLevel` enum represents the level of a [*Markdom heading block*](#domain-headingblock) object and has the following constants:
+
+* `LEVEL_1`,
+* `LEVEL_2`,
+* `LEVEL_3`,
+* `LEVEL_4`,
+* `LEVEL_5`,
+* `LEVEL_6`.
+  
+### Domain Model API {#api-dom}
+
+The Domain Model API represents a Markdom document as an object graph.
 
 #### Interfaces {#api-dom-interfaces}
 
@@ -353,7 +399,7 @@ An implementation of `Block` should have a constructor with signature `Block()`.
 
 A [`Block`](#api-dom-block) object must have a method with signature `BlockType getBlockType()`.  
 
-This method must return the `BlockType` value that corresponds to the type of the [`Block`](#api-dom-block) object.
+This method must return the `BlockType` value that corresponds to the type of the represented [*Markdom block*](#domain-block).
 
 ##### `BlockParent` {#api-dom-blockparent}
 
@@ -415,13 +461,13 @@ For convenience, an implementation of `CodeBlock` should have a constructor with
 
 A [`CodeBlock`](#api-dom-codeblock) object must have a method with signature `String getCode()`.
 
-The method must return the code of the [`CodeBlock`](#api-dom-codeblock) object.
+The method must return the `code` parameter of the represented [*Markdom code block*](#domain-codeblock).
 
 ###### `setCode` {api-dom-codeblock-setcode}
 
 A [`CodeBlock`](#api-dom-codeblock) object must have a method with signature `setCode(String code)` that takes a `String` named `code`.
 
-This method must set the code of the [`CodeBlock`](#api-dom-codeblock) object. 
+This method must set the `code` parameter of the represented [*Markdom code block*](#domain-codeblock). 
   
 This method must fail if `code` is not present.
 
@@ -429,13 +475,13 @@ This method must fail if `code` is not present.
 
 A [`CodeBlock`](#api-dom-codeblock) object must have a method with signature `String? getHint()`.
 
-The method must return the optional hint of the [`CodeBlock`](#api-dom-codeblock) object.
+The method must return the optional `hint` parameter of the represented [*Markdom code block*](#domain-codeblock).
 
 ###### `setHint` {api-dom-codeblock-sethint}
   
 A [`CodeBlock`](#api-dom-codeblock) object must have a method with signature `setHint(String? hint)` that takes an optional `String` named `hint`.
 
-This method must set the hint of the [`CodeBlock`](#api-dom-codeblock) object. 
+This method must set the `hint` parameter of the represented [*Markdom code block*](#domain-codeblock). 
  	
 ##### `CodeContent` {#api-dom-codecontent}
 
@@ -451,13 +497,13 @@ For convenience, an implementation of `CodeContent` should have a constructor wi
 
 A [`CodeContent`](#api-dom-codecontent) object must have a method with signature `String getCode()`.
 
-The method must return the code of the [`CodeContent`](#api-dom-codecontent) object.
+The method must return the `code` parameter of the represented [*Markdom code content*](#domain-codecontent).
 
 ###### `setCode` {#api-dom-codecontent-setcode}
 
 A [`CodeContent`](#api-dom-codecontent) object must have a method with signature `setCode(String code)` that takes a `String` named `code`.
 
-This method must set the code of the [`CodeContent`](#api-dom-codecontent) object. 
+This method must set the `code` parameter of the represented [*Markdom code content*](#domain-codecontent). 
   
 This method must fail if `code` is not present.
 
@@ -473,7 +519,7 @@ An implementation of `Content` should have a constructor with signature `Content
 
 A [`Content`](#api-dom-content) object must have a method with signature `ContentType getContentType()`.  
 
-This method must return the `ContentType` value that corresponds to the type of the [`Content`](#api-dom-content) object.
+This method must return the `ContentType` value that corresponds to the type of the represented [*Markdom content*](#domain-content).
 
 ###### `getBlock` {#api-dom-content-getblock}
 
@@ -579,13 +625,13 @@ For convenience, an implementation of `EmphasisContent` should have a constructo
 
 An [`EmphasisContent`](#api-dom-emphasiscontent) object must have a method with signature `EmphasisLevel getLevel()`.
 
-This method must return the level of the [`EmphasisContent`](#api-dom-emphasiscontent) object.
+This method must return the `level` parameter of the represented [*Markdom emphasis content*](#domain-emphasiscontent).
 
 ###### `setLevel` {#api-dom-emphasiscontent-setlevel}
 
 An [`EmphasisContent`](#api-dom-emphasiscontent) object must have a method with signature `setLevel(EmphasisLevel level)` that takes an `EmphasisLevel` named `level`.
 
-This method must set the level of the [`EmphasisContent`](#api-dom-emphasiscontent) object. 
+This method must set the `level` parameter of the represented [*Markdom emphasis content*](#domain-emphasiscontent). 
   
 This method must fail if `level` is not present.
    
@@ -605,13 +651,13 @@ For convenience, an implementation of `HeadingBlock` should have a constructor w
 
 A [`HeadingBlock`](#api-dom-headingblock) object must have a method with signature `HeadingLevel getLevel()`.
 
-This method must return the level of the [`HeadingBlock`](#api-dom-headingblock) object.
+This method must return the `level` parameter of the represented [*Markdom heading blocks*](#domain-headingblock).
 
 ###### `setLevel` {#api-dom-headingblock-setlevel}
 
 A [`HeadingBlock`](#api-dom-headingblock) object must have a method with signature `setLevel(HeadingLevel level)` that takes a `HeadingLevel` named `level`.
 
-This method must set the level of the [`HeadingBlock`](#api-dom-headingblock) object. 
+This method must set the `level` parameter of the represented [*Markdom heading blocks*](#domain-headingblock). 
   
 This method must fail if `level` is not present.
    
@@ -631,13 +677,13 @@ For convenience, an implementation of `ImageContent` should have a constructor w
 
 A [`ImageContent`](#api-dom-imagecontent) object must have a method with signature `String getUri()`.
 
-This method must return the uri of the [`ImageContent`](#api-dom-imagecontent) object.
+This method must return the `uri` parameter of the represented [*Markdom image content*](#domain-imagecontent).
 
 ###### `setUri` {#api-dom-imagecontent-seturi}
 
 An [`ImageContent`](#api-dom-imagecontent) object must have a method with signature `setUri(String uri)` that takes a `String` named `level`.
 
-This method must set the uri of the [`ImageContent`](#api-dom-imagecontent) object. 
+This method must set the `uri` parameter of the represented [*Markdom image content*](#domain-imagecontent).
   
 This method must fail if `uri` is not present.
 
@@ -645,29 +691,29 @@ This method must fail if `uri` is not present.
 
 A [`ImageContent`](#api-dom-imagecontent) object must have a method with signature `String getTitle()`.
 
-This method must return the title of the [`ImageContent`](#api-dom-imagecontent) object.
+This method must return the `title` parameter of the represented [*Markdom image content*](#domain-imagecontent).
 
 ###### `setTitle`{#api-dom-imagecontent-settitle}
   
 An [`ImageContent`](#api-dom-imagecontent) object must have a method with signature `setTitle(String? title)` that takes an optional `String` named `title`.
 
-This method must set the title of the [`ImageContent`](#api-dom-imagecontent) object.
+This method must set the `title` parameter of the represented [*Markdom image content*](#domain-imagecontent).
 
 ###### `getAlternative` {#api-dom-imagecontent-getalternative}
 
 A [`ImageContent`](#api-dom-imagecontent) object must have a method with signature `String getAlternative()`.
 
-This method must return the alternative text of the [`ImageContent`](#api-dom-imagecontent) object. 
+This method must return the `alternative` parameter of the represented [*Markdom image content*](#domain-imagecontent).
 
 ###### `setAlternative` {#api-dom-imagecontent-setalternative}
 
 An [`ImageContent`](#api-dom-imagecontent) object must have a method with signature `setAlternative(String? alternative)` that takes an optional `String` named `alternative`.
 
-This method must set the alternative text of the [`ImageContent`](#api-dom-imagecontent) object.
+This method must set the `alternative` parameter of the represented [*Markdom image content*](#domain-imagecontent).
 
 ##### `LineBreakContent` {#api-dom-linebreakcontent}
 
-A [`LineBreakContent`](#api-dom-linebreakcontent) object is a [`Content`](#api-dom-content) object that represents a [*Markdom line break content*](#domain-linebreakcontent).  
+A [`LineBreakContent`](#api-dom-linebreakcontent) object is a [`Content`](#api-dom-content) object that represents a [*Markdom line break content*](#domain-linebreakcontent).
 
 ###### Constructors {#api-dom-linebreakcontent-constructor}
 
@@ -679,13 +725,13 @@ For convenience, an implementation of `LineBreakContent` should have a construct
 
 A [`LineBreakContent`](#api-dom-linebreakcontent) object must have a method with signature `Boolean isHard()`.
 
-This method must return whether the [`LinkContent`](#api-dom-linkcontent) object represents a hard line break or a soft line break.
+This method must return the `hard` parameter of the represented [*Markdom line break content*](#domain-linebreakcontent).
 
 ###### `setHard` {#api-dom-linebreakcontent-sethard}
 
 A [`LineBreakContent`](#api-dom-linebreakcontent) object must have a method with signature `setHard(Boolean hard)` that takes a `Boolean` named `hard`.
 
-This method must set whether the [`LinkContent`](#api-dom-linkcontent) object represents a hard line break or a soft line break.
+This method must set the `hard` parameter of the represented [*Markdom line break content*](#domain-linebreakcontent).
   
 This method must fail if `hard` is not present.
    
@@ -705,13 +751,13 @@ For convenience, an implementation of `LinkContent` should have a constructor wi
 
 A [`LinkContent`](#api-dom-linkcontent) object must have a method with signature `String getUri()`.
 
-This method must return the uri of the [`LinkContent`](#api-dom-linkcontent) object.
+This method must return the `uri` parameter of the represented [*Markdom link content*](#domain-linkcontent).
 
 ###### `setUri` {#api-dom-linkcontent-seturi}
 
 A [`LinkContent`](#api-dom-linkcontent) object must have a method with signature `setUri(String uri)` that takes a `String` named `level`.
 
-This method must set the uri of the [`LinkContent`](#api-dom-linkcontent) object. 
+This method must set the `uri` parameter of the represented [*Markdom link content*](#domain-linkcontent).
   
 This method must fail if `uri` is not present.
    
@@ -763,7 +809,7 @@ Because this method is a short hand for repeated calls to `addItem(ListItem item
 
 A [`ListItem`](#api-dom-listitem) object is a [`BlockParent`](#api-dom-blockparent) object that represents a [*Markdom list item*](#domain-listitem).
 
-###### Constructors {#api-dom-listitem- constructor}
+###### Constructors {#api-dom-listitem-constructor}
 
 An implementation of `ListItem` should have a constructor with signature `ListItem()`.
 
@@ -879,13 +925,13 @@ For convenience, an implementation of `OrderedListBlock` should have a construct
 
 An [`OrderedListBlock`](#api-dom-orderedlistblock) object must have a method with signature `Integer getStratIndex()`.
 
-This method must return the start index of the [`OrderedListBlock`](#api-dom-orderedlistblock) object.
+This method must return the `startIndex` parameter of the represented [*ordered Markdom list block*](#domain-orderedlistblock).
 
 ###### setStartIndex {#api-dom-orderedlistblock-setstartindex}
 
 An [`OrderedListBlock`](#api-dom-orderedlistblock) object must have a method with signature `setStartIndex(Integer startIndex)` that takes an `INteger` named `startIndex`.
 
-This method must set the start index of the [`OrderedListBlock`](#api-dom-orderedlistblock) object. 
+This method must set the `startIndex` parameter of the represented [*ordered Markdom list block*](#domain-orderedlistblock).
   
 This method must fail if `startIndex` is not present.  
 This method must fail if `startIndex` is negative.
@@ -904,7 +950,7 @@ For convenience, an implementation of `ParagraphBlock` should have a constructor
 
 A [`QuoteBlock`](#api-dom-quoteblock) object is a [`Block`](#api-dom-block) object and a [`BlockParent`](#api-dom-blockparent) object that represents a [*Markdom quote block*](#domain-quoteblock).
 
-###### Constructors {#api-dom-quoteblock-paragraphblock}
+###### Constructors {#api-dom-quoteblock-constructor}
 
 An implementation of `QuoteBlock` should have a constructor with signature `QuoteBlock()`.
 
@@ -924,13 +970,13 @@ For convenience, an implementation of `TextContent` should have a constructor wi
 
 A [`TextContent`](#api-dom-textcontent) object must have a method with signature `String getText()`.
 
-This method must return the text of the [`TextContent`](#api-dom-textcontent) object.
+This method must return the `text` parameter of the represented [*Markdom text content*](#domain-textcontent).
 
 ###### `setText` {#api-dom-textcontent-settext}
 
 A [`TextContent`](#api-dom-textcontent) object must have a method with signature `setText(String text)` that takes a `String` named `text`.
 
-This method must set the text of the [`TextContent`](#api-dom-textcontent) object. 
+This method must set the `text` parameter of the represented [*Markdom text content*](#domain-textcontent).
   
 This method must fail if `text` is not present.
    
@@ -944,51 +990,10 @@ An implementation of `UnorderedListBlock` should have a constructor with signatu
    
 For convenience, an implementation of `UnorderedListBlock` should have a constructor with signature `UnorderedListBlock(ListItem... items)` that takes an array of [`ListItem`](#api-dom-listitem) objects named `items` and delegates to  `ListBlock#addItems(ListItem... items)`.
 
-#### Enumerations {#api-dom-enumerations}
+#### Enumerations {#api-enumerations}
 
 The Domain Model API has the following enumerations:
 
-##### `BlockType` {#api-dom-blocktype}
-
-The `BlockType` enum represents the node type of a [`Block`](#api-dom-block) object and has the following constants:
-
-* `CODE`,
-* `DIVISION`,
-* `HEADING`,
-* `ORDERED_LIST`,
-* `PARAGRAPH`,
-* `QUOTE`,
-* `UNORDERED_LIST`.
-  
-##### `ContentType` {#api-dom-contenttype}  
-
-The `ContentType` enum represents the node type of a [`Content`](#api-dom-content) object and has the following constants:
-
-* `CODE`,
-* `EMPHASIS`,
-* `IMAGE`,
-* `LINE_BERAK`,
-* `LINK`,
-* `TEXT`.
-
-##### `EmphasisLevel` {#api-dom-emphasislevel}
-
-The `EmphasisLevel` enum represents the level of an [`EmphasisContent`](#api-dom-emphasiscontent) object and has the following constants:
-
-* `LEVEL_1`,
-* `LEVEL_2`.
-
-##### `HeadingLevel` {#api-dom-headinglevel}
-
-The `HeadingLevel` enum represents the level of an [`HeadingBlock`](#api-dom-headingblock) object and has the following constants:
-
-* `LEVEL_1`,
-* `LEVEL_2`,
-* `LEVEL_3`,
-* `LEVEL_4`,
-* `LEVEL_5`,
-* `LEVEL_6`.
-  
 ##### `NodeType` {#api-dom-nodetype}
 
 The `NodeType` enum represents the node type of a [`Node`](#api-dom-node) object and has the following constants:
@@ -998,41 +1003,77 @@ The `NodeType` enum represents the node type of a [`Node`](#api-dom-node) object
 * `LIST_ITEM`,
 * `CONTENT`.
 
+#### Up- and Down navigation
 
 ### Handler API {#api-handler}
 
-#### Events
+The Handler API represents a [*Markdom document*](#domain-document) as a sequence of events.
 
-##### Document
+#### Events {#api-handler-event}
+
+The Handler API defines several events and the order in which the must occur to successfully describe a [*Markdom document*(#domain-document). Some of the events carry redundant information. This helps different handler implementations to create structurally different representations of the described [*Markdom document*](#domain-document).
+
+##### Document {#api-handler-event-document}
+
+A [*Markdom document*](#domain-document) is represented by an `onDocumentBegin` event and an `onDocumentEnd` event that frame the events that describe the sequence of [*Markdom blocks*](#domain-block) the described [*Markdom document*](#domain-document) consists of. 
 
 ![](resource/markdom-events-document.png)
 
-##### Blocks
+##### Blocks {#api-handler-event-blocks}
+
+A sequence of [*Markdom blocks*](#domain-block) is represented by an `onBlocksBegin` event and an `onBlocksEnd` event that frame the events that describe the [*Markdom blocks*](#domain-block). Consecutive [*Markdom blocks*](#domain-block) are separated by an `onNextBlock` event.
 
 ![](resource/markdom-events-blocks.png)
 
-##### Block
+##### Block {#api-handler-event-block}
+
+A [*Markdom block*](#domain-block) is represented by an `onBlockBegin` event and an `onBlockEnd` event that frame the events that describe the [*Markdom block*](#domain-block). Both events carry the [`BlockType`](#api-common-blocktype)  value that corresponds to the type of the described [*Markdom block*](#domain-block) as a parameter.
+
+* If the [*Markdom block*](#domain-block) is a [*Markdom code block*](#domain-codeblock), it is represented as an `onCodeBlock` event. The event carries the `code` parameter of the [*Markdom code block*](#domain-codeblock).
+* If the [*Markdom block*](#domain-block) is a [*Markdom heading content*](#domain-headingblock), it is represented as an `onHeadingBlockBegin` event and an `onHeadingBlockEnd` event that frame the events that describe the sequence of [*Markdom contents*](#domain-content) the described *Markdom heading* consists of. Both events carry the `level` parameter of the described [*Markdom heading content*](#domain-headingblock).
+* If the [*Markdom block*](#domain-block) is a [*Markdom division content*](#domain-divisionblock), it is represented as an `onDivisionBlock` event.
+* If the [*Markdom block*](#domain-block) is an [*ordered Markdom list block*](#domain-orderedlistblock), it is represented as an `onOrderedListBlockBegin` event and an `onOrderedListBlockEnd` event that frame the events that describe the sequence of *Markdom list items* the described [*ordered Markdom list block*](#domain-orderedlistblock) consists of. Both events carry the `startIndex` parameter of the described [*ordered Markdom list block*](#domain-orderedlistblock).
+* If the [*Markdom block*](#domain-block) is a [*Markdom paragraph content*](#domain-paragraphblock), it is represented as an `onParagraphBlockBegin` event and an `onParagraphBlockEnd` event that frame the events that describe the sequence of [*Markdom contents*](#domain-content) the described [*Markdom paragraph content*](#domain-paragraphblock) consists of.
+* If the [*Markdom block*](#domain-block) is a [*Markdom quote content*](#domain-quoteblock), it is represented as an `onQuoteBlockBegin` event and an `onQuoteBlockEnd` event that frame the events that describe the sequence of [*Markdom blocks*](#domain-block) the described [*Markdom quote content*](#domain-quoteblock) consists of.
+* If the [*Markdom block*](#domain-block) is an [*unordered Markdom list block*](#domain-unorderedlistblock), it is represented as an `onUNorderedListBlockBegin` event and an `onUnorderedListBlockEnd` event that frame the events that describe the sequence of *Markdom list items* the described [*unordered Markdom list block*](#domain-unorderedlistblock) consists of.
 
 ![](resource/markdom-events-block.png)
 
-##### List Items
+##### List Items {#api-handler-event-listitems}
+
+A sequence of *Markdom list items* is represented by an `onListItemsBegin` event and an `onListItemEnd` event that frame the events that describe the *Markdom list items*. Consecutive *Markdom list items* are separated by an `onNextListItem` event.
 
 ![](resource/markdom-events-listitems.png)
 
-##### List Item
+##### List Item {#api-handler-event-listitem}
+
+A *Markdom list item* is represented by an `onListItemBegin` event and an `onListItemEnd` event that frame the events that describe the sequence of [*Markdom blocks*](#domain-block) the described *Markdom list item* consists of. 
 
 ![](resource/markdom-events-listitem.png)
 
-##### Contents
+##### Contents {#api-handler-event-contents}
+
+A sequence of [*Markdom contents*](#domain-content) is represented by an `onContentsBegin` event and an `onContentsEnd` event that frame the events that describe the *Markdom contents*. Consecutive [*Markdom contents*](#domain-content) are separated by an `onNextContent` event.
 
 ![](resource/markdom-events-contents.png)
 
-##### Content
+##### Content {#api-handler-event-content}
+
+A [*Markdom content*](#domain-content) is represented by an `onContentBegin` event and an `onContentEnd` event that frame the events that describe the *Markdom content*. Both events carry the `ContentType` value that corresponds to the type of the of the described [*Markdom content*](#domain-content) as a parameter.
+
+* If the [*Markdom content*](#domain-content) is a [*Markdom code content*](#domain-codecontent), it is represented as an `onCodeContent` event. The event carries `code` parameter of the described [*Markdom code content*](#domain-codecontent).
+* If the [*Markdom content*](#domain-content) is a [*Markdom emphasis content*](#domain-emphasiscontent), it is represented as an `onEmphasisContentBegin` event and an `onEmphasisContentEnd` event that frame the events that describe the sequence of [*Markdom contents*](#domain-content) the described *Markdom conent* consists of. Both events carry the `level` parameter of the described [*Markdom emphasis content*](#domain-emphasiscontent).
+* If the [*Markdom content*](#domain-content) is a [*Markdom image content*](#domain-imagecontent), it is represented as an `onImageContent` event. The event carries the `uri`, `title` and `alternative` parameters of the described [*Markdom image content*](#domain-imagecontent).
+If the [*Markdom content*](#domain-content) is a [*Markdom line break content*](#domain-linebreakcontent), it is represented as an `onLineBreakContent` event. The event carries the `hard` parameter of the described [*Markdom line break content*](#domain-linebreakcontent).
+* If the [*Markdom content*](#domain-content) is a [*Markdom link content*](#domain-linkcontent), it is represented as an `onLinkContentBegin` event and an `onLinkContentEnd` event that frame the events that describe the sequence of [*Markdom contents*](#domain-content) the described [*Markdom link content*](#domain-linkcontent) consists of. Both events carry the `uri` parameter of the described [*Markdom link content*](#domain-linkcontent).
 
 ![](resource/markdom-events-content.png)
 
 #### Interfaces
 
+##### Handler
+
+##### Dispatcher
 
 ### Combining the Domain Model API and the Handler API
 
