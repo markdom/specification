@@ -1,4 +1,4 @@
-![logo](resource/markdom-mark-positive-inline.png)
+![](resource/markdom-mark-positive.png)
 
 ---
 
