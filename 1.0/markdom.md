@@ -984,7 +984,20 @@ The `NodeType` enum represents the node type of a [`Node`](#api-dom-node) object
 
 ### Handler API
 
-![](resource/markdom-events.png)
+![](resource/markdom-events-document.png)
+
+![](resource/markdom-events-blocks.png)
+
+![](resource/markdom-events-block.png)
+
+![](resource/markdom-events-listitems.png)
+
+![](resource/markdom-events-listitem.png)
+
+![](resource/markdom-events-contents.png)
+
+![](resource/markdom-events-content.png)
+
 
 ### Combining the Domain Object API and the Handler API
 
