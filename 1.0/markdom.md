@@ -6,14 +6,19 @@
 
 Markdom is lightweight specification for a rich text domain model.
 
-The two main intents of Markdom are to define the lowest common denominator for rich text and to be platform and representation independent. Theese properties enable Markdom to be used in a wide variety of applications, such as websites, electronic publishing or native rendering on mobile platforms.
+The two main intents of Markdom are to define the lowest common denominator for rich text and to be platform and representation independent. These properties enable Markdom to be used in a wide variety of applications, such as websites, electronic publishing or native rendering on mobile platforms.
+
+The name Markdom is a composition of [**mark**up](https://en.wikipedia.org/wiki/Markup_language) and [**do**main **m**odel](https://en.wikipedia.org/wiki/Domain_model).
 
 ## Overview
 
+This specification covers multiple aspects related to Markdom documents:
 
+* The [domain section](#domain) covers the general structure and the supported formatting instructions for Markdom documents.
+* The [API section](#api) covers programming interfaces to programmatically create, modify and process Markdom documents.
+* The [Data representation section](#datex) covers the representation of Markdom documents in common data exchange formats. 
 
-
-## Why Markdom
+## Why Markdom?
 
 Markdom was created to be an answer to a simple, but as yet unanswered [question](https://stackoverflow.com/questions/34955835/cross-device-rich-text-formatting):
 
@@ -23,13 +28,13 @@ Markdom was created to be an answer to a simple, but as yet unanswered [question
 
 The latter includes at least Android apps (using [Spanned Strings](https://developer.android.com/reference/android/text/Spanned.html)), iOS apps (using [Attributed Strings](https://developer.apple.com/library/mac/documentation/Cocoa/Reference/Foundation/Classes/NSAttributedString_Class/)) and websites (using HTML).
 
-Markdom tries to fill a gap left open by existing technologies. As the name Markdom indicates, it is closly related to [Markdown](https://daringfireball.net/projects/markdown/).
+Markdom tries to fill a gap left open by existing technologies. As the name Markdom indicates, it is closely related to [Markdown](https://daringfireball.net/projects/markdown/).
 
 ### Why not HTML?
 
 HTML itself is hardly an editor friendly language, although usable [WYSISYG editors](https://www.tinymce.com/) exist.
 
-The crucial drawback of HTML is, that is is way too powerfull for the intended purpose. There are [good reasons](https://leanpub.com/markua/read#leanpub-auto-why-is-inline-html-not-supported-in-markua) why HTML is not suitable, if the intended target platform aren't just websites.
+The crucial drawback of HTML is, that is is way too powerful for the intended purpose. There are [good reasons](https://leanpub.com/markua/read#leanpub-auto-why-is-inline-html-not-supported-in-markua) why HTML is not suitable, if the intended target platform aren't just websites.
 
 ### Why not Markdown?
 
@@ -46,9 +51,9 @@ Since Markdown was only released as an implementation and without a formal speci
 > Another quote
 ```
 
-Additionally, many Markdown implmentation use custom flavors of the Markdown syntax or offer custom extensions.
+Additionally, many Markdown implementations use custom flavors of the Markdown syntax or offer custom extensions.
 
-As a result, it is [almost](https://uncodin.github.io/bypass/) impossible to find a set of markdown implmentations that generate Spanned Strings for Android, Attributed Strings for iOS and HTML for websites, that interprete a given Markdown text identically and genereate comparable outputs.
+As a result, it is [almost](https://uncodin.github.io/bypass/) impossible to find a set of markdown implementations that generate Spanned Strings for Android, Attributed Strings for iOS and HTML for websites, that interpret a given Markdown text identically and generate equal outputs.
 
 ### Why not CommonMark?
 
@@ -56,34 +61,55 @@ As a result, it is [almost](https://uncodin.github.io/bypass/) impossible to fin
 
 While this solves some of the issues of Markdown, CommonMark still allows the integration of arbitrary HTML and available implementations are still only text-to-HTML converters or tend to offer custom extensions.
 
-## Name
+### Why not Zoidberg?
 
-The name Markdom is a composition of *Mark*up (or *Mark*down) and DOM (domain object model).
+Zoidberg is awesome, but not a rich text related technology.
 
-## Introduction 
+### So, why Markdom?
 
-```
-# Markdom
+Markdom tries to overcome the mentioned shortcomings of HTML and lightweight markup languages like CommonMark by introducing a standardized representation that can be processed in an unambiguous manner.
 
-1. Allow an editor to enter rich text in a human friendly way.
-2. Transmit the rich text to different platforms, using existing technologies.
-3. Display the rich text on different platforms in a native way.
-```
+![](resource/markdom-overview.png)
 
+A typical application of Markdom may involve the following use cases.
+
+When an editor uses a backend to create content:
+
+  * The server allows an editor to enter CommonMark text.
+  * The server parses the markup with any suitable parser (i.e. with an actual parser, not just a regex-based converter) that is available for the language the server is written in, and creates a Markdom document.
+  * The server generates a HTML representation of the Markdom document and delivers it to the editor.
+  * The server generates a XML representation of the Markdom document and stores is for later use.
+
+When the editor returns to review the content:
+
+  * The server loads the previously stored XML representation and creates a Markdom document.
+  * The server creates a CommonMark representation of the Markdom document and delivers it to the editor.
+
+When a visitor uses the frontend to view the content:
+
+  * The server loads the previously stored XML representation and creates a Markdom document.
+  * The server creates a HTML representation of the Markdom document and delivers it to the visitor.
+
+When a visitor uses a smartphone app to view the content:
+
+  * The server loads the previously stored XML representation and creates a Markdom document.
+  * The server creates a JSON representation of the Markdom document and delivers it to the app.
+  * The app receives the JSON representation and creates a Markdom document.
+  * The app creates a native representation of the Markdom document and displays it.
+  
+Other use cases might include to interpret other sources of rich text (e.g. an uploaded HTML or DOC file) to create a Markdom document or generate other representations (e.g. a PDF file) of a Markdom document.
+  
+The important benefit of Markdom is, that the responsibility to interpret the somewhat cumbersome markup language lies completely by the server. Once the server has interpreted the original input, it is completely unambiguous and easy to process for all participants.
 
 ## Domain {#domain}
 
-*This sections describes the general structure of a Markdom document, independent of any representation.*
-
-### Overview
-
 A Markdom document represents the entirety of a rich text document, including the actual rich text and the formatting instructions. A Markdom document contains of a sequence of Markdom block.
 
-A Markdom block represents a portion of a rich text document that serves a specific purpose. Each type of Markdom block has the necessary properties that describe it's content. Some Markdom blocks, e.g. a Markdom block representing a blockm quote, contain further Markdom blocks. Other Markdom blocks, e.g. a Markdom block representing a paragraph, contain Markdom content.
+A Markdom block represents a portion of a rich text document that serves a specific purpose. Each type of Markdom block has the necessary properties that describe it's content. Some Markdom blocks, e.g. a Markdom block representing a block quote, contain further Markdom blocks. Other Markdom blocks, e.g. a Markdom block representing a paragraph, contain Markdom content.
 
 A Markdom content represents a portion of rich text that serves a specific purpose. Each type of Markdom block has the necessary properties that describe it's content. Some Markdom contents, e.g. a Markdom block representing a link, contain further Markdom content. A Markdom content never contains a Markdom block.
 
-Put another way, a Markdom document is represented as a tree of Markdom nodes. Starting with a root node that represents an entire rich text document, each markdom node represents a portion of the corresponding Markdom document.
+Put another way, a Markdom document is represented as a tree of Markdom nodes. Starting with a root node that represents an entire rich text document, each Markdom node represents a portion of the corresponding Markdom document.
 
 ### Nodes {#domain-node}
 
@@ -114,7 +140,7 @@ A *Markdom block* is either a
 * *ordered Markdom list block*, or a
 * *Markdom paragraph block*, or a
 * *Markdom quote block*, or an
-* *ordered Markdom list bliock*.
+* *ordered Markdom list block*.
 
 ##### Code Block {#domain-codeblock}
 
@@ -124,7 +150,7 @@ A *Markdom code block* has a mandatory string parameter named `code` and an opti
 
 Values of the `code` parameter should not contain any [control](http://www.fileformat.info/info/unicode/category/Cc/list.htm) characters other then `LINE_FEED` (`\n`) or `CHARACTER_TABULATION` (`\t`). Values of the `code` parameter shouldn't be empty.
 
-Values of the `hint` parameter, if present, should be the common name of a programming or markup language in lowercase (i.e `java`, `php`, `json`, `html`, ...) and are intended to be used by implementations to augment the preformatted text with meaningful syntax highliting.  Values of the `code` parameter, if present, shouldn't be empty.
+Values of the `hint` parameter, if present, should be the common name of a programming or markup language in lowercase (i.e `java`, `php`, `json`, `html`, ...) and are intended to be used by implementations to augment the preformatted text with meaningful syntax highlighting. Values of the `code` parameter, if present, shouldn't be empty.
 
 ##### Division Block {#domain-divisionblock}
 
@@ -132,13 +158,13 @@ A *Markdom division block* is a *Markdom block* that represents a division or th
 
 ##### Heading Block {#domain-headingblock}
 
-A *Markdom heading block* is a *Markdom block* that represents a headline. Implementations that generate output that is displayed to humans should display the headline text as an appropriatly emphasized and separated paragraph.
+A *Markdom heading block* is a *Markdom block* that represents a headline. Implementations that generate output that is displayed to humans should display the headline text as an appropriately emphasized and separated paragraph.
 
 A *Markdom heading block* has a mandatory integer parameter named `level` and a sequence of *Markdom contents* named `contents`.
 
 Valid values of the `level` parameter are 1 to 6, where a lower value indicates a higher precedence of the headline.
 
-The `contents` sequnece shouldn't be empty.
+The `contents` sequence shouldn't be empty.
 
 ##### Ordered List Block {#domain-orderedlistblock}
 
@@ -146,21 +172,21 @@ An *ordered Markdom list block* is a *Markdom block* that represents an ordered 
 
 An *ordered Markdom list block* has a mandatory integer parameter `startIndex` and a sequence of *Markdom list items* named `items`.
 
-Valid values of the `startIndex` parameter are non-negative integers. The value of the `startIndex` parameter is the inidex of the first item in the `items` sequnece. Following items in the `items` sequence have successive indices.
+Valid values of the `startIndex` parameter are non-negative integers. The value of the `startIndex` parameter is the index of the first item in the `items` sequence. Following items in the `items` sequence have successive indices.
 
 The `items` sequence shouldn't be empty.
 
 ##### Paragraph Block {#domain-paragraphblock}
 
-A *Markdom pagargraph block* is a *markdom block* that represents a paragraph. Implementations that generate output that is displayed to humans should display the paragraph text as an appropriatly separated paragraph.
+A *Markdom paragraph block* is a *markdom block* that represents a paragraph. Implementations that generate output that is displayed to humans should display the paragraph text as an appropriately separated paragraph.
 
-A *Markdom pagargraph block* has a sequence of *Markdom contents* named `contents`.
+A *Markdom paragraph block* has a sequence of *Markdom contents* named `contents`.
 
-The `contents` sequnece shouldn't be empty.
+The `contents` sequence shouldn't be empty.
 
 ##### Quote Block {#domain-quoteblock}
 
-A *Markdom quote block* is a *Markdom block* that represents a quote. The quote contains further portions of the Markdom document. Implementations that generate output that is displayed to humans should emphasize (e.g. a vertical line, indentation, slanted font) the quote appropriatly.
+A *Markdom quote block* is a *Markdom block* that represents a quote. The quote contains further portions of the Markdom document. Implementations that generate output that is displayed to humans should emphasize (e.g. a vertical line, indentation, slanted font) the quote appropriately.
 
 An `QuoteBlock` has a sequence of *Markdom blocks* named `blocks`.
 
@@ -207,13 +233,13 @@ Values of the `code` parameter should not contain any [control](http://www.filef
 
 ##### Emphasis Content {#domain-emphasiscontent}
 
-An *Markdom emphasis content* is a *Markdom content* that represents emphasized text. Implementations that generate output that is displayed to humans should display text appropriatly emphasized (e.g. italic or bold).
+An *Markdom emphasis content* is a *Markdom content* that represents emphasized text. Implementations that generate output that is displayed to humans should display text appropriately emphasized (e.g. italic or bold).
 
 A *Markdom emphasis content* has a mandatory integer parameter named `level` and a sequence of *Markdom contents* named `contents`.
 
 Valid values of the `level` parameter are 1 to 2, where a higher value indicates a higher importance of the emphasized text.
 
-The `contents` sequnece shouldn't be empty.
+The `contents` sequence shouldn't be empty.
 
 ##### Image Content {#domain-imagecontent}
 
@@ -229,23 +255,23 @@ Values of the `alternative` parameter should not contain any [control](http://ww
 
 ##### Line Break Content {#domain-linebreakcontent}
 
-A *Markdom line break content* is a *Markdom content* that represents a link. A line break is either a *hard line break* or a *soft line break*. Implementations that generate output that is displayed to humans should display only hard line breaks. Implementations that generate output that is processed as souce code, e.g. as Markdown text, should also display soft line breaks in a way that doesn't introduce line breaks during further processing of the generated source code.
+A *Markdom line break content* is a *Markdom content* that represents a link. A line break is either a *hard line break* or a *soft line break*. Implementations that generate output that is displayed to humans should display only hard line breaks. Implementations that generate output that is processed as source code, e.g. as Markdown text, should also display soft line breaks in a way that doesn't introduce line breaks during further processing of the generated source code.
 
 A *Markdom line break content* has a mandatory boolean parameter named `hard`.
 
 ##### Link Content {#domain-linkcontent}
 
-A *Markdom link content* is a *Markdom content* that represents text with a link. Implementations that generate output that is displayed to humans should display text appropriatly emphasized (e.g. underlined or in a different color).
+A *Markdom link content* is a *Markdom content* that represents text with a link. Implementations that generate output that is displayed to humans should display text appropriately emphasized (e.g. underlined or in a different color).
 
 A *Markdom link content* has a mandatory integer parameter named `uri` and a sequence of *Markdom contents* named `contents`.
 
 Valid values of the `uri` parameter are valid [URI references](https://tools.ietf.org/html/rfc3986#section-4.1). Actual applications that process Markdom documents may impose further constraints.
 
-The `contents` sequnece shouldn't be empty. A *Markdom content* in the `contents` sequence must not contain another *Markdom link content* or, recursively, contain a *Markdom content* that contains a *Markdom link content*.
+The `contents` sequence shouldn't be empty. A *Markdom content* in the `contents` sequence must not contain another *Markdom link content* or, recursively, contain a *Markdom content* that contains a *Markdom link content*.
 
 ##### Text Content {#domain-textcontent}
 
-A *Markdom text content* is a *Markdom content* that represents a portion of text. Implementations that generate output that is displayed to humans should display the text as preformatted text in an appropriate font.
+A *Markdom text content* is a *Markdom content* that represents a portion of text. Implementations that generate output that is displayed to humans should display the text as text in an appropriate font.
 
 A *Markdom text content* has a mandatory string parameter named `text`. 
 
@@ -274,36 +300,27 @@ The following image shows a tree of *Markdom nodes*, i.e. a Markdom document, th
 ![](resource/markdom-example.png)
 
 
-
-
-
 ## APIs {#api}
-
-*This sections describes differenst APIs that can be used to work with Markdom documents*
-
-### Overview
 
 This specification describes two distinct APIs:
 
-1. The *Domain Object API* describes a set of interfaces that describe how a Markdom document is represented as an object graph and methods to compose and consume such an object graph.
+1. The [Domain Model API](#api-dom) describes a set of interfaces that describe how a Markdom document is represented as an object graph and methods to compose and consume such an object graph.
 
-   The Domain Object API allows to create a representation of a Markdom document in the memory, which can then be examined, modified and further processed.
-2. The *Handler API* describes a `Handler` interface that describes how a Markdom document is represented as a sequence of events.
+   The Domain Model API allows to create a representation of a Markdom document in the memory, which can then be examined, modified and further processed.
+   
+2. The [Handler API](#handler-api) describes a `Handler` interface that describes how a Markdom document is represented as a sequence of events.
 
-   The Handler API allows to process a Markdom document on the fly whithout the necessity to create an object graph.
+   The Handler API allows to process a Markdom document on the fly without the necessity to create an object graph.
    
 ### Implementation guideline
 
+### Domain Model API {#api-dom}
 
-### Domain Object API {#api-dom}
+#### Dependencies {#api-dom-dependencies}
 
-*This section describes the Domain Object API*
+*This section lists the interfaces, enumerations and classes that are used by the Domain Model API.*
 
-#### Classes used by the Domain Object API
-
-*This section lists the interfaces, enumerations and classes that are used by the Domain Object API.*
-
-The Domain Object API uses the following classes:
+The Domain Model API uses the following classes:
 
 // hint**
 
@@ -318,11 +335,11 @@ The Domain Object API uses the following classes:
 
 #### Interfaces {#api-dom-interfaces}
 
-The following image shows the interfaces that are part of the Domain Object API:
+The following image shows the interfaces that are part of the Domain Model API:
 
 ![](resource/markdom-nodes.png)
 
-*Interfaces with bold names are eminently suitable to be implmented as final classes, interfaces with italic names are eminently suitable to be implmented as abstract classes and interfaces with normal names are eminently suitable to be implmented as traits or mixins.*
+*Interfaces with bold names are eminently suitable to be implemented as final classes, interfaces with italic names are eminently suitable to be implemented as abstract classes and interfaces with normal names are eminently suitable to be implemented as traits or mixins.*
 
 ##### `Block` {#api-dom-block}
 
@@ -336,7 +353,7 @@ An implementation of `Block` should have a constructor with signature `Block()`.
 
 A [`Block`](#api-dom-block) object must have a method with signature `BlockType getBlockType()`.  
 
-This method must return the `BlockType` value that correspondes to the type of the [`Block`](#api-dom-block) object.
+This method must return the `BlockType` value that corresponds to the type of the [`Block`](#api-dom-block) object.
 
 ##### `BlockParent` {#api-dom-blockparent}
 
@@ -380,7 +397,7 @@ This method must add all [`Block`](#api-dom-block) objects from `blocks` in the 
 This method must fail if `blocks` is not present.
 This method must fail if adding any [`Block`](#api-dom-block) object from `blocks` to the  associated `Sequence` of [`Block`](#api-dom-block) objects failed.
   
-Because this method is a short hand for repeated calls to `addBlock(Block block)`, it must add all prior [`Block`](#api-dom-block) objects from `blocks` to the  associated `Sequence` of [`Block`](#api-dom-block) objects, if it fails beacause of a violating [`Block`](#api-dom-block) object from `blocks`.
+Because this method is a short hand for repeated calls to `addBlock(Block block)`, it must add all prior [`Block`](#api-dom-block) objects from `blocks` to the  associated `Sequence` of [`Block`](#api-dom-block) objects, if it fails because of a violating [`Block`](#api-dom-block) object from `blocks`.
 
 ##### `CodeBlock` {#api-dom-codeblock}
 
@@ -456,7 +473,7 @@ An implementation of `Content` should have a constructor with signature `Content
 
 A [`Content`](#api-dom-content) object must have a method with signature `ContentType getContentType()`.  
 
-This method must return the `ContentType` value that correspondes to the type of the [`Content`](#api-dom-content) object.
+This method must return the `ContentType` value that corresponds to the type of the [`Content`](#api-dom-content) object.
 
 ###### `getBlock` {#api-dom-content-getblock}
 
@@ -465,26 +482,6 @@ A [`Content`](#api-dom-content) object must have a method with signature `Block 
 This method must return the nearest [`Block`](#api-dom-block) object object the `Content` in the tree of Markdom nodes  the [`Content`](#api-dom-content) object is part of, which is the [`Block`](#api-dom-block) object of the `ContentParent` this [`Content`](#api-dom-content) object is currently attached to.
 
 This method must fail if the [`Content`](#api-dom-content) object doesn't [have](#api-dom-node-hasparent) a [parent](#api-dom-node-getparent) [`ContentParent`](#api-dom-node) object.
-   
-##### `ContentParentBlock` {#api-dom-contentparentblock}
-
-A [`ContentParentBlock`](#api-dom-contentparentblock) object is a [`Block`](#api-dom-block) object and a [`ContentParent`](#api-dom-contentparent) object that represents a [*Markdom block*](#domain-block) that contains [*Markdom content*](#domain-content).
-
-###### Constructors {#api-dom-contentparentblock-constructor}
-
-An implementation of `ContentParentBlock` should have a constructor with signature `ContentParentBlock()`.
-
-For convenience, an implementation of `ContentParentBlock` should have a constructor with signature `ContentParentBlock(Content... contents)` that takes that takes an array of [`Content`](#api-dom-content) objects named `contents` and delegates to `ContentParent#addContents(Content... content)`.
-
-##### `ContentParentContent` {#api-dom-contentparentcontent}
-
-A [`ContentParentContent`](#api-dom-contentparentcontent) object is a [`Content`](#api-dom-content) object and a [`ContentParent`](#api-dom-contentparent) object that represents a [*Markdom content*](#domain-content) that contains [*Markdom content*](#domain-content).
-
-###### Constructors {#api-dom-contentparentcontent-constructor}
-
-An implementation of `ContentParent` should have a constructor with signature `ContentParentContent()`.
-
-For convenience, an implementation of `ContentParentContent` should have a constructor with signature `ContentParentContent(Content... contents)` that takes that takes an array of [`Content`](#api-dom-content) objects named `contents` and delegates to `ContentParent#addContents(Content... content)`.
 
 ##### `ContentParent` {#api-dom-contentparent}
 
@@ -528,7 +525,27 @@ This method must add all [`Content`](#api-dom-content) objects from `contents` i
 This method must fail if `contents` is not present.
 This method must fail if adding any [`Content`](#api-dom-content) object from `contents` to the  associated `Sequence` of [`Content`](#api-dom-content) objects failed.
   
-Because this method is a short hand for repeated calls to `addContent(Content content)`, it must add all prior [`Content`](#api-dom-content) objects from `contents` to the  associated `Sequence` of [`Content`](#api-dom-content) objects, if it fails beacause of a violating [`Content`](#api-dom-content) object from `contents`.
+Because this method is a short hand for repeated calls to `addContent(Content content)`, it must add all prior [`Content`](#api-dom-content) objects from `contents` to the  associated `Sequence` of [`Content`](#api-dom-content) objects, if it fails because of a violating [`Content`](#api-dom-content) object from `contents`.
+   
+##### `ContentParentBlock` {#api-dom-contentparentblock}
+
+A [`ContentParentBlock`](#api-dom-contentparentblock) object is a [`Block`](#api-dom-block) object and a [`ContentParent`](#api-dom-contentparent) object that represents a [*Markdom block*](#domain-block) that contains [*Markdom content*](#domain-content).
+
+###### Constructors {#api-dom-contentparentblock-constructor}
+
+An implementation of `ContentParentBlock` should have a constructor with signature `ContentParentBlock()`.
+
+For convenience, an implementation of `ContentParentBlock` should have a constructor with signature `ContentParentBlock(Content... contents)` that takes that takes an array of [`Content`](#api-dom-content) objects named `contents` and delegates to `ContentParent#addContents(Content... content)`.
+
+##### `ContentParentContent` {#api-dom-contentparentcontent}
+
+A [`ContentParentContent`](#api-dom-contentparentcontent) object is a [`Content`](#api-dom-content) object and a [`ContentParent`](#api-dom-contentparent) object that represents a [*Markdom content*](#domain-content) that contains [*Markdom content*](#domain-content).
+
+###### Constructors {#api-dom-contentparentcontent-constructor}
+
+An implementation of `ContentParent` should have a constructor with signature `ContentParentContent()`.
+
+For convenience, an implementation of `ContentParentContent` should have a constructor with signature `ContentParentContent(Content... contents)` that takes that takes an array of [`Content`](#api-dom-content) objects named `contents` and delegates to `ContentParent#addContents(Content... content)`.
   
 ##### `DivisionBlock` {#api-dom-divisionblock}
 
@@ -740,7 +757,7 @@ This method must add all [`ListItem`](#api-dom-listitem) objects from `items` in
 This method must fail if `items` is not present.
 This method must fail if adding any [`ListItem`](#api-dom-listitem) object from `items` to the  associated `Sequence` of [`ListItem`](#api-dom-listitem) objects failed.
   
-Because this method is a short hand for repeated calls to `addItem(ListItem item)`, it must add all prior [`ListItem`](#api-dom-listitem) objects from `items` to the  associated `Sequence` of [`ListItem`](#api-dom-listitem) objects, if it fails beacause of a violating [`ListItem`](#api-dom-listitem) object from `items`.
+Because this method is a short hand for repeated calls to `addItem(ListItem item)`, it must add all prior [`ListItem`](#api-dom-listitem) objects from `items` to the  associated `Sequence` of [`ListItem`](#api-dom-listitem) objects, if it fails because of a violating [`ListItem`](#api-dom-listitem) object from `items`.
 
 ##### `ListItem` {#api-dom-listitem}
 
@@ -760,7 +777,7 @@ A [`Node`](#api-dom-node) object represents a [*Markdom node*](#domain-node).
 
 A [`Node`](#api-dom-node) object must have a method with signature `NodeType getNodeType()`.  
 
-This method must return the [`NodeType`](#api-dom-nodetype) value that correspondes to the type of the [`Node`](#api-dom-node) object.
+This method must return the [`NodeType`](#api-dom-nodetype) value that corresponds to the type of the [`Node`](#api-dom-node) object.
 
 ###### `hasParent` {#api-dom-node-hasparent}
 
@@ -929,7 +946,7 @@ For convenience, an implementation of `UnorderedListBlock` should have a constru
 
 #### Enumerations {#api-dom-enumerations}
 
-The Domain Object API has the following enumerations:
+The Domain Model API has the following enumerations:
 
 ##### `BlockType` {#api-dom-blocktype}
 
@@ -982,24 +999,42 @@ The `NodeType` enum represents the node type of a [`Node`](#api-dom-node) object
 * `CONTENT`.
 
 
-### Handler API
+### Handler API {#api-handler}
+
+#### Events
+
+##### Document
 
 ![](resource/markdom-events-document.png)
 
+##### Blocks
+
 ![](resource/markdom-events-blocks.png)
+
+##### Block
 
 ![](resource/markdom-events-block.png)
 
+##### List Items
+
 ![](resource/markdom-events-listitems.png)
+
+##### List Item
 
 ![](resource/markdom-events-listitem.png)
 
+##### Contents
+
 ![](resource/markdom-events-contents.png)
+
+##### Content
 
 ![](resource/markdom-events-content.png)
 
+#### Interfaces
 
-### Combining the Domain Object API and the Handler API
+
+### Combining the Domain Model API and the Handler API
 
 // document is dispatcher, 
 
