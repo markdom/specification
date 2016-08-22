@@ -305,6 +305,7 @@ The same Markdom document can be represented as
 * an [object graph](#api-dom-example), 
 * a [sequence of events](#api-handler-example), 
 * a [JSON document](#data-json-example), 
+* a [YAML document](#data-yaml-example), 
 * a [XML document](#data-xml-example) or
 * a [HTML document](#text-html-example).
 
@@ -1119,7 +1120,7 @@ If the designated parent object is not part of a *Markdom document* (and therefo
 
 This can be accomplished by repeatedly retrieving the parent of the designated parent until a `Node` object that doesn't have a parent is found and check whether the last `Node` object in the chain of parent is the object that is about to be added.
 
-For example: Assuming a `QuoteBlock` object is about to be attached to a `BlockParent` object. That `BlockParent` object might be aanother `QuoteBlock` object which is attached to a `ListItem` object which is attached to an `UnorderedListBlock` object which is attached to a `QuoteBlock` object which isn't attached to a `BlockParent` object.  The last `QuoteBlock` in the chain of parents might be the same `QuoteBlock` object that is about to be attached. Attaching the `QuoteBlock` object to its designated parent would therefore create a cycle. The following image illustrates this example.
+For example: Assuming a `QuoteBlock` object is about to be attached to a `BlockParent` object. That `BlockParent` object might be another `QuoteBlock` object which is attached to a `ListItem` object which is attached to an `UnorderedListBlock` object which is attached to a `QuoteBlock` object which isn't attached to a `BlockParent` object.  The last `QuoteBlock` in the chain of parents might be the same `QuoteBlock` object that is about to be attached. Attaching the `QuoteBlock` object to its designated parent would therefore create a cycle. The following image illustrates this example.
 
 ![](resource/markdom-cycles.png)
 
@@ -1132,7 +1133,7 @@ The Handler API represents a [*Markdom document*](#domain-document) as a sequenc
 The Handler API defines several events and the order in which the must occur to successfully describe a [*Markdom document*](#domain-document).
 
 To help different handler implementations to process the described [*Markdom document*](#domain-document) easily, some of the events carry redundant information:
- * Every event concerning a [*Markdom node*](#domain-node) of a polymorph kind (i.e. [*Markdom blocks*](#markdom-block) and [*Markdom contents*](#markdom-content)) is reported twice. Once in a general form and once in a specific form with the specific parameters. This allows to execute general or specific behavior when necessary.
+ * Every event concerning a [*Markdom node*](#domain-node) of a polymorph kind (i.e. [*Markdom blocks*](#domain-block) and [*Markdom contents*](#domain-content)) is reported twice. Once in a general form and once in a specific form with the specific parameters. This allows to execute general or specific behavior when necessary.
  * Every event that is part of a pair (i.e. opening and closing events) and has parameters, carries the same values for the parameters as its counterpart. This usually eliminates the need to remember previously reported values.
 
 ##### Document {#api-handler-event-document}
@@ -1639,10 +1640,7 @@ The following JSON document represents the [example document](#example):
 ```
 {
   "$schema": "http://schema.markdom.io/markdom-1.0.json#",
-  "version": {
-    "major": 1,
-    "minor": 0
-  },
+  "version": "1.0",
   "blocks": [
     {
       "type": "Heading",
@@ -1726,8 +1724,7 @@ The following JSON document represents the [example document](#example):
     },
     {
       "type": "Code",
-      "code": "goto 11",
-      "hint": ""
+      "code": "goto 11"
     }
   ]
 }
@@ -1735,8 +1732,50 @@ The following JSON document represents the [example document](#example):
 
 ### YAML {#data-yaml}
 
-#### Example Document
+#### Example Document {#data-yaml-example}
 
+```
+---
+version: '1.0'
+blocks:
+- type: Heading
+  level: 1
+  contents:
+  - type: Text
+    text: Markdom
+- type: OrderedList
+  startIndex: 1
+  items:
+  - blocks:
+    - type: Paragraph
+      contents:
+      - type: Link
+        uri: "#Bar"
+        contents:
+        - type: Text
+          text: Foo
+  - blocks:
+    - type: Paragraph
+      contents:
+      - type: Text
+        text: Lorem ipsum
+      - type: LineBreak
+        hard: true
+      - type: Code
+        code: dolor sit amet
+  - blocks:
+    - type: Quote
+      blocks:
+      - type: Paragraph
+        contents:
+        - type: Emphasis
+          level: 1
+          contents:
+          - type: Text
+            text: Baz
+- type: Code
+  code: goto 11
+```
 
 ### XML {#data-xml}
 
@@ -1775,7 +1814,7 @@ The following XML document represents the [example document](#example):
       </Quote>
     </ListItem>
   </OrderedList>
-  <Code hint="">goto 11</Code>
+  <Code>goto 11</Code>
 </Document>
 ```
 
