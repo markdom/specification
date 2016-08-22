@@ -300,6 +300,13 @@ The following image shows a tree of *Markdom nodes*, i.e. a Markdom document, th
 
 ![](resource/markdom-example.png)
 
+The same Markdom document can be represented as 
+
+* an [object graph](#api-dom-example), 
+* a [sequence of events](#api-handler-example), 
+* a [JSON document](#data-json-exampl), 
+* a [XML document](#data-xml-example) or
+* a [HTML document](#text-html-example).
 
 ## APIs {#api}
 
@@ -420,7 +427,7 @@ This method must return the `BlockType` value that corresponds to the type of th
 
 A [`BlockParent`](#api-dom-blockparent) object is a [`Node`](#api-dom-node) object that represents a [*Markdom node*](#domain-node) that contains [*Markdom blocks*](#domain-block).
 
-An implementation of `BlockParent` must have a final and initially empty `Sequence` of [`Block`](#api-dom-block) objects that is associated with the [`BlockParent`](#api-dom-blockparent) object.
+An implementation of `BlockParent` must have a final and initially empty companion `Sequence` of [`Block`](#api-dom-block) objects that is associated with the [`BlockParent`](#api-dom-blockparent) object.
 
 Any structural modification (insert, remove, clear, replace) to the associated `Sequence` of [`Block`](#api-dom-block) objects must reflect the fact, that a [`Block`](#api-dom-block) object that is added to the associated `Sequence` object is attached to the [`BlockParent`](#api-dom-blockparent) object until is is removed from the associated `Sequence` of [`Block`](#api-dom-block) objects.
 
@@ -433,17 +440,23 @@ Attaching a [`Block`](#api-dom-block) object to the [`BlockParent`](#api-dom-blo
 
 An implementation of `BlockParent` should have a constructor with signature `BlockParent()`.
 
-For convenience, an implementation of `BlockParent` should have a constructor with signature `BlockParent(Block... blocks)` that takes that takes an array of [`Block`](#api-dom-block) objects named `blocks` and delegates to `addBlocks(Block... blocks)`.
+For convenience, an implementation of `BlockParent` should have a constructor with signature `BlockParent(Block... blocks)` that delegates to `addBlocks(Block... blocks)`.
+
+###### `getBlockParentType` {#api-dom-listblock-getblockparenttype}
+
+A [`BlockParent`](#api-dom-blockparent) object must have a method with signature `BlockParentType getBlockParentType()`.  
+
+This method must return the [`BlockParentType`](#api-dom-blockparenttype) value that corresponds to the type of the [`BlockParent`](#api-dom-blockparent) object.
 
 ###### `getBlocks` {#api-dom-blockparent-getblocks}
 
-A [`Block`](#api-dom-block) object must have a method with signature `Sequence getBlocks()`.
+A [`BlockParent`](#api-dom-blockparent) object must have a method with signature `Sequence getBlocks()`.
 
 This method must return the associated `Sequence` of [`Block`](#api-dom-block) objects.
 
 ###### `addBlock` {#api-dom-blockparent-addblock}
 
-For convenience, a [`BlockParent`](#api-dom-blockparent) object should have a method with signature `addBlock(Block block)` that takes a [`Block`](#api-dom-block) object named `block`.
+For convenience, a [`BlockParent`](#api-dom-blockparent) object should have a method with signature `addBlock(Block block)`.
 
 This method must add `block` at the end of the associated `Sequence` of [`Block`](#api-dom-block) objects. This attaches `block` to the [`BlockParent`](#api-dom-blockparent) object.
 
@@ -451,7 +464,7 @@ This method must fail if add `block` to the  associated `Sequence` of [`Block`](
 
 ###### `addBlocks` {#api-dom-blockparent-addblocks}
 
-For convenience, a [`BlockParent`](#api-dom-blockparent) object should have a method with signature `addBlocks(Block... blocks)` that takes an array of [`Block`](#api-dom-block) objects named `blocks`.
+For convenience, a [`BlockParent`](#api-dom-blockparent) object should have a method with signature `addBlocks(Block... blocks)`.
 
 This method must add all [`Block`](#api-dom-block) objects from `blocks` in the given order at the end of the `Sequence` of [`Block`](#api-dom-block) objects of the [`BlockParent`](#api-dom-blockparent) object, as if `addBlock(Block block)` has been called repeatedly for all [`Block`](#api-dom-block) objects from `blocks`.  This attaches all [`Block`](#api-dom-block) objects from `blocks` to the [`BlockParent`](#api-dom-blockparent) object.
   
@@ -468,9 +481,9 @@ A [`CodeBlock`](#api-dom-codeblock) objects is a [`Block`](#api-dom-block) objec
 
 An implementation of `CodeBlock` should have a constructor with signature `CodeBlock()` that set the code of the [`CodeBlock`](#api-dom-codeblock) object to the empty string ant the hint of the `Code` object to be not present.
 
-For convenience, an implementation of `CodeBlock` should have a constructor with signature `CodeBlock(String code)` that takes a `String` named `code` and delegates to `setCode(String code)`.
+For convenience, an implementation of `CodeBlock` should have a constructor with signature `CodeBlock(String code)` that delegates to `setCode(String code)`.
 
-For convenience, an implementation of `CodeBlock` should have a constructor with signature `CodeBlock(String code, String hint)` that takes a `String` named `code` and a `String` named `hint` and delegates to `setCode(String code)` and `setHint(String hint)`.
+For convenience, an implementation of `CodeBlock` should have a constructor with signature `CodeBlock(String code, String hint)` that delegates to `setCode(String code)` and `setHint(String hint)`.
 
 ###### `getCode` {#api-dom-codeblock-getcode}
 
@@ -480,7 +493,7 @@ The method must return the `code` parameter of the represented [*Markdom code bl
 
 ###### `setCode` {#api-dom-codeblock-setcode}
 
-A [`CodeBlock`](#api-dom-codeblock) object must have a method with signature `setCode(String code)` that takes a `String` named `code`.
+A [`CodeBlock`](#api-dom-codeblock) object must have a method with signature `setCode(String code)`.
 
 This method must set the `code` parameter of the represented [*Markdom code block*](#domain-codeblock). 
   
@@ -494,7 +507,7 @@ The method must return the optional `hint` parameter of the represented [*Markdo
 
 ###### `setHint` {#api-dom-codeblock-sethint}
   
-A [`CodeBlock`](#api-dom-codeblock) object must have a method with signature `setHint(String? hint)` that takes an optional `String` named `hint`.
+A [`CodeBlock`](#api-dom-codeblock) object must have a method with signature `setHint(String? hint)`.
 
 This method must set the `hint` parameter of the represented [*Markdom code block*](#domain-codeblock). 
  	
@@ -506,7 +519,7 @@ A [`CodeContent`](#api-dom-codecontent) object is a [`Content`](#api-dom-content
 
 An implementation of `CodeContent` should have a constructor with signature `CodeContent()` that set the code of the [`CodeContent`](#api-dom-codecontent) object to the empty string.
 
-For convenience, an implementation of `CodeContent` should have a constructor with signature `CodeContent(String code)` that takes a `String` named `code` and delegates to `setCode(String code)`.
+For convenience, an implementation of `CodeContent` should have a constructor with signature `CodeContent(String code)` that delegates to `setCode(String code)`.
 
 ###### `getCode` {#api-dom-codecontent-getcode}
 
@@ -516,7 +529,7 @@ The method must return the `code` parameter of the represented [*Markdom code co
 
 ###### `setCode` {#api-dom-codecontent-setcode}
 
-A [`CodeContent`](#api-dom-codecontent) object must have a method with signature `setCode(String code)` that takes a `String` named `code`.
+A [`CodeContent`](#api-dom-codecontent) object must have a method with signature `setCode(String code)`.
 
 This method must set the `code` parameter of the represented [*Markdom code content*](#domain-codecontent). 
   
@@ -548,7 +561,7 @@ This method must fail if the [`Content`](#api-dom-content) object doesn't [have]
 
 A [`ContentParent`](#api-dom-contentparent) object is a [`Node`](#api-dom-node) object that represents a [*Markdom node*](#domain-node) that contains [*Markdom contents*](#domain-content).
 
-An implementation of `ContentParent` must have a final and initially empty `Sequence` of [`Content`](#api-dom-content) objects that is associated with the [`ContentParent`](#api-dom-contentparent) object.
+An implementation of `ContentParent` must have a final and initially empty companion `Sequence` of [`Content`](#api-dom-content) objects that is associated with the [`ContentParent`](#api-dom-contentparent) object.
 
 Any structural modification (insert, remove, clear, replace) to the associated `Sequence` of [`Content`](#api-dom-content) objects must reflect the fact, that a [`Content`](#api-dom-content) object that is added to the associated `Sequence` object is attached to the [`ContentParent`](#api-dom-contentparent) object until is is removed from the associated `Sequence` of [`Content`](#api-dom-content) objects.
 
@@ -561,17 +574,23 @@ Attaching a [`Content`](#api-dom-content) object to the [`ContentParent`](#api-d
 
 An implementation of `ContentParent` should have a constructor with signature `ContentParent()`.
 
-For convenience, an implementation of `ContentParent` should have a constructor with signature `ContentParent(Content... contents)` that takes that takes an array of [`Content`](#api-dom-content) objects named `contents` and delegates to `addContents(Content... contents)`.
+For convenience, an implementation of `ContentParent` should have a constructor with signature `ContentParent(Content... contents)` that delegates to `addContents(Content... contents)`.
+
+###### `getContentParentType` {#api-dom-listblock-getcontentparenttype}
+
+A [`ContentParent`](#api-dom-contentparent) object must have a method with signature `ContentParentType getContentParentType()`.  
+
+This method must return the [`ContentParentType`](#api-dom-contentparenttype) value that corresponds to the type of the [`ContentParent`](#api-dom-contentparent) object.
 
 ###### `getContents` {#api-dom-contentparent-getcontents}
 
-A [`Content`](#api-dom-content) object must have a method with signature `Sequence getContents()`.
+A [`ContentParent`](#api-dom-contentparent) object must have a method with signature `Sequence getContents()`.
 
 This method must return the associated `Sequence` of [`Content`](#api-dom-content) objects.
 
 ###### `addContent` {#api-dom-contentparent-addcontent}
 
-For convenience, a [`ContentParent`](#api-dom-contentparent) object should have a method with signature `addContent(Content content)` that takes a [`Content`](#api-dom-content) object named `content`.
+For convenience, a [`ContentParent`](#api-dom-contentparent) object should have a method with signature `addContent(Content content)`.
 
 This method must add `content` at the end of the associated `Sequence` of [`Content`](#api-dom-content) objects. This attaches `content` to the [`ContentParent`](#api-dom-contentparent) object.
 
@@ -579,7 +598,7 @@ This method must fail if add `content` to the  associated `Sequence` of [`Conten
 
 ###### `addContents` {#api-dom-contentparent-addcontents}
 
-For convenience, a [`ContentParent`](#api-dom-contentparent) object should have a method with signature `addContents(Content... contents)` that takes an array of [`Content`](#api-dom-content) objects named `contents`.
+For convenience, a [`ContentParent`](#api-dom-contentparent) object should have a method with signature `addContents(Content... contents)`.
 
 This method must add all [`Content`](#api-dom-content) objects from `contents` in the given order at the end of the `Sequence` of [`Content`](#api-dom-content) objects of the [`ContentParent`](#api-dom-contentparent) object, as if `addContent(Content content)` has been called repeatedly for all [`Content`](#api-dom-content) objects from `contents`.  This attaches all [`Content`](#api-dom-content) objects from `contents` to the [`ContentParent`](#api-dom-contentparent) object.
   
@@ -596,7 +615,7 @@ A [`ContentParentBlock`](#api-dom-contentparentblock) object is a [`Block`](#api
 
 An implementation of `ContentParentBlock` should have a constructor with signature `ContentParentBlock()`.
 
-For convenience, an implementation of `ContentParentBlock` should have a constructor with signature `ContentParentBlock(Content... contents)` that takes that takes an array of [`Content`](#api-dom-content) objects named `contents` and delegates to `ContentParent#addContents(Content... content)`.
+For convenience, an implementation of `ContentParentBlock` should have a constructor with signature `ContentParentBlock(Content... contents)` that delegates to `ContentParent#addContents(Content... content)`.
 
 ##### `ContentParentContent` {#api-dom-contentparentcontent}
 
@@ -606,7 +625,7 @@ A [`ContentParentContent`](#api-dom-contentparentcontent) object is a [`Content`
 
 An implementation of `ContentParent` should have a constructor with signature `ContentParentContent()`.
 
-For convenience, an implementation of `ContentParentContent` should have a constructor with signature `ContentParentContent(Content... contents)` that takes that takes an array of [`Content`](#api-dom-content) objects named `contents` and delegates to `ContentParent#addContents(Content... content)`.
+For convenience, an implementation of `ContentParentContent` should have a constructor with signature `ContentParentContent(Content... contents)` that delegates to `ContentParent#addContents(Content... content)`.
   
 ##### `DivisionBlock` {#api-dom-divisionblock}
 
@@ -622,7 +641,7 @@ A [`Document`](#api-dom-document) object is a [`BlockParent`](#api-dom-blockpare
 
 ###### Constructors {#api-dom-document-constructor}
 
-For convenience, an implementation of `Document` should have a constructor with signature `Document(Block... blocks)` that takes that takes an array of [`Block`](#api-dom-block) objects and delegates to `BlockParent#addBlocks(Block... blocks)`.
+For convenience, an implementation of `Document` should have a constructor with signature `Document(Block... blocks)` that delegates to `BlockParent#addBlocks(Block... blocks)`.
 
 ##### `EmphasisContent` {#api-dom-emphasiscontent}
 
@@ -632,9 +651,9 @@ An [`EmphasisContent`](#api-dom-emphasiscontent) object is a [`ContentParentCont
 
 An implementation of `EmphasisContent` should have a constructor with signature `EmphasisContent()` that sets the level of the [`EmphasisContent`](#api-dom-emphasiscontent) object to `LEVEL_1`.
 
-For convenience, an implementation of `EmphasisContent` should have a constructor with signature `EmphasisContent(EmphasisLevel level)` that takes an `EmphasisLevel` named `level` and delegates to `setLevel(EmphasisLevel level)`.
+For convenience, an implementation of `EmphasisContent` should have a constructor with signature `EmphasisContent(EmphasisLevel level)` that delegates to `setLevel(EmphasisLevel level)`.
 
-For convenience, an implementation of `EmphasisContent` should have a constructor with signature `EmphasisContent(EmphasisLevel level, Content... contents)` that takes an `EmphasisLevel` named `level` and an array of [`Content`](#api-dom-content) objects named `contents` and delegates to `setLevel(EmphasisLevel level)` and `ContentParent#addContents(Content... contents)`.
+For convenience, an implementation of `EmphasisContent` should have a constructor with signature `EmphasisContent(EmphasisLevel level, Content... contents)` that delegates to `setLevel(EmphasisLevel level)` and `ContentParent#addContents(Content... contents)`.
 
 ###### `getLevel` {#api-dom-emphasiscontent-getlevel}
 
@@ -644,7 +663,7 @@ This method must return the `level` parameter of the represented [*Markdom empha
 
 ###### `setLevel` {#api-dom-emphasiscontent-setlevel}
 
-An [`EmphasisContent`](#api-dom-emphasiscontent) object must have a method with signature `setLevel(EmphasisLevel level)` that takes an `EmphasisLevel` named `level`.
+An [`EmphasisContent`](#api-dom-emphasiscontent) object must have a method with signature `setLevel(EmphasisLevel level)`.
 
 This method must set the `level` parameter of the represented [*Markdom emphasis content*](#domain-emphasiscontent). 
   
@@ -658,9 +677,9 @@ A [`HeadingBlock`](#api-dom-headingblock) object is a [`ContentParentBlock`](#ap
 
 An implementation of `HeadingBlock` should have a constructor with signature `HeadingBlock()` that sets the level of the [`HeadingBlock`](#api-dom-headingblock) object to `LEVEL_1`.
 
-For convenience, an implementation of `HeadingBlock` should have a constructor with signature `HeadingBlock(HeadingLevel level)` that takes a `HeadingLevel` named `level` and delegates to `setLevel(HeadingLevel level)`.
+For convenience, an implementation of `HeadingBlock` should have a constructor with signature `HeadingBlock(HeadingLevel level)` that delegates to `setLevel(HeadingLevel level)`.
 
-For convenience, an implementation of `HeadingBlock` should have a constructor with signature `HeadingBlock(HeadingLevel level, Content... contents)` that takes a `HeadingLevel` named `level` and an array of [`Content`](#api-dom-content) objects named `contents` and delegates to `setLevel(HeadingLevel level)` and `ContentParent#addContents(Contents... contents)`.
+For convenience, an implementation of `HeadingBlock` should have a constructor with signature `HeadingBlock(HeadingLevel level, Content... contents)` that delegates to `setLevel(HeadingLevel level)` and `ContentParent#addContents(Contents... contents)`.
 
 ###### `getLevel` {#api-dom-headingblock-getlevel}
 
@@ -670,7 +689,7 @@ This method must return the `level` parameter of the represented [*Markdom headi
 
 ###### `setLevel` {#api-dom-headingblock-setlevel}
 
-A [`HeadingBlock`](#api-dom-headingblock) object must have a method with signature `setLevel(HeadingLevel level)` that takes a `HeadingLevel` named `level`.
+A [`HeadingBlock`](#api-dom-headingblock) object must have a method with signature `setLevel(HeadingLevel level)`.
 
 This method must set the `level` parameter of the represented [*Markdom heading blocks*](#domain-headingblock). 
   
@@ -684,9 +703,9 @@ An [`ImageContent`](#api-dom-imagecontent) object is a [`Content`](#api-dom-cont
 
 An implementation of `LinkContent` should have a constructor with signature `LinkContent()` that sets the uri of the [`ImageContent`](#api-dom-imagecontent) object to the empty string and the title of the [`ImageContent`](#api-dom-imagecontent) object to be not present and the alternative text of the [`ImageContent`](#api-dom-imagecontent) object to be not present.
 
-For convenience, an implementation of `ImageContent` should have a constructor with signature `ImageContent(String uri)` that takes a `String` named `uri` and delegates to `setUri(String uri)`.
+For convenience, an implementation of `ImageContent` should have a constructor with signature `ImageContent(String uri)` that delegates to `setUri(String uri)`.
 
-For convenience, an implementation of `ImageContent` should have a constructor with signature `ImageContent(String uri, String? title, String? alternative)` that takes a `String` named `uri` and an optional `String` named `title` and an optional `String` named `alternative `and delegates to `setUri(String uri)` and `setTitle(String? title)` and `setAlternative(String? alternative)`.
+For convenience, an implementation of `ImageContent` should have a constructor with signature `ImageContent(String uri, String? title, String? alternative)` that delegates to `setUri(String uri)` and `setTitle(String? title)` and `setAlternative(String? alternative)`.
 
 ###### `getUri` {#api-dom-imagecontent-geturi}
 
@@ -696,7 +715,7 @@ This method must return the `uri` parameter of the represented [*Markdom image c
 
 ###### `setUri` {#api-dom-imagecontent-seturi}
 
-An [`ImageContent`](#api-dom-imagecontent) object must have a method with signature `setUri(String uri)` that takes a `String` named `level`.
+An [`ImageContent`](#api-dom-imagecontent) object must have a method with signature `setUri(String uri)`.
 
 This method must set the `uri` parameter of the represented [*Markdom image content*](#domain-imagecontent).
   
@@ -712,7 +731,7 @@ This method must return the `title` parameter of the represented [*Markdom image
 
 ###### `setTitle`{#api-dom-imagecontent-settitle}
   
-An [`ImageContent`](#api-dom-imagecontent) object must have a method with signature `setTitle(String? title)` that takes an optional `String` named `title`.
+An [`ImageContent`](#api-dom-imagecontent) object must have a method with signature `setTitle(String? title)`.
 
 This method must set the `title` parameter of the represented [*Markdom image content*](#domain-imagecontent).
 
@@ -724,7 +743,7 @@ This method must return the `alternative` parameter of the represented [*Markdom
 
 ###### `setAlternative` {#api-dom-imagecontent-setalternative}
 
-An [`ImageContent`](#api-dom-imagecontent) object must have a method with signature `setAlternative(String? alternative)` that takes an optional `String` named `alternative`.
+An [`ImageContent`](#api-dom-imagecontent) object must have a method with signature `setAlternative(String? alternative)`.
 
 This method must set the `alternative` parameter of the represented [*Markdom image content*](#domain-imagecontent).
 
@@ -736,7 +755,7 @@ A [`LineBreakContent`](#api-dom-linebreakcontent) object is a [`Content`](#api-d
 
 An implementation of `LineBreakContent` should have a constructor with signature `LineBreakContent()` that sets the [`LineBreakContent`](#api-dom-linebreakcontent) object to represent a soft line break.
 
-For convenience, an implementation of `LineBreakContent` should have a constructor with signature `LinkContent(Boolean hard)` that takes a `Boolean` named `hard` and delegates to `setHard(Boolean hard)`.
+For convenience, an implementation of `LineBreakContent` should have a constructor with signature `LinkContent(Boolean hard)` that delegates to `setHard(Boolean hard)`.
 
 ###### `isHard` {#api-dom-linebreakcontent-ishard}
 
@@ -746,7 +765,7 @@ This method must return the `hard` parameter of the represented [*Markdom line b
 
 ###### `setHard` {#api-dom-linebreakcontent-sethard}
 
-A [`LineBreakContent`](#api-dom-linebreakcontent) object must have a method with signature `setHard(Boolean hard)` that takes a `Boolean` named `hard`.
+A [`LineBreakContent`](#api-dom-linebreakcontent) object must have a method with signature `setHard(Boolean hard)`.
 
 This method must set the `hard` parameter of the represented [*Markdom line break content*](#domain-linebreakcontent).
   
@@ -760,9 +779,9 @@ A [`LinkContent`](#api-dom-linkcontent) object is a [`ContentParentContent`](#ap
 
 An implementation of `LinkContent` should have a constructor with signature `LinkContent()` that sets the uri of the [`LinkContent`](#api-dom-linkcontent) object to the empty string.
 
-For convenience, an implementation of `LinkContent` should have a constructor with signature `LinkContent(String uri)` that takes a `String` named `uri` and delegates to `setUri(String uri)`.
+For convenience, an implementation of `LinkContent` should have a constructor with signature `LinkContent(String uri)` that delegates to `setUri(String uri)`.
 
-For convenience, an implementation of `LinkContent` should have a constructor with signature `LinkContent(String uri, Content... contents)` that takes a `String` named `uri` and an array of [`Content`](#api-dom-content) objects named `contents` and delegates to `setUri(String uri)` and `ContentParent#addContents(Content... contents)`.
+For convenience, an implementation of `LinkContent` should have a constructor with signature `LinkContent(String uri, Content... contents)` that delegates to `setUri(String uri)` and `ContentParent#addContents(Content... contents)`.
 
 ###### `getUri` {#api-dom-imagecontent-geturi}
 
@@ -772,7 +791,7 @@ This method must return the `uri` parameter of the represented [*Markdom link co
 
 ###### `setUri` {#api-dom-linkcontent-seturi}
 
-A [`LinkContent`](#api-dom-linkcontent) object must have a method with signature `setUri(String uri)` that takes a `String` named `level`.
+A [`LinkContent`](#api-dom-linkcontent) object must have a method with signature `setUri(String uri)`.
 
 This method must set the `uri` parameter of the represented [*Markdom link content*](#domain-linkcontent).
   
@@ -784,7 +803,7 @@ This method must fail if `uri` is not a valid URI reference.
 
 A [`ListBlock`](#api-dom-listblock) object is a [`Block`](#api-dom-block) object that represents a [*Markdom list block*](#domain-listblock)  
 
-An implementation of `ListBlock` must have a final and initially empty `Sequence` of [`ListItem`](#api-dom-listitem) objects that is associated with the [`ListBlock`](#api-dom-listblock) object.
+An implementation of `ListBlock` must have a final and initially empty companion `Sequence` of [`ListItem`](#api-dom-listitem) objects that is associated with the [`ListBlock`](#api-dom-listblock) object.
 
 Any structural modification (insert, remove, clear, replace) to the associated `Sequence` of [`ListItem`](#api-dom-listitem) objects must reflect the fact, that a [`ListItem`](#api-dom-listitem) object that is added to the associated `Sequence` object is attached to the [`ListBlock`](#api-dom-listblock) object until is is removed from the associated `Sequence` of [`ListItem`](#api-dom-listitem) objects.
 
@@ -797,7 +816,7 @@ Attaching a [`ListItem`](#api-dom-listitem) object to the [`ListBlock`](#api-dom
 
 An implementation of `ListBlock` should have a constructor with signature `ListBlock()`.
 
-For convenience, an implementation of `ListBlock` should have a constructor with signature `ListBlock(ListItem... items)` that takes that takes an array of [`ListItem`](#api-dom-listitem) objects named `items` and delegates to `addItems(ListItem... items)`.
+For convenience, an implementation of `ListBlock` should have a constructor with signature `ListBlock(ListItem... items)` that delegates to `addItems(ListItem... items)`.
 
 ###### `getListBlockType` {#api-dom-listblock-getlistblocktype}
 
@@ -813,7 +832,7 @@ This method must return the associated `Sequence` of [`ListItem`](#api-dom-listi
 
 ###### `addItem` {#api-dom-listblock-additem}
 
-For convenience, a [`ListBlock`](#api-dom-listblock) object should have a method with signature `addItem(ListItem item)` that takes a [`ListItem`](#api-dom-listitem) object named `item`.
+For convenience, a [`ListBlock`](#api-dom-listblock) object should have a method with signature `addItem(ListItem item)`.
 
 This method must add `item` at the end of the associated `Sequence` of [`ListItem`](#api-dom-listitem) objects. This attaches `item` to the [`ListBlock`](#api-dom-listblock) object.
 
@@ -821,7 +840,7 @@ This method must fail if add `item` to the  associated `Sequence` of [`ListItem`
 
 ###### `addItems` {#api-dom-listblock-additems}
 
-For convenience, a [`ListBlock`](#api-dom-listblock) object should have a method with signature `addItems(ListItem... items)` that takes an array of [`ListItem`](#api-dom-listitem) objects named `items`.
+For convenience, a [`ListBlock`](#api-dom-listblock) object should have a method with signature `addItems(ListItem... items)`.
 
 This method must add all [`ListItem`](#api-dom-listitem) objects from `items` in the given order at the end of the `Sequence` of [`ListItem`](#api-dom-listitem) objects of the [`ListBlock`](#api-dom-listblock) object, as if `addItem(ListItem item)` has been called repeatedly for all [`ListItem`](#api-dom-listitem) objects from `items`.  This attaches all [`ListItem`](#api-dom-listitem) objects from `items` to the [`ListBlock`](#api-dom-listblock) object.
   
@@ -838,7 +857,7 @@ A [`ListItem`](#api-dom-listitem) object is a [`BlockParent`](#api-dom-blockpare
 
 An implementation of `ListItem` should have a constructor with signature `ListItem()`.
 
-For convenience, an implementation of `ListItem` should have a constructor with signature `ListItem(Block... blocks)` that takes an array of [`Block`](#api-dom-block) objects named `blocks` and delegates to `BlockParent#addBlocks(Block... blocks)`.
+For convenience, an implementation of `ListItem` should have a constructor with signature `ListItem(Block... blocks)` that delegates to `BlockParent#addBlocks(Block... blocks)`.
 
 ##### `Node` {#api-dom-node}
 
@@ -942,9 +961,9 @@ An [`OrderedListBlock`](#api-dom-orderedlistblock) object is a [`ListBlock`](#ap
 
 An implementation of `OrderedListBlock` should have a constructor with signature `OrderedListBlock()` that sets the start index of the [`OrderedListBlock`](#api-dom-orderedlistblock) object to `1`.
 
-For convenience, an implementation of `OrderedListBlock` should have a constructor with signature `OrderedListBlock(Integer startIndex)` that takes an `Integer` named `startIndex` and delegates to `setStartIndex(Integer startIndex)`.
+For convenience, an implementation of `OrderedListBlock` should have a constructor with signature `OrderedListBlock(Integer startIndex)` that delegates to `setStartIndex(Integer startIndex)`.
 
-For convenience, an implementation of `OrderedListBlock` should have a constructor with signature `OrderedListBlock(Integer startIndex, ListItem... items)` that takes an `Integer` named `startIndex` and an array of [`ListItem`](#api-dom-listitem) objects named `items` and delegates to `setStartINdex(Integer startIndex)` and `ContentParent#addContents(Content... contents)`.
+For convenience, an implementation of `OrderedListBlock` should have a constructor with signature `OrderedListBlock(Integer startIndex, ListItem... items)` that delegates to `setStartIndex(Integer startIndex)` and `ContentParent#addContents(Content... contents)`.
 
 ###### getStartIndex {#api-dom-orderedlistblock-getstartindex}
 
@@ -954,7 +973,7 @@ This method must return the `startIndex` parameter of the represented [*ordered 
 
 ###### setStartIndex {#api-dom-orderedlistblock-setstartindex}
 
-An [`OrderedListBlock`](#api-dom-orderedlistblock) object must have a method with signature `setStartIndex(Integer startIndex)` that takes an `INteger` named `startIndex`.
+An [`OrderedListBlock`](#api-dom-orderedlistblock) object must have a method with signature `setStartIndex(Integer startIndex)`.
 
 This method must set the `startIndex` parameter of the represented [*ordered Markdom list block*](#domain-orderedlistblock).
   
@@ -969,7 +988,7 @@ A [`ParagraphBlock`](#api-dom-paragraphblock) object is a [`ContentParentBlock`]
 
 An implementation of `ParagraphBlock` should have a constructor with signature `ParagraphBlock()`.
 
-For convenience, an implementation of `ParagraphBlock` should have a constructor with signature `ParagraphBlock(Content... contents)` that takes an array of [`Content`](#api-dom-content) objects named `contents` and delegates to `ContentParentBlock#addContents(Contents... contents)`.
+For convenience, an implementation of `ParagraphBlock` should have a constructor with signature `ParagraphBlock(Content... contents)` that delegates to `ContentParentBlock#addContents(Contents... contents)`.
 
 ##### `QuoteBlock` {#api-dom-quoteblock}
 
@@ -979,7 +998,7 @@ A [`QuoteBlock`](#api-dom-quoteblock) object is a [`Block`](#api-dom-block) obje
 
 An implementation of `QuoteBlock` should have a constructor with signature `QuoteBlock()`.
 
-For convenience, an implementation of `QuoteBlock` should have a constructor with signature `QuoteBlock(Block... blocks)` that takes an array of [`Block`](#api-dom-block) objects named `blocks` and delegates to `BlockParent#addBlocks(Block... blocks)`.
+For convenience, an implementation of `QuoteBlock` should have a constructor with signature `QuoteBlock(Block... blocks)` that delegates to `BlockParent#addBlocks(Block... blocks)`.
     
 ##### `TextContent` {#api-dom-textcontent}
 
@@ -989,7 +1008,7 @@ A [`TextContent`](#api-dom-textcontent) object is [`ContentParentContent`](#api-
 
 An implementation of `TextContent` should have a constructor with signature `TextContent()` that sets the text of the [`TextContent`](#api-dom-textcontent) object to the empty string.
    
-For convenience, an implementation of `TextContent` should have a constructor with signature `TextContent(String text)` that takes a `String` named `text` and delegates to `setText(String text)`.
+For convenience, an implementation of `TextContent` should have a constructor with signature `TextContent(String text)` that delegates to `setText(String text)`.
 
 ###### `getText` {#api-dom-textcontent-gettext}
 
@@ -999,7 +1018,7 @@ This method must return the `text` parameter of the represented [*Markdom text c
 
 ###### `setText` {#api-dom-textcontent-settext}
 
-A [`TextContent`](#api-dom-textcontent) object must have a method with signature `setText(String text)` that takes a `String` named `text`.
+A [`TextContent`](#api-dom-textcontent) object must have a method with signature `setText(String text)`.
 
 This method must set the `text` parameter of the represented [*Markdom text content*](#domain-textcontent).
   
@@ -1013,11 +1032,28 @@ An [`UnorderedListBlock`](#api-dom-unorderedlistblock) object is a [`ListBlock`]
 
 An implementation of `UnorderedListBlock` should have a constructor with signature `UnorderedListBlock()`.
    
-For convenience, an implementation of `UnorderedListBlock` should have a constructor with signature `UnorderedListBlock(ListItem... items)` that takes an array of [`ListItem`](#api-dom-listitem) objects named `items` and delegates to  `ListBlock#addItems(ListItem... items)`.
+For convenience, an implementation of `UnorderedListBlock` should have a constructor with signature `UnorderedListBlock(ListItem... items)` that delegates to  `ListBlock#addItems(ListItem... items)`.
 
 #### Enumerations {#api-enumerations}
 
 The Domain Model API has the following enumerations:
+
+##### `BlockParentType` {#api-dom-blockparenttype}  
+
+The `BlockParentType` enum represents the type of a [`BlockParent`](#api-dom-blockparent) and has the following constants:
+
+* `DOCUMENT`,
+* `QUOTE_BLOCK`, 
+* `LIST_ITEM`.
+
+##### `ContentParentType` {#api-dom-contentparenttype}  
+
+The `ContentParentType` enum represents the type of a [`ContentParent`](#api-dom-blockparent) and has the following constants:
+
+* `HEADING_BLOCK`,
+* `PARAGRAPH_BLOCK`, 
+* `EMPHASIS_CONTENT`,
+* `LINK_CONTENT`.
 
 ##### `NodeType` {#api-dom-nodetype}
 
@@ -1030,16 +1066,25 @@ The `NodeType` enum represents the type of a [`Node`](#api-dom-node) object and 
 
 ##### `ListBlockType` {#api-dom-listblocktype}  
 
-The `ListBlockType` enum represents the of a [`ListBlock`](#api-dom-listblock) and has the following constants:
+The `ListBlockType` enum represents the type of a [`ListBlock`](#api-dom-listblock) and has the following constants:
 
 * `ORDERED_LIST_BLOCK`,
 * `UNORDERED_LIST_BLOCK`.
 
+#### Example Document {#api-dom-example}  
+
+The following Domain Model API object graph represents the [example document](#example):
+
+![](resource/markdom-objectgraph.png)
+
+Every `BlockParent`, `ListBlock` and `ContentParent` has a reference to its companion `Sequence object` that holds references to its [children](#api-dom-node-getchildren). Each child has a reference to its [parent](#api-dom-node-getparent).
+
+
 #### Additional information
 
-##### Example Document
+##### Up navigation
 
-##### Up- and Down navigation
+##### Down navigation
 
 ##### Detecting cycles {#api-dom-detecting-cycles}
 
@@ -1118,7 +1163,7 @@ A `Dispatcher` is a component that is able to describe a [*Markdom document*](#d
 
 ###### `handle` {#api-handler-dispatcher-handle}
 
-A [`Dispatcher`](#api-handler-dispatcher) object must have a method with signature `Object handle(Handler handler)` that takes a [`Handler`](#api-handler-handler) object named `handler`.
+A [`Dispatcher`](#api-handler-dispatcher) object must have a method with signature `Object handle(Handler handler)`.
 
 This method must dispatch [*Markdom events*](#api-handler-event) that describe the [*Markdom document*](#domain-document) to `handler` in the correct order.
   
@@ -1150,7 +1195,7 @@ Calling this method before the [`onDocumentEnd`](#api-handler-handler-ondocument
 
 ###### `onBlockBegin` {#api-handler-handler-onblockbegin}
 
-A [`Handler`](#api-handler-handler) object must have a method with signature `onBlockBegin(BlockType type)` that takes a `BlockType` named `type`.
+A [`Handler`](#api-handler-handler) object must have a method with signature `onBlockBegin(BlockType type)`.
 
 The `type` parameter determines the type of the represented [*Markdom block*](#domain-block).
 
@@ -1160,7 +1205,7 @@ Calling this method must be must be, depending on the value of the `type` parame
 
 ###### `onBlockEnd` {#api-handler-handler-onblockend}
 
-A [`Handler`](#api-handler-handler) object must have a method with signature `onBlockEnd(BlockType type)` that takes the `BlockType` named `type`.
+A [`Handler`](#api-handler-handler) object must have a method with signature `onBlockEnd(BlockType type)`.
 
 The `type` parameter must have the same value as the corresponding call to `onBlockBegin`.
 
@@ -1182,7 +1227,7 @@ A corresponding call to `onBlocksBegin` must have occurred. Calling this method 
 
 ###### `onCodeBlock` {#api-handler-handler-oncodeblock}
 
-A [`Handler`](#api-handler-handler) object must have a method with signature `onCodeBlock(String code, String? hint)` that takes a `String` named `code` and an optional `String` named `hint`.
+A [`Handler`](#api-handler-handler) object must have a method with signature `onCodeBlock(String code, String? hint)`.
 
 The parameters determine the `code` parameter and the `hint` parameter of the represented [*Markdom code block*](#domain-codeblock).
 
@@ -1192,7 +1237,7 @@ Calling this method must be must be followed by a call to `onBlockEnd`.
 
 ###### `onCodeContent` {#api-handler-handler-oncodecontent}
 
-A [`Handler`](#api-handler-handler) object must have a method with signature `onCodeContent(String code)` that takes a `String` named `code`.
+A [`Handler`](#api-handler-handler) object must have a method with signature `onCodeContent(String code)`.
 
 The parameter determines the `code` parameter of the represented [*Markdom code content*](#domain-codecontent).
 
@@ -1202,7 +1247,7 @@ Calling this method must be must be followed by a call to `onBlockEnd`.
 
 ###### `onContentBegin` {#api-handler-handler-oncontentbegin}
 
-A [`Handler`](#api-handler-handler) object must have a method with signature `onContenBegin(ContentType type)` that takes a `ContentType` named `type`.
+A [`Handler`](#api-handler-handler) object must have a method with signature `onContenBegin(ContentType type)`.
 
 The `type` parameter determines the type of the represented [*Markdom content*](#domain-content).
 
@@ -1212,7 +1257,7 @@ Calling this method must be must be, depending on the value of the `type` parame
 
 ###### `onContentEnd` {#api-handler-handler-oncontentend}
 
-A [`Handler`](#api-handler-handler) object must have a method with signature `onContentEnd(ContentType type)` that takes a `ContentType` named `type`.
+A [`Handler`](#api-handler-handler) object must have a method with signature `onContentEnd(ContentType type)`.
 
 The `type` parameter must have the same value as the corresponding call to `onContentBegin`.
 
@@ -1252,7 +1297,7 @@ A corresponding call to `onDocumentBegin` must have occurred. Calling this metho
 
 ###### `onHeadingBlockBegin` {#api-handler-handler-onheadingblockbegin}
 
-A [`Handler`](#api-handler-handler) object must have a method with signature `onHeadingBlockBegin(HeadingLevel level)` that takes a `HeadingLevel` named `level`.
+A [`Handler`](#api-handler-handler) object must have a method with signature `onHeadingBlockBegin(HeadingLevel level)`.
 
 The parameter determines the `level` parameter of the represented [*Markdom heading block*](#domain-headingblock).
 
@@ -1262,7 +1307,7 @@ Calling this method must be must be followed by a call to `onContentsBegin`. A c
 
 ###### `onHeadingBlockEnd` {#api-handler-handler-onheadingblockend}
 
-A [`Handler`](#api-handler-handler) object must have a method with signature `onHeadingBlockEnd(HeadingLevel level)` that takes a `HeadingLevel` named `level`.
+A [`Handler`](#api-handler-handler) object must have a method with signature `onHeadingBlockEnd(HeadingLevel level)`.
 
 The `level` parameter must have the same value as the corresponding call to `onHeadingBlockBegin`.
 
@@ -1272,7 +1317,7 @@ A corresponding call to `onHeadingBlockBegin` must have occurred. Calling this m
 
 ###### `onEmphasisContentBegin` {#api-handler-handler-onemphasiscontentbegin}
 
-A [`Handler`](#api-handler-handler) object must have a method with signature `onEmphasisContentBegin(EmphasisLevel level)` that takes a `EmphasisLevel` named `level`.
+A [`Handler`](#api-handler-handler) object must have a method with signature `onEmphasisContentBegin(EmphasisLevel level)`.
 
 The parameter determines the `level` parameter of the represented [*Markdom emphasis content*](#domain-emphasiscontent).
 
@@ -1282,7 +1327,7 @@ Calling this method must be must be followed by a call to `onContentsBegin`. A c
 
 ###### `onEmphasisContentEnd` {#api-handler-handler-onemphasiscontentend}
 
-A [`Handler`](#api-handler-handler) object must have a method with signature `onEmphasisContentEnd(EmphasisLevel level)` that takes a `EmphasisLevel` named `level`.
+A [`Handler`](#api-handler-handler) object must have a method with signature `onEmphasisContentEnd(EmphasisLevel level)`.
 
 The `level` parameter must have the same value as the corresponding call to `onEmphasisContentBegin`.
 
@@ -1292,7 +1337,7 @@ A corresponding call to `onEmphasisContentBegin` must have occurred. Calling thi
 
 ###### `onImageContent` {#api-handler-handler-onimagecontent}
 
-A [`Handler`](#api-handler-handler) object must have a method with signature `onImageContent(String uri, String? title, String? alternative)` that takes a `String` named `uri` and an optional `String` named `title` and an optional `String` named `alternative`.
+A [`Handler`](#api-handler-handler) object must have a method with signature `onImageContent(String uri, String? title, String? alternative)`.
 
 The parameters determine the `uri` parameter and the `title` parameter and the `alternative` parameter of the represented [*Markdom image content*](#domain-imagecontent).
 
@@ -1304,7 +1349,7 @@ Calling this method must be must be followed by a call to `onBlockEnd`.
 
 ###### `onLineBreakContent` {#api-handler-handler-onlinebreakcontent}
 
-A [`Handler`](#api-handler-handler) object must have a method with signature `onLineBreakContent(Boolean hard)` that takes a `Boolean` named `hard`.
+A [`Handler`](#api-handler-handler) object must have a method with signature `onLineBreakContent(Boolean hard)`.
 
 The parameter determines the `hard` parameter of the represented [*Markdom line break content*](#domain-linebreakcontent).
 
@@ -1314,7 +1359,7 @@ Calling this method must be must be followed by a call to `onBlockEnd`.
 
 ###### `onLinkContentBegin` {#api-handler-handler-onlinkcontentbegin}
 
-A [`Handler`](#api-handler-handler) object must have a method with signature `onLinkContentBegin(String uri)` that takes a `String` named `uri`.
+A [`Handler`](#api-handler-handler) object must have a method with signature `onLinkContentBegin(String uri)`.
 
 The parameter determines the `uri` parameter of the represented [*Markdom link content*](#domain-linkcontent).
 
@@ -1326,7 +1371,7 @@ Calling this method must be must be followed by a call to `onContentsBegin`. A c
 
 ###### `onLinkContentEnd` {#api-handler-handler-onlincontentend}
 
-A [`Handler`](#api-handler-handler) object must have a method with signature `onLinkContentEnd(String uri)` that takes a `String` named `uri`.
+A [`Handler`](#api-handler-handler) object must have a method with signature `onLinkContentEnd(String uri)`.
 
 The `uri` parameter must have the same value as the corresponding call to `onLinkContentBegin`.
 
@@ -1380,7 +1425,7 @@ Calling this method must be must be followed by a call to `onListItemBegin`.
 
 ###### `onOrderedListBlockBegin` {#api-handler-handler-onorderedlistblockbegin}
 
-A [`Handler`](#api-handler-handler) object must have a method with signature `onOrderedListBlockBegin(Integer startIndex)` that takes an `Integer` named `startIndex`.
+A [`Handler`](#api-handler-handler) object must have a method with signature `onOrderedListBlockBegin(Integer startIndex)`.
 
 The parameter determines the `startIndex` parameter of the represented [*ordered Markdom list block*](#domain-orderedlistblock).
 
@@ -1392,7 +1437,7 @@ Calling this method must be must be followed by a call to `onListItemsBegin`. A 
 
 ###### `onOrderedListBlockEnd` {#api-handler-handler-onorderedlistblockend}
 
-A [`Handler`](#api-handler-handler) object must have a method with signature `onOrderedListBlockEnd(Integer startIndex)` that takes an `Integer` named `startIndex`.
+A [`Handler`](#api-handler-handler) object must have a method with signature `onOrderedListBlockEnd(Integer startIndex)`.
 
 The `startIndex` parameter must have the same value as the corresponding call to `onOrderedListBlockBegin`.
 
@@ -1440,7 +1485,7 @@ A corresponding call to `onUnorderedListBlockBegin` must have occurred. Calling 
 
 ###### `onTextContent` {#api-handler-handler-ontextcontent}
 
-A [`Handler`](#api-handler-handler) object must have a method with signature `onTextContent(String text)` that takes a `String` named `text`.
+A [`Handler`](#api-handler-handler) object must have a method with signature `onTextContent(String text)`.
 
 The parameter determines the `text` parameter of the represented [*Markdom text content*](#domain-textcontent).
 
@@ -1450,9 +1495,9 @@ Calling this method must be must be followed by a call to `onBlockEnd`.
 
 #### Additional information
 
-#### Example Document
+#### Example Document {#api-handler-example}
 
-The [example document](#example) is described with the following sequence of events:
+The following sequence of events describes the [example document](#example):
 
 ```
 onDocumentBegin()
@@ -1552,9 +1597,9 @@ onDocumentEnd()
 
 ### JSON {#data-json}
 
-#### Example Document
+#### Example Document {#data-json-example}
 
-The [example document](#example) is represented as the following JSON document:
+The following JSON document represents the [example document](#example):
 
 ```
 {
@@ -1655,11 +1700,14 @@ The [example document](#example) is represented as the following JSON document:
 
 ### YAML {#data-yaml}
 
-### XML {#data-xml}
-
 #### Example Document
 
-The [example document](#example) is represented as the following XML document:
+
+### XML {#data-xml}
+
+#### Example Document {#data-xml-example}
+
+The following XML document represents the [example document](#example):
 
 ```
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
@@ -1692,12 +1740,17 @@ The [example document](#example) is represented as the following XML document:
       </Quote>
     </ListItem>
   </OrderedList>
-  <Code hint=""><![CDATA[goto 11]]></Code>
+  <Code hint="">goto 11</Code>
 </Document>
 ```
 
 ## Text representations {#text}
 
-### CommonMark {#text-html}
+### HTML {#text-html}
+
+#### Example Document {#text-html-example}
+
+The following HTML document represents the [example document](#example):
+
 
 ### CommonMark {#text-cm}
