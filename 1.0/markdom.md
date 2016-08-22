@@ -278,7 +278,7 @@ A *Markdom text content* has a mandatory string parameter named `text`.
 
 Values of the `text` parameter should not contain any [control](http://www.fileformat.info/info/unicode/category/Cc/list.htm) characters. Values of the `text` parameter shouldn't be empty.
 
-### Example document {#example}
+## Example document {#example}
 
 This CommonMark text describes a rich text document that serves as an example document throughout the rest of this specification:
 
@@ -304,7 +304,7 @@ The same Markdom document can be represented as
 
 * an [object graph](#api-dom-example), 
 * a [sequence of events](#api-handler-example), 
-* a [JSON document](#data-json-exampl), 
+* a [JSON document](#data-json-example), 
 * a [XML document](#data-xml-example) or
 * a [HTML document](#text-html-example).
 
@@ -332,7 +332,7 @@ Depending on the programming language, it might be sensible to divide the interf
 
 ![](resource/markdom-packages.png)
 
-It is commonly recommended to implement an algorithms that processes a [*Markdom document*](#domain document) as a [`Handler`](#api-handler-handler) rather than a method that directly processes a Domain Model API object graph. This allows to use the algorithm implementation in a multitude of scenarios (e.g. converting the [XML representation](#data-xml) of a [*Markdom document*](#domain document) into a corresponding [HTML representation](#text-html) as a stream without creating an object graph for XML, Markdom or HTML). The Domain Model API should generally only be used if it is necessary to temporarily store a [*Markdom document*](#domain document) in the memory or to programmatically modify a [*Markdom document*](#domain document) before it is further processed with a [`Handler`](#api-handler-handler).
+It is commonly recommended to implement an algorithms that processes a [*Markdom document*](#domain-document) as a [`Handler`](#api-handler-handler) rather than a method that directly processes a [Domain Model API](#api-dom) object graph. This allows to use the algorithm implementation in a multitude of scenarios (e.g. converting the [XML representation](#data-xml) of a [*Markdom document*](#domain-document) into a corresponding [HTML representation](#text-html) as a stream without creating an object graph for XML, Markdom or HTML). The Domain Model API should generally only be used if it is necessary to temporarily store a [*Markdom document*](#domain-document) in the memory or to programmatically modify a [*Markdom document*](#domain-document) before it is further processed with a [`Handler`](#api-handler-handler).
    
 ### Common {#api-common}
 
@@ -1077,16 +1077,50 @@ The following Domain Model API object graph represents the [example document](#e
 
 ![](resource/markdom-objectgraph.png)
 
-Every `BlockParent`, `ListBlock` and `ContentParent` has a reference to its companion `Sequence object` that holds references to its [children](#api-dom-node-getchildren). Each child has a reference to its [parent](#api-dom-node-getparent).
-
+Every `BlockParent`, `ListBlock` or `ContentParent` object has a reference to its companion `Sequence` object. A companion `Sequence` object holds references to the [children](#api-dom-node-getchildren) of the corresponding `BlockParent`, `ListBlock` or `ContentParent` object. Each child has a reference to its [parent](#api-dom-node-getparent).
 
 #### Additional information
 
 ##### Up navigation
 
+The following image shows the possible methods to navigate from an `Node` object upwards from the leaf `TextContent` object with `text` value `Baz` of the [example document](#example).
+
+![](resource/markdom-navigation-up)
+
+Every `Node` object in a Domain Model API object graph that is not a `Document` object has a reference to its [parent](#api-dom-node-getparent), which is
+
+* a `BlockParent` object, if the `Node` object is a `Block` object,
+* a `ListBlock` object, if the `Node` object is a `ListItem` object, or
+* a `ContentParent` object, if the `Node` object is a `Content` object.
+
+Depending on the kind of the parent, either `getBlockParentType`, `getListBlockType` or `getContentParentType` can be used to find out the actual type of the parent.
+
+For example: Consider a method that gets leaf `Node` object as a parameter without any knowledge about it. Calling `getNodeType` reveals that is it a `Content` object. Calling `getContentType()` reveals that it is a `TextContent` object. Calling `getParent()` returns the parent as a `ContentParent` object. Calling `getContentParentType()` on the parent reveals that the parent is en `EmphasisContent` object.
+
+Each `Node` object in a Domain Model API object graph can, through its predecessors, retrieve the root `Document` object. Each `Content` object in a Domain Model API object graph can, through its predecessors, retrieve its `Block` object.
+
 ##### Down navigation
 
+The following image shows the possible methods to navigate from an `Node` object downwards to the leaf `TextContent` object with `text` value `Baz` of the [eample document](#example).
+
+![](resource/markdom-navigation-down)
+
+Every `Node` object in a Domain Model API object graph that is parent object has a reference to its companion `Sequence` object which has references to the [children](#api-dom-node-getchildren) of the `Node` object.
+
+For example: Consider a method that gets the root `Node` as a parameter without any knowledge about it. Calling `getNodeType()` reveals that is it a `Document` object. Calling `getBlocks` returns the companion `Sequence` object. Calling `size` reveals that the companion `Sequence` object contains three `Block` objects. Calling `get(1)` returns the second child. Calling `getBlockType()` on the second child reveals that it is a `OrderedListBlock` object.
+
 ##### Detecting cycles {#api-dom-detecting-cycles}
+
+If a `Block`, `ListItem` or `Content` object is about to be attached to a `BlockParent`, `ListBlock` or `ContentParent` object it is necessary to check, whether this would create a cycle.
+
+If the designated parent object is part of a *Markdom document* (i.e. a tree of *Markdom nodes*), it is not possible to create a cycle, because repeatedly retrieving the [parent](#api-dom-node-getparent) will eventually yield a `Document` object which cannot be added into any other `BlockParent`, `ListItem` or `ContentParent` object and thus ending the path after a finite number of repetitions.
+
+If the designated parent object is not part of a *Markdom document* and therefore part of a tree fragment where one `Node` object doesn't [have](#api-dom-node-hasparent) a parent it is possible to create a cycle. The object that is about to be attached doesnt't currently have a parent or otherwise it wouldn't be eligible to be attached to the a parent. The only object in the tree fragment the designated parent is a part of that doesn't have a parent is the root object of that fragment. It is therefore necessary and sufficient to check whether the object that is about to be attached is not the root of the tree fragment that the designated parent is a part of, to ensure that no cycle is created. 
+
+For example: Assuming a `QuoteBlock` object is about to be attached to a `BlockParent` object. That `BlockParent` object might be aanother `QuoteBlock` object which is attached to a `ListItem` object which is attached to an `UnorderedListBlock` object which is attached to a `QuoteBlock` object which isn't attached to a `BlockParent` object.  The last `QuoteBlock` in the chain of parents might be the same `QuoteBlock` object that is about to be attached. Attaching the `QuoteBlock` object to its designated parent would therefore create a cycle. The folloing image illustrates this example.
+
+![](resource/markdom-cycles-down)
+
 
 ### Handler API {#api-handler}
 
