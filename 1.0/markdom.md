@@ -1049,7 +1049,11 @@ The Handler API represents a [*Markdom document*](#domain-document) as a sequenc
 
 #### Events {#api-handler-event}
 
-The Handler API defines several events and the order in which the must occur to successfully describe a [*Markdom document*(#domain-document). Some of the events carry redundant information. This helps different handler implementations to create structurally different representations of the described [*Markdom document*](#domain-document).
+The Handler API defines several events and the order in which the must occur to successfully describe a [*Markdom document*](#domain-document).
+
+To help different handler implementations to process the described [*Markdom document*](#domain-document) easily, some of the events carry redundant information:
+ * Every event concerning a [*Markdom node*](#domain-node) of a polymorph kind (i.e. [*Markdom blocks*](#markdom-block) and [*Markdom contents*](#markdom-content)) is reported twice. Once in a general form and once in a specific form with the specific parameters. This allows to execute general or specific behavior when necessary.
+ * Every event that is part of a pair (i.e. opening and closing events) and has parameters, carries the same values for the parameters as its counterpart. This usually eliminates the need to remember previously reported values.
 
 ##### Document {#api-handler-event-document}
 
@@ -1446,7 +1450,7 @@ Calling this method must be must be followed by a call to `onBlockEnd`.
 
 #### Additional information
 
-##### Example Document
+#### Example Document
 
 The [example document](#example) is described with the following sequence of events:
 
@@ -1548,9 +1552,149 @@ onDocumentEnd()
 
 ### JSON {#data-json}
 
+#### Example Document
+
+The [example document](#example) is represented as the following JSON document:
+
+```
+{
+  "$schema": "http://schema.markdom.io/markdom-1.0.json#",
+  "version": {
+    "major": 1,
+    "minor": 0
+  },
+  "blocks": [
+    {
+      "type": "Heading",
+      "level": 1,
+      "contents": [
+        {
+          "type": "Text",
+          "text": "Markdom"
+        }
+      ]
+    },
+    {
+      "type": "OrderedList",
+      "startIndex": 1,
+      "items": [
+        {
+          "blocks": [
+            {
+              "type": "Paragraph",
+              "contents": [
+                {
+                  "type": "Link",
+                  "uri": "#Bar",
+                  "contents": [
+                    {
+                      "type": "Text",
+                      "text": "Foo"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "blocks": [
+            {
+              "type": "Paragraph",
+              "contents": [
+                {
+                  "type": "Text",
+                  "text": "Lorem ipsum"
+                },
+                {
+                  "type": "LineBreak",
+                  "hard": true
+                },
+                {
+                  "type": "Code",
+                  "code": "dolor sit amet"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "blocks": [
+            {
+              "type": "Quote",
+              "blocks": [
+                {
+                  "type": "Paragraph",
+                  "contents": [
+                    {
+                      "type": "Emphasis",
+                      "level": 1,
+                      "contents": [
+                        {
+                          "type": "Text",
+                          "text": "Baz"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "Code",
+      "code": "goto 11",
+      "hint": ""
+    }
+  ]
+}
+```
+
 ### YAML {#data-yaml}
 
 ### XML {#data-xml}
+
+#### Example Document
+
+The [example document](#example) is represented as the following XML document:
+
+```
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Document version="1.0" xmlns="http://schema.markdom.io/markdom-1.0.xsd">
+  <Heading level="1">
+    <Text>Markdom</Text>
+  </Heading>
+  <OrderedList startIndex="1">
+    <ListItem>
+      <Paragraph>
+        <Link uri="#Bar">
+          <Text>Foo</Text>
+        </Link>
+      </Paragraph>
+    </ListItem>
+    <ListItem>
+      <Paragraph>
+        <Text>Lorem ipsum</Text>
+        <LineBreak hard="true"/>
+        <Code/>
+      </Paragraph>
+    </ListItem>
+    <ListItem>
+      <Quote>
+        <Paragraph>
+          <Emphasis level="1">
+            <Text>Baz</Text>
+          </Emphasis>
+        </Paragraph>
+      </Quote>
+    </ListItem>
+  </OrderedList>
+  <Code hint=""><![CDATA[goto 11]]></Code>
+</Document>
+```
 
 ## Text representations {#text}
 
