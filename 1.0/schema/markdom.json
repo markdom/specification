@@ -1,0 +1,371 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "id": "http://schema.markenwerk.net/markdom-1.0.xsd",
+  "allOf": [
+    {
+      "$ref": "#/definitions/document"
+    }
+  ],
+  "definitions": {
+    "document": {
+      "title": "Document",
+      "type": "object",
+      "properties": {
+        "version": {
+          "type": "string",
+          "pattern": "1\\.0"
+        },
+        "blocks": {
+          "$ref": "#/definitions/blocks"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "version"
+      ]
+    },
+    "blocks": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/block"
+      }
+    },
+    "block": {
+      "oneOf": [
+        {
+          "$ref": "#/definitions/codeBlock"
+        },
+        {
+          "$ref": "#/definitions/divisionBlock"
+        },
+        {
+          "$ref": "#/definitions/headingBlock"
+        },
+        {
+          "$ref": "#/definitions/orderedListBlock"
+        },
+        {
+          "$ref": "#/definitions/paragraphBlock"
+        },
+        {
+          "$ref": "#/definitions/quoteBlock"
+        },
+        {
+          "$ref": "#/definitions/unorderedListBlock"
+        }
+      ]
+    },
+    "codeBlock": {
+      "title": "Code",
+      "type": "object",
+      "properties": {
+        "type": {
+          "enum": [
+            "Code"
+          ]
+        },
+        "code": {
+          "type": "string"
+        },
+        "hint": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "code"
+      ]
+    },
+    "divisionBlock": {
+      "title": "Division",
+      "type": "object",
+      "properties": {
+        "type": {
+          "enum": [
+            "Division"
+          ]
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "type"
+      ]
+    },
+    "headingBlock": {
+      "title": "Heading",
+      "type": "object",
+      "properties": {
+        "type": {
+          "enum": [
+            "Heading"
+          ]
+        },
+        "level": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 6
+        },
+        "contents": {
+          "$ref": "#/definitions/contents"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "level"
+      ]
+    },
+    "orderedListBlock": {
+      "title": "OrderedList",
+      "type": "object",
+      "properties": {
+        "type": {
+          "enum": [
+            "OrderedList"
+          ]
+        },
+        "startIndex": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "items": {
+          "$ref": "#/definitions/listItems"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "startIndex"
+      ]
+    },
+    "paragraphBlock": {
+      "title": "Paragraph",
+      "type": "object",
+      "properties": {
+        "type": {
+          "enum": [
+            "Paragraph"
+          ]
+        },
+        "contents": {
+          "$ref": "#/definitions/contents"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "type"
+      ]
+    },
+    "quoteBlock": {
+      "title": "Quote",
+      "type": "object",
+      "properties": {
+        "type": {
+          "enum": [
+            "Quote"
+          ]
+        },
+        "blocks": {
+          "$ref": "#/definitions/blocks"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "type"
+      ]
+    },
+    "unorderedListBlock": {
+      "type": "object",
+      "title": "UnorderedList",
+      "properties": {
+        "type": {
+          "enum": [
+            "UnorderedList"
+          ]
+        },
+        "items": {
+          "$ref": "#/definitions/listItems"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "type"
+      ]
+    },
+    "listItems": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/listItem"
+      }
+    },
+    "listItem": {
+      "title": "ListItem",
+      "type": "object",
+      "properties": {
+        "blocks": {
+          "$ref": "#/definitions/blocks"
+        }
+      },
+      "additionalProperties": false
+    },
+    "contents": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/content"
+      }
+    },
+    "content": {
+      "oneOf": [
+        {
+          "$ref": "#/definitions/codeContent"
+        },
+        {
+          "$ref": "#/definitions/emphasisContent"
+        },
+        {
+          "$ref": "#/definitions/imageContent"
+        },
+        {
+          "$ref": "#/definitions/lineBreakContent"
+        },
+        {
+          "$ref": "#/definitions/linkContent"
+        },
+        {
+          "$ref": "#/definitions/textContent"
+        }
+      ]
+    },
+    "codeContent": {
+      "title": "Code",
+      "type": "object",
+      "properties": {
+        "type": {
+          "enum": [
+            "Code"
+          ]
+        },
+        "code": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "code"
+      ]
+    },
+    "emphasisContent": {
+      "title": "Emphasis",
+      "type": "object",
+      "properties": {
+        "type": {
+          "enum": [
+            "Emphasis"
+          ]
+        },
+        "level": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 2
+        },
+        "contents": {
+          "$ref": "#/definitions/contents"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "level"
+      ]
+    },
+    "imageContent": {
+      "title": "Image",
+      "type": "object",
+      "properties": {
+        "type": {
+          "enum": [
+            "Image"
+          ]
+        },
+        "uri": {
+          "type": "string",
+          "format": "uri"
+        },
+        "title": {
+          "type": "string"
+        },
+        "alternative": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "uri"
+      ]
+    },
+    "lineBreakContent": {
+      "title": "LineBreak",
+      "type": "object",
+      "properties": {
+        "type": {
+          "enum": [
+            "LineBreak"
+          ]
+        },
+        "hard": {
+          "type": "boolean"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "hard"
+      ]
+    },
+    "linkContent": {
+      "title": "Link",
+      "type": "object",
+      "properties": {
+        "type": {
+          "enum": [
+            "Link"
+          ]
+        },
+        "uri": {
+          "type": "string",
+          "format": "uri"
+        },
+        "contents": {
+          "$ref": "#/definitions/contents"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "uri"
+      ]
+    },
+    "textContent": {
+      "title": "Text",
+      "type": "object",
+      "properties": {
+        "type": {
+          "enum": [
+            "Text"
+          ]
+        },
+        "text": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "text"
+      ]
+    }
+  }
+}

@@ -1,0 +1,159 @@
+<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://schema.markdom.io/markdom-1.0.xsd"
+	xmlns:md="http://schema.markdom.io/markdom-1.0.xsd" elementFormDefault="qualified" attributeFormDefault="unqualified">
+
+	<xs:element name="Document">
+		<xs:complexType>
+			<xs:group ref="md:block" minOccurs="0" maxOccurs="unbounded" />
+			<xs:attribute name="version" type="xs:string" use="required" fixed="1.0" />
+		</xs:complexType>
+	</xs:element>
+
+	<xs:group name="block">
+		<xs:choice>
+			<xs:group ref="md:codeBlock" />
+			<xs:element ref="md:Division" />
+			<xs:element ref="md:Heading" />
+			<xs:element ref="md:OrderedList" />
+			<xs:element ref="md:Paragraph" />
+			<xs:element ref="md:Quote" />
+			<xs:element ref="md:UnorderedList" />
+		</xs:choice>
+	</xs:group>
+
+	<xs:group name="codeBlock">
+		<xs:sequence>
+			<xs:element name="Code">
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="md:text">
+							<xs:attribute name="hint" type="xs:string" use="optional" />
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:group>
+
+	<xs:element name="Division" />
+
+	<xs:element name="Heading">
+		<xs:complexType>
+			<xs:group ref="md:content" minOccurs="0" maxOccurs="unbounded" />
+			<xs:attribute name="level" use="required">
+				<xs:simpleType>
+					<xs:restriction base="xs:integer">
+						<xs:minInclusive value="1" />
+						<xs:maxInclusive value="6" />
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:attribute>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="OrderedList">
+		<xs:complexType>
+			<xs:group ref="md:listItems" />
+			<xs:attribute name="startIndex" type="xs:nonNegativeInteger" use="required" />
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="Paragraph">
+		<xs:complexType>
+			<xs:group ref="md:content" minOccurs="0" maxOccurs="unbounded" />
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="Quote">
+		<xs:complexType>
+			<xs:group ref="md:block" minOccurs="0" maxOccurs="unbounded" />
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="UnorderedList">
+		<xs:complexType>
+			<xs:group ref="md:listItems" />
+		</xs:complexType>
+	</xs:element>
+
+	<xs:group name="listItems">
+		<xs:sequence>
+			<xs:element ref="md:ListItem" minOccurs="0" maxOccurs="unbounded" />
+		</xs:sequence>
+	</xs:group>
+
+	<xs:element name="ListItem">
+		<xs:complexType>
+			<xs:group ref="md:block" minOccurs="0" maxOccurs="unbounded" />
+		</xs:complexType>
+	</xs:element>
+
+	<xs:group name="content">
+		<xs:choice>
+			<xs:group ref="md:codeContent" />
+			<xs:element ref="md:Emphasis" />
+			<xs:element ref="md:Image" />
+			<xs:element ref="md:LineBreak" />
+			<xs:element ref="md:Link" />
+			<xs:element ref="md:Text" />
+		</xs:choice>
+	</xs:group>
+
+	<xs:group name="codeContent">
+		<xs:sequence>
+			<xs:element name="Code">
+				<xs:simpleType>
+					<xs:restriction base="md:text" />
+				</xs:simpleType>
+			</xs:element>
+		</xs:sequence>
+	</xs:group>
+
+	<xs:element name="Emphasis">
+		<xs:complexType>
+			<xs:group ref="md:content" minOccurs="0" maxOccurs="unbounded" />
+			<xs:attribute name="level" use="required">
+				<xs:simpleType>
+					<xs:restriction base="xs:integer">
+						<xs:minInclusive value="1" />
+						<xs:maxInclusive value="2" />
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:attribute>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="Image">
+		<xs:complexType>
+			<xs:attribute name="uri" type="xs:anyURI" use="required" />
+			<xs:attribute name="title" type="xs:string" use="optional" />
+			<xs:attribute name="alternative" type="xs:string" use="optional" />
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="LineBreak">
+		<xs:complexType>
+			<xs:attribute name="hard" type="xs:boolean" use="required" />
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="Link">
+		<xs:complexType>
+			<xs:group ref="md:content" minOccurs="0" maxOccurs="unbounded" />
+			<xs:attribute name="uri" type="xs:anyURI" use="required" />
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="Text">
+		<xs:simpleType>
+			<xs:restriction base="md:text" />
+		</xs:simpleType>
+	</xs:element>
+
+	<xs:simpleType name="text">
+		<xs:restriction base="xs:string">
+			<xs:whiteSpace value="preserve" />
+		</xs:restriction>
+	</xs:simpleType>
+
+</xs:schema>
