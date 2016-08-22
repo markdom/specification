@@ -1637,7 +1637,7 @@ onDocumentEnd()
 
 The following JSON document represents the [example document](#example):
 
-```
+```json
 {
   "$schema": "http://schema.markdom.io/markdom-1.0.json#",
   "version": "1.0",
@@ -1734,7 +1734,7 @@ The following JSON document represents the [example document](#example):
 
 #### Example Document {#data-yaml-example}
 
-```
+```yaml
 ---
 version: '1.0'
 blocks:
@@ -1783,7 +1783,7 @@ blocks:
 
 The following XML document represents the [example document](#example):
 
-```
+```xml
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <Document version="1.0" xmlns="http://schema.markdom.io/markdom-1.0.xsd">
   <Heading level="1">
