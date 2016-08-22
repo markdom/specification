@@ -68,7 +68,7 @@ Zoidberg is awesome, but not a rich text related technology.
 
 ### So, why Markdom?
 
-Markdom tries to overcome the mentioned shortcomings of HTML and lightweight markup languages like CommonMark by introducing a standardized representation that can be processed in an unambiguous manner.
+Markdom tries to overcome the mentioned shortcomings of HTML and lightweight markup languages like CommonMark by introducing an  standardized architecture for rich text that is unambiguous, easy to process and extensively usable.
 
 ![](resource/markdom-overview.png)
 
@@ -100,7 +100,9 @@ When a visitor uses a smartphone app to view the content:
   
 Other use cases might include to interpret other sources of rich text (e.g. an uploaded HTML or DOC file) to create a Markdom document or generate other representations (e.g. a PDF file) of a Markdom document.
   
-The important benefit of Markdom is, that the responsibility to interpret the somewhat cumbersome markup language lies completely by the server. Once the server has interpreted the original input, it is completely unambiguous and easy to process for all participants.
+The important benefit of Markdom is, that the responsibility to interpret the somewhat cumbersome markup language lies solely by the authoritative component (e.g. a server). Once the server has interpreted the original input, it is reduced to instances of a small and finalized set of formatting instructions. These formatting instructions can be stored and transmitted using unambiguous and well established data exchange formats. The set of possible formatting instructions has been chosen with the intent, that the largest possible number of applications can produce a reasonable output.
+
+The last point includes the lack of arbitrarily configurable content like HTML blocks. If the original input includes such content, it is the responsibility of the authoritative component to reject the input or to process the input and reduce it to appropriate formatting instructions.
 
 ## Domain {#domain}
 
@@ -478,9 +480,11 @@ Because this method is a short hand for repeated calls to `addBlock(Block block)
 
 A [`CodeBlock`](#api-dom-codeblock) objects is a [`Block`](#api-dom-block) object that represents a [*Markdom code block*](#domain-codeblock).
 
+The initial value of the `code` parameter should be the empty string. The initial value of the `hint` parameter should be not present.
+
 ###### Constructors {#api-dom-codeblock-constructor}
 
-An implementation of `CodeBlock` should have a constructor with signature `CodeBlock()` that set the code of the [`CodeBlock`](#api-dom-codeblock) object to the empty string ant the hint of the `Code` object to be not present.
+An implementation of `CodeBlock` should have a constructor with signature `CodeBlock()`.
 
 For convenience, an implementation of `CodeBlock` should have a constructor with signature `CodeBlock(String code)` that delegates to `setCode(String code)`.
 
@@ -516,9 +520,11 @@ This method must set the `hint` parameter of the represented [*Markdom code bloc
 
 A [`CodeContent`](#api-dom-codecontent) object is a [`Content`](#api-dom-content) object that represents a [*Markdom code content*](#domain-codecontent).
 
+The initial value of the `code` parameter should be the empty string.
+
 ###### Constructors {#api-dom-codecontent-constructors}
 
-An implementation of `CodeContent` should have a constructor with signature `CodeContent()` that set the code of the [`CodeContent`](#api-dom-codecontent) object to the empty string.
+An implementation of `CodeContent` should have a constructor with signature `CodeContent()`.
 
 For convenience, an implementation of `CodeContent` should have a constructor with signature `CodeContent(String code)` that delegates to `setCode(String code)`.
 
@@ -648,9 +654,11 @@ For convenience, an implementation of `Document` should have a constructor with 
 
 An [`EmphasisContent`](#api-dom-emphasiscontent) object is a [`ContentParentContent`](#api-dom-contentparentcontent) object that represents a [*Markdom emphasis content*](#domain-emphasiscontent).  
 
+The initial value of the `level` parameter should be `LEVEL_1`.
+
 ###### Constructors {#api-dom-emphasiscontent-constructor}
 
-An implementation of `EmphasisContent` should have a constructor with signature `EmphasisContent()` that sets the level of the [`EmphasisContent`](#api-dom-emphasiscontent) object to `LEVEL_1`.
+An implementation of `EmphasisContent` should have a constructor with signature `EmphasisContent()`.
 
 For convenience, an implementation of `EmphasisContent` should have a constructor with signature `EmphasisContent(EmphasisLevel level)` that delegates to `setLevel(EmphasisLevel level)`.
 
@@ -674,9 +682,11 @@ This method must fail if `level` is not present.
 
 A [`HeadingBlock`](#api-dom-headingblock) object is a [`ContentParentBlock`](#api-dom-contentparentblock) object that represents a [*Markdom heading blocks*](#domain-headingblock).  
 
+The initial value of the `level` parameter should be `LEVEL_1`.
+
 ###### Constructors {#api-dom-headingblock-constructor}
 
-An implementation of `HeadingBlock` should have a constructor with signature `HeadingBlock()` that sets the level of the [`HeadingBlock`](#api-dom-headingblock) object to `LEVEL_1`.
+An implementation of `HeadingBlock` should have a constructor with signature `HeadingBlock()`.
 
 For convenience, an implementation of `HeadingBlock` should have a constructor with signature `HeadingBlock(HeadingLevel level)` that delegates to `setLevel(HeadingLevel level)`.
 
@@ -700,9 +710,11 @@ This method must fail if `level` is not present.
 
 An [`ImageContent`](#api-dom-imagecontent) object is a [`Content`](#api-dom-content) object that represents a [*Markdom image content*](#domain-imagecontent).  
 
+The initial value of the `uri` parameter should be the empty string. The initial value of the `title` parameter should be not present. The initial value of the `alternative` parameter should be not present.
+
 ###### Constructors {#api-dom-imagecontent-constructor}
 
-An implementation of `LinkContent` should have a constructor with signature `LinkContent()` that sets the uri of the [`ImageContent`](#api-dom-imagecontent) object to the empty string and the title of the [`ImageContent`](#api-dom-imagecontent) object to be not present and the alternative text of the [`ImageContent`](#api-dom-imagecontent) object to be not present.
+An implementation of `LinkContent` should have a constructor with signature `LinkContent()`.
 
 For convenience, an implementation of `ImageContent` should have a constructor with signature `ImageContent(String uri)` that delegates to `setUri(String uri)`.
 
@@ -752,9 +764,11 @@ This method must set the `alternative` parameter of the represented [*Markdom im
 
 A [`LineBreakContent`](#api-dom-linebreakcontent) object is a [`Content`](#api-dom-content) object that represents a [*Markdom line break content*](#domain-linebreakcontent).
 
+The initial value of the `hard` parameter should be `false`.
+
 ###### Constructors {#api-dom-linebreakcontent-constructor}
 
-An implementation of `LineBreakContent` should have a constructor with signature `LineBreakContent()` that sets the [`LineBreakContent`](#api-dom-linebreakcontent) object to represent a soft line break.
+An implementation of `LineBreakContent` should have a constructor with signature `LineBreakContent()`.
 
 For convenience, an implementation of `LineBreakContent` should have a constructor with signature `LinkContent(Boolean hard)` that delegates to `setHard(Boolean hard)`.
 
@@ -776,9 +790,11 @@ This method must fail if `hard` is not present.
 
 A [`LinkContent`](#api-dom-linkcontent) object is a [`ContentParentContent`](#api-dom-contentparentcontent) object that represents a [*Markdom link content*](#domain-linkcontent).
 
+The initial value of the `uri` parameter should be the empty string.
+
 ###### Constructors {#api-dom-linkcontent-constructor}
 
-An implementation of `LinkContent` should have a constructor with signature `LinkContent()` that sets the uri of the [`LinkContent`](#api-dom-linkcontent) object to the empty string.
+An implementation of `LinkContent` should have a constructor with signature `LinkContent()`.
 
 For convenience, an implementation of `LinkContent` should have a constructor with signature `LinkContent(String uri)` that delegates to `setUri(String uri)`.
 
@@ -958,9 +974,11 @@ Specifically, this method must return `true`
 
 An [`OrderedListBlock`](#api-dom-orderedlistblock) object is a [`ListBlock`](#api-dom-listblock) object that represents an [*ordered Markdom list block*](#domain-orderedlistblock).
 
+The initial value of the `startIndex` parameter should be `1`.
+
 ###### Constructors {#api-dom-orderedlistblock-constructor}
 
-An implementation of `OrderedListBlock` should have a constructor with signature `OrderedListBlock()` that sets the start index of the [`OrderedListBlock`](#api-dom-orderedlistblock) object to `1`.
+An implementation of `OrderedListBlock` should have a constructor with signature `OrderedListBlock()`.
 
 For convenience, an implementation of `OrderedListBlock` should have a constructor with signature `OrderedListBlock(Integer startIndex)` that delegates to `setStartIndex(Integer startIndex)`.
 
@@ -1005,9 +1023,11 @@ For convenience, an implementation of `QuoteBlock` should have a constructor wit
 
 A [`TextContent`](#api-dom-textcontent) object is [`ContentParentContent`](#api-dom-contentparentcontent) object that represents a [*Markdom text content*](#domain-textcontent).
 
+The initial value of the `text` parameter should be the empty string.
+
 ###### Constructors {#api-dom-textcontent-constructor}
 
-An implementation of `TextContent` should have a constructor with signature `TextContent()` that sets the text of the [`TextContent`](#api-dom-textcontent) object to the empty string.
+An implementation of `TextContent` should have a constructor with signature `TextContent()`.
    
 For convenience, an implementation of `TextContent` should have a constructor with signature `TextContent(String text)` that delegates to `setText(String text)`.
 
@@ -1824,7 +1844,95 @@ The following XML document represents the [example document](#example):
 
 #### Example Document {#text-html-example}
 
-The following HTML document represents the [example document](#example):
+The following HTML 5 document represents the [example document](#example):
+
+```
+<!doctype html>
+<html>
+  <head>
+    <title>Example</title>
+  </head>
+  <body>
+    <h1>Markdom</h1>
+    <ol start="1">
+      <li>
+        <p>
+          <a href="#Bar">Foo</a>
+        </p>
+      </li>
+      <li>
+        <p>Lorem ipsum<br>
+          <code>dolor sit amet</code>
+        </p>
+      </li>
+      <li>
+        <blockquote>
+          <p>
+            <em>Baz</em>
+          </p>
+        </blockquote>
+      </li>
+    </ol>
+    <pre><code>goto 11</code></pre>
+  </body>
+</html>
+```
+
+The following XHTML 5 document represents the [example document](#example):
+
+```
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>Example</title>
+  </head>
+  <body>
+    <h1>Markdom</h1>
+    <ol start="1">
+      <li>
+        <p>
+          <a href="#Bar">Foo</a>
+        </p>
+      </li>
+      <li>
+        <p>Lorem ipsum<br/>
+          <code>dolor sit amet</code>
+        </p>
+      </li>
+      <li>
+        <blockquote>
+          <p>
+            <em>Baz</em>
+          </p>
+        </blockquote>
+      </li>
+    </ol>
+    <pre><code>goto 11</code></pre>
+  </body>
+</html>
+
+
+```
 
 
 ### CommonMark {#text-cm}
+
+
+#### Example Document {#text-cm-example}
+
+The following CommonMark document represents the [example document](#example):
+
+    # Markdom
+    
+    1. 
+       [Foo](#Bar)
+    2. 
+       Lorem ipsum  
+       `dolor sit amet`
+    3. 
+       > *Baz*
+    
+    ```
+    goto 11
+    ```
