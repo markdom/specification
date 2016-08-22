@@ -1085,7 +1085,7 @@ Every `BlockParent`, `ListBlock` or `ContentParent` object has a reference to it
 
 The following image shows the possible methods to navigate from an `Node` object upwards from the leaf `TextContent` object with `text` value `Baz` of the [example document](#example).
 
-![](resource/markdom-navigation-up)
+![](resource/markdom-navigation-up.png)
 
 Every `Node` object in a Domain Model API object graph that is not a `Document` object has a reference to its [parent](#api-dom-node-getparent), which is
 
@@ -1103,7 +1103,7 @@ Each `Node` object in a Domain Model API object graph can, through its predecess
 
 The following image shows the possible methods to navigate from an `Node` object downwards to the leaf `TextContent` object with `text` value `Baz` of the [eample document](#example).
 
-![](resource/markdom-navigation-down)
+![](resource/markdom-navigation-down.png)
 
 Every `Node` object in a Domain Model API object graph that is parent object has a reference to its companion `Sequence` object which has references to the [children](#api-dom-node-getchildren) of the `Node` object.
 
@@ -1119,7 +1119,7 @@ If the designated parent object is not part of a *Markdom document* and therefor
 
 For example: Assuming a `QuoteBlock` object is about to be attached to a `BlockParent` object. That `BlockParent` object might be aanother `QuoteBlock` object which is attached to a `ListItem` object which is attached to an `UnorderedListBlock` object which is attached to a `QuoteBlock` object which isn't attached to a `BlockParent` object.  The last `QuoteBlock` in the chain of parents might be the same `QuoteBlock` object that is about to be attached. Attaching the `QuoteBlock` object to its designated parent would therefore create a cycle. The folloing image illustrates this example.
 
-![](resource/markdom-cycles-down)
+![](resource/markdom-cycles-down.png)
 
 
 ### Handler API {#api-handler}
