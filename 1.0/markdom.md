@@ -100,9 +100,9 @@ When a visitor uses a smartphone app to view the content:
   
 Other use cases might include to interpret other sources of rich text (e.g. an uploaded HTML or DOC file) to create a Markdom document or generate other representations (e.g. a PDF file) of a Markdom document.
   
-The important benefit of Markdom is, that the responsibility to interpret the somewhat cumbersome markup language lies solely by the authoritative component (e.g. a server). Once the server has interpreted the original input, it is reduced to instances of a small and finalized set of formatting instructions. These formatting instructions can be stored and transmitted using unambiguous and well established data exchange formats. The set of possible formatting instructions has been chosen with the intent, that the largest possible number of applications can produce a reasonable output.
+The important benefit of Markdom is, that the responsibility to interpret the somewhat cumbersome markup language lies solely by a authoritative component (e.g. a server). Once such a component has interpreted the original input, it is reduced to instances of a small and finalized set of formatting instructions. These formatting instructions can be stored and transmitted using unambiguous and well established data exchange formats. The set of possible formatting instructions has been chosen with the intent, that the largest possible number of applications can produce a reasonable output.
 
-The last point includes the lack of arbitrarily configurable content like HTML blocks. If the original input includes such content, it is the responsibility of the authoritative component to reject the input or to process the input and reduce it to appropriate formatting instructions.
+The last point includes the lack of arbitrarily configurable content like HTML. If the original input includes such content, it is the responsibility of the authoritative component to reject the input or to process the input and reduce it to appropriate formatting instructions.
 
 ## Domain {#domain}
 
