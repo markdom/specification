@@ -1119,10 +1119,9 @@ If the designated parent object is not part of a *Markdom document* (and therefo
 
 This can be accomplished by repeatedly retrieving the parent of the designated parent until a `Node` object that doesn't have a parent is found and check whether the last `Node` object in the chain of parent is the object that is about to be added.
 
-For example: Assuming a `QuoteBlock` object is about to be attached to a `BlockParent` object. That `BlockParent` object might be aanother `QuoteBlock` object which is attached to a `ListItem` object which is attached to an `UnorderedListBlock` object which is attached to a `QuoteBlock` object which isn't attached to a `BlockParent` object.  The last `QuoteBlock` in the chain of parents might be the same `QuoteBlock` object that is about to be attached. Attaching the `QuoteBlock` object to its designated parent would therefore create a cycle. The folloing image illustrates this example.
+For example: Assuming a `QuoteBlock` object is about to be attached to a `BlockParent` object. That `BlockParent` object might be aanother `QuoteBlock` object which is attached to a `ListItem` object which is attached to an `UnorderedListBlock` object which is attached to a `QuoteBlock` object which isn't attached to a `BlockParent` object.  The last `QuoteBlock` in the chain of parents might be the same `QuoteBlock` object that is about to be attached. Attaching the `QuoteBlock` object to its designated parent would therefore create a cycle. The following image illustrates this example.
 
-![](resource/markdom-cycles-down.png)
-
+![](resource/markdom-cycles.png)
 
 ### Handler API {#api-handler}
 
