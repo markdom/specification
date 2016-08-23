@@ -1166,7 +1166,7 @@ For example: Consider a method that gets the root `Node` as a parameter without 
 
 ##### Detecting cycles {#api-dom-detecting-cycles}
 
-If a `Block`, `ListItem` or [`Content`][] object is about to be attached to a `BlockParent`, `ListBlock` or [`ContentParent`][] object, it is necessary to check, whether this would create a cycle.
+If a [`Block`][], [`ListItem`][] or [`Content`][] object is about to be attached to a [`BlockParent`][], [`ListBlock`][] or [`ContentParent`][] object respectively, it is necessary to check, whether this would create a cycle.
 
 If the designated parent object is part of a [*Markdom document*][] (i.e. a tree of [`Node`][] objects which has a root [`Document`][] object), it is not possible to create a cycle, because repeatedly retrieving the [parent](#api-dom-node-getparent) will eventually yield the root [`Document`][] object which by definition doesn't [have](#api-dom-node-hasparent) a parent object and thus ending the path after a finite number of repetitions.
 
@@ -1174,7 +1174,7 @@ If the designated parent object is not part of a [*Markdom document*][] (and the
 
 This can be accomplished by repeatedly retrieving the parent of the designated parent until a [`Node`][] object that doesn't have a parent is found and check whether the last [`Node`][] object in the chain of parent is the object that is about to be added.
 
-For example: Assuming a [`QuoteBlock`][] object is about to be attached to a [`BlockParent`][] object. That [`BlockParent`][] object might be another [`QuoteBlock`][] object which is attached to a [`ListItem`][] object which is attached to an [`UnorderedListBlock`][] object which is attached to a [`QuoteBlock`][] object which isn't attached to a [`BlockParent`][] object.  The last `QuoteBlock` in the chain of parents might be the same [`QuoteBlock`][] object that is about to be attached. Attaching the [`QuoteBlock`][] object to its designated parent would therefore create a cycle. The following image illustrates this example.
+For example: Assuming a [`QuoteBlock`][] object is about to be attached to a [`BlockParent`][] object. That [`BlockParent`][] object might be another [`QuoteBlock`][] object which is attached to a [`ListItem`][] object which is attached to an [`UnorderedListBlock`][] object which is attached to a [`QuoteBlock`][] object which isn't attached to a [`BlockParent`][] object.  The last [`QuoteBlock`][] object in the chain of parents might be the same [`QuoteBlock`][] object that is about to be attached. Attaching the [`QuoteBlock`][] object to its designated parent would therefore create a cycle. The following image illustrates this example.
 
 ![](resource/markdom-cycles.png)
 
@@ -1976,7 +1976,7 @@ The following XHTML 5 document represents the [example document](#example):
 
 ```
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <title>Example</title>
