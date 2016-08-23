@@ -4,7 +4,7 @@
 
 # Markdom
 
-Markdom is lightweight specification for a rich text domain model.
+Markdom is lightweight specification for simple rich text. Markdom is not a markup language, it is a set of definitions that allow to transport and process content in a standardized way.
 
 The two main intents of Markdom are to define the lowest common denominator for rich text and to be platform and representation independent. These properties enable Markdom to be used in a wide variety of applications, such as websites, electronic publishing or native rendering on mobile platforms.
 
@@ -16,8 +16,8 @@ This specification covers multiple aspects related to Markdom documents:
 
 * The [domain section](#domain) covers the general structure and the supported formatting instructions for Markdom documents.
 * The [API section](#api) covers programming interfaces to programmatically create, modify and process Markdom documents.
-* The [Data representation section](#data) covers the representation of Markdom documents in common data exchange formats. 
-* The [Text representation section](#text) covers the representation of Markdom documents in common markup languages. 
+* The [data section](#data) covers the representation of Markdom documents in common data exchange formats. 
+* The [markup section](#markup) covers the representation of Markdom documents in common markup languages. 
 
 ## Why Markdom?
 
@@ -100,9 +100,9 @@ When a visitor uses a smartphone app to view the content:
   
 Other use cases might include to interpret other sources of rich text (e.g. an uploaded HTML or DOC file) to create a Markdom document or generate other representations (e.g. a PDF file) of a Markdom document.
   
-The important benefit of Markdom is, that the responsibility to interpret the somewhat cumbersome markup language lies solely by a authoritative component (e.g. a server). Once such a component has interpreted the original input, it is reduced to instances of a small and finalized set of formatting instructions. These formatting instructions can be stored and transmitted using unambiguous and well established data exchange formats. The set of possible formatting instructions has been chosen with the intent, that the largest possible number of applications can produce a reasonable output.
+The important benefit of Markdom is, that the responsibility to interpret the somewhat cumbersome markup language lies solely by a authoritative component (e.g. a server). Once such a component has interpreted the original input, it is reduced to instances of a small and finalized set of formatting instructions. These formatting instructions can be stored and transmitted using unambiguous and well established data exchange formats. 
 
-The last point includes the lack of arbitrarily configurable content like HTML. If the original input includes such content, it is the responsibility of the authoritative component to reject the input or to process the input and reduce it to appropriate formatting instructions.
+The set of possible formatting instructions has been chosen with the intent, that the largest possible number of applications can produce a reasonable output. This includes the lack of arbitrarily configurable content like HTML. If the original input includes such content, it is the responsibility of the authoritative component to reject the input or to process the input and reduce it to appropriate formatting instructions.
 
 ## Domain {#domain}
 
@@ -295,21 +295,13 @@ This CommonMark text describes a rich text document that serves as an example do
     goto 11
     ```
 
-
 The rich text document consists of a heading, an ordered list with three list items and some plain text. The first list item of the ordered list contains a link. the second list item of the unordered list contains emphasized text, a hard line break and some plain text. The third list item of the ordered list contains a quoted text.
 
 The following image shows a tree of *Markdom nodes*, i.e. a Markdom document, that describes the same rich text document:
 
 ![](resource/markdom-example.png)
 
-The same Markdom document can be represented as 
-
-* an [object graph](#api-dom-example), 
-* a [sequence of events](#api-handler-example), 
-* a [JSON document](#data-json-example), 
-* a [YAML document](#data-yaml-example), 
-* a [XML document](#data-xml-example) or
-* a [HTML document](#text-html-example).
+The same Markdom document can be, for instance, represented as an [object graph](#api-dom-example) or a [succession of events](#api-handler-example), using a data exchange format like [JSON](#data-json-example) or [XML](#data-xml-example) or using a markup language like [HTML document](#markup-html-example).
 
 ## APIs {#api}
 
@@ -319,9 +311,9 @@ This specification describes two distinct APIs:
 
    The Domain Model API allows to create a representation of a [*Markdom document*](#domain-document) in the memory, which can then be examined, modified and further processed.
    
-* The [Handler API](#api-dom) contains a [`Handler`](#api-handler-handler) interface that describes how a Markdom document is represented as a sequence of events.
+* The [Handler API](#api-dom) contains a [`Handler`](#api-handler-handler) interface that describes how a Markdom document is represented as a succession of events.
 
-  The Handler API allows to process a [*Markdom document*](#domain-document) on the fly without the necessity to create an object graph. Events that describe a [*Markdom document*](#domain-document) might be dispatched by an object graph from the Domain Model API or by a specific event dispatcher implementation that process a [data representation](#data) or [text representation](#text) of a [*Markdom document*](#domain-document).
+  The Handler API allows to process a [*Markdom document*](#domain-document) on the fly without the necessity to create an object graph. Events that describe a [*Markdom document*](#domain-document) might be dispatched by an object graph from the [Domain Model API](#api-dom) or by a specific event dispatcher implementation that process a [data representation](#data) or a [markup representation](#markup) of a [*Markdom document*](#domain-document).
    
 This specifications primarily covers the interfaces and enumerations for both APIs. A concrete implementation of this specification for a given programming language should consist of corresponding interface definitions as well as an concrete implementation of the Domain Model API interfaces and some commonly useful concrete implementations of the Handler API. 
 
@@ -1146,7 +1138,7 @@ For example: Assuming a `QuoteBlock` object is about to be attached to a `BlockP
 
 ### Handler API {#api-handler}
 
-The Handler API represents a [*Markdom document*](#domain-document) as a sequence of events.
+The Handler API represents a [*Markdom document*](#domain-document) as a succession of events.
 
 #### Events {#api-handler-event}
 
@@ -1553,7 +1545,7 @@ Calling this method must be must be followed by a call to `onBlockEnd`.
 
 #### Example Document {#api-handler-example}
 
-The following sequence of events describes the [example document](#example):
+The following succession of events describes the [example document](#example):
 
 ```
 onDocumentBegin()
@@ -1838,11 +1830,31 @@ The following XML document represents the [example document](#example):
 </Document>
 ```
 
-## Text representations {#text}
+## Markdup representations {#markup}
 
-### HTML {#text-html}
+### CommonMark {#markup-cm}
 
-#### Example Document {#text-html-example}
+#### Example Document {#markup-cm-example}
+
+The following CommonMark document represents the [example document](#example):
+
+    # Markdom
+    
+    1. 
+       [Foo](#Bar)
+    2. 
+       Lorem ipsum  
+       `dolor sit amet`
+    3. 
+       > *Baz*
+    
+    ```
+    goto 11
+    ```
+
+### HTML {#markup-html}
+
+#### Example Document {#markup-html-example}
 
 The following HTML 5 document represents the [example document](#example):
 
@@ -1916,23 +1928,3 @@ The following XHTML 5 document represents the [example document](#example):
 ```
 
 
-### CommonMark {#text-cm}
-
-
-#### Example Document {#text-cm-example}
-
-The following CommonMark document represents the [example document](#example):
-
-    # Markdom
-    
-    1. 
-       [Foo](#Bar)
-    2. 
-       Lorem ipsum  
-       `dolor sit amet`
-    3. 
-       > *Baz*
-    
-    ```
-    goto 11
-    ```
