@@ -106,7 +106,7 @@ The set of possible formatting instructions has been chosen with the intent, tha
 
 ## Domain {#domain}
 
-A Markdom document represents the entirety of a rich text document, including the actual rich text and the formatting instructions. A Markdom document contains of a sequence of Markdom block.
+A Markdom document represents the entirety of a rich text document, including the actual rich text and the formatting instructions. A Markdom document contains of a sequence of Markdom blocks.
 
 A Markdom block represents a portion of a rich text document that serves a specific purpose. Each type of Markdom block has the necessary properties that describe it's content. Some Markdom blocks, e.g. a Markdom block representing a block quote, contain further Markdom blocks. Other Markdom blocks, e.g. a Markdom block representing a paragraph, contain Markdom content.
 
@@ -116,40 +116,40 @@ Put another way, a Markdom document is represented as a tree of Markdom nodes. S
 
 ### Nodes {#domain-node}
 
-A *Markdom node* is either a
+A [*Markdom node*][] is either a
 
-* *Markdom document*, or a
-* *Markdom block*, or a
-* *Markdom list item*, or a
-* *Markdom content*.
+* [*Markdom document*][], or a
+* [*Markdom block*][], or a
+* [*Markdom list item*][], or a
+* [*Markdom content*][].
 
 #### Document {#domain-document}
 
-A *Markdom document* is a *Markdom node* that represents the entirety of a rich text document. A *Markdom document* is the root node of a tree of *Markdom nodes*.
+A [*Markdom document*][] is a [*Markdom node*][] that represents the entirety of a rich text document. A [*Markdom document*][] is the root node of a tree of [*Markdom nodes*][].
 
-A *Markdom document* contains a sequence of *Markdom blocks* named `blocks`.
+A [*Markdom document*][] contains a sequence of [*Markdom blocks*][] named `blocks`.
 
 The `blocks` sequence shouldn't be empty.
 
 #### Block {#domain-block}
 
-A *Markdom block* is a *Markdom node* that represents a portion of a rich text document.
+A [*Markdom block*][] is a [*Markdom node*][] that represents a portion of a rich text document.
 
-A *Markdom block* is either a
+A [*Markdom block*][] is either a
 
-* *Markdom code block*, or a
-* *Markdom division block*, or a
-* *Markdom heading block*, or an
-* *ordered Markdom list block*, or a
-* *Markdom paragraph block*, or a
-* *Markdom quote block*, or an
-* *ordered Markdom list block*.
+* [*Markdom code block*][], or a
+* [*Markdom division block*][], or a
+* [*Markdom heading block*][], or an
+* [*ordered Markdom list block*][], or a
+* [*Markdom paragraph block*][], or a
+* [*Markdom quote block*][], or an
+* [*ordered Markdom list block*][].
 
 ##### Code Block {#domain-codeblock}
 
-A *Markdom code block* is a *Markdom block* that represents a portion of plain text (e.g. source code) that may be augmented with meaningful syntax highlighting. Implementations that generate output that is displayed to humans should display the text as preformatted text in a monospaced font.
+A [*Markdom code block*][] is a [*Markdom block*][] that represents a portion of plain text (e.g. source code) that may be augmented with meaningful syntax highlighting. Implementations that generate output that is displayed to humans should display the text as preformatted text in a monospaced font.
 
-A *Markdom code block* has a mandatory string parameter named `code` and an optional string parameter named `hint`. 
+A [*Markdom code block*][] has a mandatory string parameter named `code` and an optional string parameter named `hint`. 
 
 Values of the `code` parameter should not contain any [control](http://www.fileformat.info/info/unicode/category/Cc/list.htm) characters other then `LINE_FEED` (`\n`) or `CHARACTER_TABULATION` (`\t`). Values of the `code` parameter shouldn't be empty.
 
@@ -157,13 +157,13 @@ Values of the `hint` parameter, if present, should be the common name of a progr
 
 ##### Division Block {#domain-divisionblock}
 
-A *Markdom division block* is a *Markdom block* that represents a division or thematic break. Implementations that generate output that is displayed to humans should display a horizontal rule.
+A [*Markdom division block*][] is a [*Markdom block*][] that represents a division or thematic break. Implementations that generate output that is displayed to humans should display a horizontal rule.
 
 ##### Heading Block {#domain-headingblock}
 
-A *Markdom heading block* is a *Markdom block* that represents a headline. Implementations that generate output that is displayed to humans should display the headline text as an appropriately emphasized and separated paragraph.
+A [*Markdom heading block*][] is a [*Markdom block*][] that represents a headline. Implementations that generate output that is displayed to humans should display the headline text as an appropriately emphasized and separated paragraph.
 
-A *Markdom heading block* has a mandatory integer parameter named `level` and a sequence of *Markdom contents* named `contents`.
+A [*Markdom heading block*][] has a mandatory integer parameter named `level` and a sequence of [*Markdom contents*][] named `contents`.
 
 Valid values of the `level` parameter are 1 to 6, where a lower value indicates a higher precedence of the headline.
 
@@ -171,9 +171,9 @@ The `contents` sequence shouldn't be empty.
 
 ##### Ordered List Block {#domain-orderedlistblock}
 
-An *ordered Markdom list block* is a *Markdom block* that represents an ordered list (enumeration) of list items. Each list item contains further portions of the Markdom document. Implementations that generate output that is displayed to humans should indent all list items and display the index of each list item in front of it.
+An [*ordered Markdom list block*][] is a [*Markdom block*][] that represents an ordered list (enumeration) of list items. Each list item contains further portions of the [*Markdom document*][]. Implementations that generate output that is displayed to humans should indent all list items and display the index of each list item in front of it.
 
-An *ordered Markdom list block* has a mandatory integer parameter `startIndex` and a sequence of *Markdom list items* named `items`.
+An [*ordered Markdom list block*][] has a mandatory integer parameter `startIndex` and a sequence of [*Markdom list items*][] named `items`.
 
 Valid values of the `startIndex` parameter are non-negative integers. The value of the `startIndex` parameter is the index of the first item in the `items` sequence. Following items in the `items` sequence have successive indices.
 
@@ -181,64 +181,62 @@ The `items` sequence shouldn't be empty.
 
 ##### Paragraph Block {#domain-paragraphblock}
 
-A *Markdom paragraph block* is a *markdom block* that represents a paragraph. Implementations that generate output that is displayed to humans should display the paragraph text as an appropriately separated paragraph.
+A [*Markdom paragraph block*][] is a *markdom block* that represents a paragraph. Implementations that generate output that is displayed to humans should display the paragraph text as an appropriately separated paragraph.
 
-A *Markdom paragraph block* has a sequence of *Markdom contents* named `contents`.
+A [*Markdom paragraph block*][] has a sequence of [*Markdom contents*][] named `contents`.
 
 The `contents` sequence shouldn't be empty.
 
 ##### Quote Block {#domain-quoteblock}
 
-A *Markdom quote block* is a *Markdom block* that represents a quote. The quote contains further portions of the Markdom document. Implementations that generate output that is displayed to humans should emphasize (e.g. a vertical line, indentation, slanted font) the quote appropriately.
+A [*Markdom quote block*][] is a [*Markdom block*][] that represents a quote. The quote contains further portions of the [*Markdom document*][]. Implementations that generate output that is displayed to humans should emphasize (e.g. a vertical line, indentation, slanted font) the quote appropriately.
 
-An `QuoteBlock` has a sequence of *Markdom blocks* named `blocks`.
+An `QuoteBlock` has a sequence of [*Markdom blocks*][] named `blocks`.
 
 The `blocks` sequence shouldn't be empty.
 
 ##### Unordered List Block {#domain-unorderedlistblock}
 
-An *unordered Markdom list block* is a *Markdom block* that represents an unordered list (bullet list) of list items. Each list item contains further portions of the Markdom document. Implementations that generate output that is displayed to humans should indent all list items and display an appropriate symbol (e.g. a bullet) in front of each item.
+An *unordered Markdom list block* is a [*Markdom block*][] that represents an unordered list (bullet list) of list items. Each list item contains further portions of the [*Markdom document*][]. Implementations that generate output that is displayed to humans should indent all list items and display an appropriate symbol (e.g. a bullet) in front of each item.
 
-An `UnorderedListBlock` has a sequence of *Markdom list items* named `items`.
+An `UnorderedListBlock` has a sequence of [*Markdom list items*][] named `items`.
 
 The `items` sequence shouldn't be empty.
 
 #### List Item {#domain-listitem}
 
-A *Markdom list item* represents a list item. The list item contains further portions of the Markdom document. Implementations that generate output that is displayed to humans should display the list item according to the corresponding `OrderedListBlock` or `UnorderedListBlock`.
+A [*Markdom list item*][] represents a list item. The list item contains further portions of the [*Markdom document*][]. Implementations that generate output that is displayed to humans should display the list item according to the corresponding `OrderedListBlock` or `UnorderedListBlock`.
 
-A `ListItem` has a sequence of *Markdom blocks* named `blocks`.
+A `ListItem` has a sequence of [*Markdom blocks*][] named `blocks`.
 
 The `blocks` sequence shouldn't be empty.
 
 #### Content {#domain-content}
 
-A *Markdom content* represents a portion of a Markdom paragraph or a Markdom heading.
+A [*Markdom content*][] represents a portion of rich text that makes up a [*Markdom paragraph block*][] or a [*Markdom heading block*][].
 
-A *Markdom content* is either a
+A [*Markdom content*][] is either a
 
-* *Markdom code content*, or an
-* *Markdom emphasis content*, or an
-* *Markdom image content*, or an
-* *Markdom line break content*, or a
-* *Markdom link content*, or a
-* *Markdom text content*.
-
-*The following sections describe the *Markdom contents* of a Markdom paragraph.*
+* [*Markdom code content*][], or an
+* [*Markdom emphasis content*][], or an
+* [*Markdom image content*][], or an
+* [*Markdom line break content*][], or a
+* [*Markdom link content*][], or a
+* [*Markdom text content*][].
 
 ##### Code Content {#domain-codecontent}
 
-A *Markdom code content* is a *Markdom content* that represents a portion of plain text (e.g. source code). Implementations that generate output that is displayed to humans should display the text as preformatted text in a monospaced font.
+A [*Markdom code content*][] is a [*Markdom content*][] that represents a portion of plain text (e.g. source code). Implementations that generate output that is displayed to humans should display the text as preformatted text in a monospaced font.
 
-A *Markdom code content* has a mandatory string parameter named `code`. 
+A [*Markdom code content*][] has a mandatory string parameter named `code`. 
 
 Values of the `code` parameter should not contain any [control](http://www.fileformat.info/info/unicode/category/Cc/list.htm) characters. Values of the `code` parameter shouldn't be empty.
 
 ##### Emphasis Content {#domain-emphasiscontent}
 
-An *Markdom emphasis content* is a *Markdom content* that represents emphasized text. Implementations that generate output that is displayed to humans should display text appropriately emphasized (e.g. italic or bold).
+An [*Markdom emphasis content*][] is a [*Markdom content*][] that represents emphasized text. Implementations that generate output that is displayed to humans should display text appropriately emphasized (e.g. italic or bold).
 
-A *Markdom emphasis content* has a mandatory integer parameter named `level` and a sequence of *Markdom contents* named `contents`.
+A [*Markdom emphasis content*][] has a mandatory integer parameter named `level` and a sequence of [*Markdom contents*][] named `contents`.
 
 Valid values of the `level` parameter are 1 to 2, where a higher value indicates a higher importance of the emphasized text.
 
@@ -246,11 +244,11 @@ The `contents` sequence shouldn't be empty.
 
 ##### Image Content {#domain-imagecontent}
 
-An *Markdom image content* is a *Markdom content* that represents an image, including a title text and an alternative text. Implementations that generate output that is displayed to humans should display the linked image with the title text or, if the linked image couldn't be resolved, the alternative text as if the *Markdom image content* was a *Markdom text content*.
+An [*Markdom image content*][] is a [*Markdom content*][] that represents an image, including a title text and an alternative text. Implementations that generate output that is displayed to humans should display the linked image with the title text or, if the linked image couldn't be resolved, the alternative text as if the [*Markdom image content*][] was a [*Markdom text content*][].
 
-A *Markdom link content* has a mandatory integer parameter named `uri` and an optional string parameter named `title` and an optional string parameter named `alternative`.  
+A [*Markdom link content*][] has a mandatory integer parameter named `uri` and an optional string parameter named `title` and an optional string parameter named `alternative`.  
 
-Valid values of the `uri` parameter are valid [URI references](https://tools.ietf.org/html/rfc3986#section-4.1). Values of the `uri` parameter should link to an image resource (e.g. a JPEG or PNG file). Actual applications that process Markdom documents may impose further constraints.
+Valid values of the `uri` parameter are valid [URI references](https://tools.ietf.org/html/rfc3986#section-4.1). Values of the `uri` parameter should link to an image resource (e.g. a JPEG or PNG file). Actual applications that process [*Markdom documents*][] may impose further constraints.
 
 Values of the `title` parameter should not contain any [control](http://www.fileformat.info/info/unicode/category/Cc/list.htm) characters.
 
@@ -258,25 +256,25 @@ Values of the `alternative` parameter should not contain any [control](http://ww
 
 ##### Line Break Content {#domain-linebreakcontent}
 
-A *Markdom line break content* is a *Markdom content* that represents a link. A line break is either a *hard line break* or a *soft line break*. Implementations that generate output that is displayed to humans should display only hard line breaks. Implementations that generate output that is processed as source code, e.g. as Markdown text, should also display soft line breaks in a way that doesn't introduce line breaks during further processing of the generated source code.
+A [*Markdom line break content*][] is a [*Markdom content*][] that represents a link. A line break is either a *hard line break* or a *soft line break*. Implementations that generate output that is displayed to humans should display only hard line breaks. Implementations that generate output that is processed as source code, e.g. as Markdown text, should also display soft line breaks in a way that doesn't introduce line breaks during further processing of the generated source code.
 
-A *Markdom line break content* has a mandatory boolean parameter named `hard`.
+A [*Markdom line break content*][] has a mandatory boolean parameter named `hard`.
 
 ##### Link Content {#domain-linkcontent}
 
-A *Markdom link content* is a *Markdom content* that represents text with a link. Implementations that generate output that is displayed to humans should display text appropriately emphasized (e.g. underlined or in a different color).
+A [*Markdom link content*][] is a [*Markdom content*][] that represents text with a link. Implementations that generate output that is displayed to humans should display text appropriately emphasized (e.g. underlined or in a different color).
 
-A *Markdom link content* has a mandatory integer parameter named `uri` and a sequence of *Markdom contents* named `contents`.
+A [*Markdom link content*][] has a mandatory integer parameter named `uri` and a sequence of [*Markdom contents*][] named `contents`.
 
-Valid values of the `uri` parameter are valid [URI references](https://tools.ietf.org/html/rfc3986#section-4.1). Actual applications that process Markdom documents may impose further constraints.
+Valid values of the `uri` parameter are valid [URI references](https://tools.ietf.org/html/rfc3986#section-4.1). Actual applications that process [*Markdom documents*][] may impose further constraints.
 
-The `contents` sequence shouldn't be empty. A *Markdom content* in the `contents` sequence must not contain another *Markdom link content* or, recursively, contain a *Markdom content* that contains a *Markdom link content*.
+The `contents` sequence shouldn't be empty. A [*Markdom content*][] in the `contents` sequence must not contain another [*Markdom link content*][] or, recursively, contain a [*Markdom content*][] that contains a [*Markdom link content*][].
 
 ##### Text Content {#domain-textcontent}
 
-A *Markdom text content* is a *Markdom content* that represents a portion of text. Implementations that generate output that is displayed to humans should display the text as text in an appropriate font.
+A [*Markdom text content*][] is a [*Markdom content*][] that represents a portion of text. Implementations that generate output that is displayed to humans should display the text as text in an appropriate font.
 
-A *Markdom text content* has a mandatory string parameter named `text`. 
+A [*Markdom text content*][] has a mandatory string parameter named `text`. 
 
 Values of the `text` parameter should not contain any [control](http://www.fileformat.info/info/unicode/category/Cc/list.htm) characters. Values of the `text` parameter shouldn't be empty.
 
@@ -297,23 +295,23 @@ This CommonMark text describes a rich text document that serves as an example do
 
 The rich text document consists of a heading, an ordered list with three list items and some plain text. The first list item of the ordered list contains a link. the second list item of the unordered list contains emphasized text, a hard line break and some plain text. The third list item of the ordered list contains a quoted text.
 
-The following image shows a tree of *Markdom nodes*, i.e. a Markdom document, that describes the same rich text document:
+The following image shows a tree of [*Markdom nodes*][], i.e. a [*Markdom document*][], that describes the same rich text document:
 
 ![](resource/markdom-example.png)
 
-The same Markdom document can be, for instance, represented as an [object graph](#api-dom-example) or a [succession of events](#api-handler-example), using a data exchange format like [JSON](#data-json-example) or [XML](#data-xml-example) or using a markup language like [HTML document](#markup-html-example).
+The same [*Markdom document*][] can be, for instance, represented as an [object graph](#api-dom-example) or a [succession of events](#api-handler-example), using a data exchange format like [JSON](#data-json-example) or [XML](#data-xml-example) or using a markup language like [HTML document](#markup-html-example).
 
 ## APIs {#api}
 
 This specification describes two distinct APIs:
 
-* The [Domain Model API](#api-dom) contains a set of interfaces that describe how a [*Markdom document*](#domain-document) is represented as an object graph and methods to compose and consume such an object graph.
+* The [Domain Model API](#api-dom) contains a set of interfaces that describe how a [*Markdom document*][] is represented as an object graph and methods to compose and consume such an object graph.
 
-   The Domain Model API allows to create a representation of a [*Markdom document*](#domain-document) in the memory, which can then be examined, modified and further processed.
+   The Domain Model API allows to create a representation of a [*Markdom document*][] in the memory, which can then be examined, modified and further processed.
    
-* The [Handler API](#api-dom) contains a [`Handler`](#api-handler-handler) interface that describes how a Markdom document is represented as a succession of events.
+* The [Handler API](#api-dom) contains a `Handler` interface that describes how a [*Markdom document*][] is represented as a succession of events.
 
-  The Handler API allows to process a [*Markdom document*](#domain-document) on the fly without the necessity to create an object graph. Events that describe a [*Markdom document*](#domain-document) might be dispatched by an object graph from the [Domain Model API](#api-dom) or by a specific event dispatcher implementation that process a [data representation](#data) or a [markup representation](#markup) of a [*Markdom document*](#domain-document).
+  The Handler API allows to process a [*Markdom document*][] on the fly without the necessity to create an object graph. Events that describe a [*Markdom document*][] might be dispatched by an object graph from the [Domain Model API](#api-dom) or by a specific event dispatcher implementation that process a [data representation](#data) or a [markup representation](#markup) of a [*Markdom document*][].
    
 This specifications primarily covers the interfaces and enumerations for both APIs. A concrete implementation of this specification for a given programming language should consist of corresponding interface definitions as well as an concrete implementation of the Domain Model API interfaces and some commonly useful concrete implementations of the Handler API. 
 
@@ -327,7 +325,7 @@ Depending on the programming language, it might be sensible to divide the interf
 
 ![](resource/markdom-packages.png)
 
-It is commonly recommended to implement an algorithms that processes a [*Markdom document*](#domain-document) as a [`Handler`](#api-handler-handler) rather than a method that directly processes a [Domain Model API](#api-dom) object graph. This allows to use the algorithm implementation in a multitude of scenarios (e.g. converting the [XML representation](#data-xml) of a [*Markdom document*](#domain-document) into a corresponding [HTML representation](#text-html) as a stream without creating an object graph for XML, Markdom or HTML). The Domain Model API should generally only be used if it is necessary to temporarily store a [*Markdom document*](#domain-document) in the memory or to programmatically modify a [*Markdom document*](#domain-document) before it is further processed with a [`Handler`](#api-handler-handler).
+It is commonly recommended to implement an algorithms that processes a [*Markdom document*][] as a `Handler` rather than a method that directly processes a [Domain Model API](#api-dom) object graph. This allows to use the algorithm implementation in a multitude of scenarios (e.g. converting the [XML representation](#data-xml) of a [*Markdom document*][] into a corresponding [HTML representation](#text-html) as a stream without creating an object graph for XML, Markdom or HTML). The Domain Model API should generally only be used if it is necessary to temporarily store a [*Markdom document*][] in the memory or to programmatically modify a [*Markdom document*][] before it is further processed with a `Handler`.
    
 ### Common {#api-common}
 
@@ -353,7 +351,7 @@ Markdom APIs have the following enumerations:
 
 ##### `BlockType` {#api-common-blocktype}
 
-The `BlockType` enum represents the node type of a [*Markdom block*](#domain-block) and has the following constants:
+The [`BlockType`][] enum represents the node type of a [*Markdom block*][] and has the following constants:
 
 * `CODE`,
 * `DIVISION`,
@@ -365,7 +363,7 @@ The `BlockType` enum represents the node type of a [*Markdom block*](#domain-blo
   
 ##### `ContentType` {#api-common-contenttype}  
 
-The `ContentType` enum represents the node type of a [*Markdom content*](#domain-content) and has the following constants:
+The [`ContentType`][] enum represents the node type of a [*Markdom content*][] and has the following constants:
 
 * `CODE`,
 * `EMPHASIS`,
@@ -376,14 +374,14 @@ The `ContentType` enum represents the node type of a [*Markdom content*](#domain
 
 ##### `EmphasisLevel` {#api-common-emphasislevel}
 
-The `EmphasisLevel` enum represents the level of a [*Markdom emphasis content*](#domain-emphasiscontent) object and has the following constants:
+The [`EmphasisLevel`][] enum represents the level of a [*Markdom emphasis content*][] object and has the following constants:
 
 * `LEVEL_1`,
 * `LEVEL_2`.
 
 ##### `HeadingLevel` {#api-common-headinglevel}
 
-The `HeadingLevel` enum represents the level of a [*Markdom heading block*](#domain-headingblock) object and has the following constants:
+The [`HeadingLevel`][] enum represents the level of a [*Markdom heading block*][] object and has the following constants:
 
 * `LEVEL_1`,
 * `LEVEL_2`,
@@ -406,7 +404,7 @@ The following image shows the interfaces that are part of the Domain Model API:
 
 ##### `Block` {#api-dom-block}
 
-A [`Block`](#api-dom-block) object is a [`Node`](#api-dom-node) object that represents a [*Markdom block*](#domain-block).
+A [`Block`][] object is a [`Node`][] object that represents a [*Markdom block*][].
 
 ###### Constructors {#api-dom-block-constructor}
 
@@ -414,22 +412,22 @@ An implementation of `Block` should have a constructor with signature `Block()`.
 
 ###### `getBlockType` {#api-dom-block-getblocktype}
 
-A [`Block`](#api-dom-block) object must have a method with signature `BlockType getBlockType()`.  
+A [`Block`][] object must have a method with signature `BlockType getBlockType()`.  
 
-This method must return the `BlockType` value that corresponds to the type of the represented [*Markdom block*](#domain-block).
+This method must return the [`BlockType`][] value that corresponds to the type of the represented [*Markdom block*][].
 
 ##### `BlockParent` {#api-dom-blockparent}
 
-A [`BlockParent`](#api-dom-blockparent) object is a [`Node`](#api-dom-node) object that represents a [*Markdom node*](#domain-node) that contains [*Markdom blocks*](#domain-block).
+A [`BlockParent`][] object is a [`Node`][] object that represents a [*Markdom node*][] that contains [*Markdom blocks*][].
 
-An implementation of `BlockParent` must have a final and initially empty companion `Sequence` of [`Block`](#api-dom-block) objects that is associated with the [`BlockParent`](#api-dom-blockparent) object.
+An implementation of `BlockParent` must have a final and initially empty companion `Sequence` of [`Block`][] objects that is associated with the [`BlockParent`][] object.
 
-Any structural modification (insert, remove, clear, replace) to the associated `Sequence` of [`Block`](#api-dom-block) objects must reflect the fact, that a [`Block`](#api-dom-block) object that is added to the associated `Sequence` object is attached to the [`BlockParent`](#api-dom-blockparent) object until is is removed from the associated `Sequence` of [`Block`](#api-dom-block) objects.
+Any structural modification (insert, remove, clear, replace) to the associated `Sequence` of [`Block`][] objects must reflect the fact, that a [`Block`][] object that is added to the associated `Sequence` object is attached to the [`BlockParent`][] object until is is removed from the associated `Sequence` of [`Block`][] objects.
 
-Attaching a [`Block`](#api-dom-block) object to the [`BlockParent`](#api-dom-blockparent) object  must fail
-* if the [`Block`](#api-dom-block) object is not present, or  
-* if the [`Block`](#api-dom-block) object is already attached to a [`BlockParent`](#api-dom-blockparent) object, or 
-* if attaching the [`Block`](#api-dom-block) object to the [`BlockParent`](#api-dom-blockparent) object would create a [cycle](#api-dom-detecting-cycles) in the tree of Markdom nodes that the [`BlockParent`](#api-dom-blockparent) object is part of.
+Attaching a [`Block`][] object to the [`BlockParent`][] object  must fail
+* if the [`Block`][] object is not present, or  
+* if the [`Block`][] object is already attached to a [`BlockParent`][] object, or 
+* if attaching the [`Block`][] object to the [`BlockParent`][] object would create a [cycle](#api-dom-detecting-cycles) in the tree of Markdom nodes that the [`BlockParent`][] object is part of.
 
 ###### Constructors {#api-dom-blockparent-constructor}
 
@@ -439,38 +437,39 @@ For convenience, an implementation of `BlockParent` should have a constructor wi
 
 ###### `getBlockParentType` {#api-dom-listblock-getblockparenttype}
 
-A [`BlockParent`](#api-dom-blockparent) object must have a method with signature `BlockParentType getBlockParentType()`.  
+A [`BlockParent`][] object must have a method with signature `BlockParentType getBlockParentType()`.  
 
-This method must return the [`BlockParentType`](#api-dom-blockparenttype) value that corresponds to the type of the [`BlockParent`](#api-dom-blockparent) object.
+This method must return the [`BlockParentType`][] value that corresponds to the type of the [`BlockParent`][] object.
 
 ###### `getBlocks` {#api-dom-blockparent-getblocks}
 
-A [`BlockParent`](#api-dom-blockparent) object must have a method with signature `Sequence getBlocks()`.
+A [`BlockParent`][] object must have a method with signature `Sequence getBlocks()`.
 
-This method must return the associated `Sequence` of [`Block`](#api-dom-block) objects.
+This method must return the associated `Sequence` of [`Block`][] objects.
 
 ###### `addBlock` {#api-dom-blockparent-addblock}
 
-For convenience, a [`BlockParent`](#api-dom-blockparent) object should have a method with signature `addBlock(Block block)`.
+For convenience, a [`BlockParent`][] object should have a method with signature `addBlock(Block block)`.
 
-This method must add `block` at the end of the associated `Sequence` of [`Block`](#api-dom-block) objects. This attaches `block` to the [`BlockParent`](#api-dom-blockparent) object.
+This method must add `block` at the end of the associated `Sequence` of [`Block`][] objects. This attaches `block` to the [`BlockParent`][] object.
 
-This method must fail if add `block` to the  associated `Sequence` of [`Block`](#api-dom-block) objects failed.
+This method must fail if adding `block` to the  associated `Sequence` of [`Block`][] objects failed.
 
 ###### `addBlocks` {#api-dom-blockparent-addblocks}
 
-For convenience, a [`BlockParent`](#api-dom-blockparent) object should have a method with signature `addBlocks(Block... blocks)`.
+For convenience, a [`BlockParent`][] object should have a method with signature `addBlocks(Block... blocks)`.
 
-This method must add all [`Block`](#api-dom-block) objects from `blocks` in the given order at the end of the `Sequence` of [`Block`](#api-dom-block) objects of the [`BlockParent`](#api-dom-blockparent) object, as if `addBlock(Block block)` has been called repeatedly for all [`Block`](#api-dom-block) objects from `blocks`.  This attaches all [`Block`](#api-dom-block) objects from `blocks` to the [`BlockParent`](#api-dom-blockparent) object.
+This method must add all [`Block`][] objects from `blocks` in the given order at the end of the `Sequence` of [`Block`][] objects of the [`BlockParent`][] object, as if `addBlock(Block block)` has been called repeatedly for all [`Block`][] objects from `blocks`.  This attaches all [`Block`][] objects from `blocks` to the [`BlockParent`][] object.
   
 This method must fail if `blocks` is not present.
-This method must fail if adding any [`Block`](#api-dom-block) object from `blocks` to the  associated `Sequence` of [`Block`](#api-dom-block) objects failed.
+
+This method must fail if adding any [`Block`][] object from `blocks` to the  associated `Sequence` of [`Block`][] objects failed.
   
-Because this method is a short hand for repeated calls to `addBlock(Block block)`, it must add all prior [`Block`](#api-dom-block) objects from `blocks` to the  associated `Sequence` of [`Block`](#api-dom-block) objects, if it fails because of a violating [`Block`](#api-dom-block) object from `blocks`.
+Because this method is a short hand for repeated calls to `addBlock(Block block)`, it must add all prior [`Block`][] objects from `blocks` to the  associated `Sequence` of [`Block`][] objects, if it fails because of a violating [`Block`][] object from `blocks`.
 
 ##### `CodeBlock` {#api-dom-codeblock}
 
-A [`CodeBlock`](#api-dom-codeblock) objects is a [`Block`](#api-dom-block) object that represents a [*Markdom code block*](#domain-codeblock).
+A [`CodeBlock`][] objects is a [`Block`][] object that represents a [*Markdom code block*][](#domain-codeblock).
 
 The initial value of the `code` parameter should be the empty string. The initial value of the `hint` parameter should be not present.
 
@@ -484,35 +483,35 @@ For convenience, an implementation of `CodeBlock` should have a constructor with
 
 ###### `getCode` {#api-dom-codeblock-getcode}
 
-A [`CodeBlock`](#api-dom-codeblock) object must have a method with signature `String getCode()`.
+A [`CodeBlock`][] object must have a method with signature `String getCode()`.
 
-The method must return the `code` parameter of the represented [*Markdom code block*](#domain-codeblock).
+The method must return the value of the `code` parameter of the represented [*Markdom code block*][](#domain-codeblock).
 
 ###### `setCode` {#api-dom-codeblock-setcode}
 
-A [`CodeBlock`](#api-dom-codeblock) object must have a method with signature `setCode(String code)`.
+A [`CodeBlock`][] object must have a method with signature `setCode(String code)`.
 
-This method must set the `code` parameter of the represented [*Markdom code block*](#domain-codeblock). 
+This method must set the value of the `code` parameter of the represented [*Markdom code block*][](#domain-codeblock). 
   
 This method must fail if `code` is not present.
 
 ###### `getHint` {#api-dom-codeblock-gethint}
 
-A [`CodeBlock`](#api-dom-codeblock) object must have a method with signature `String? getHint()`.
+A [`CodeBlock`][] object must have a method with signature `String? getHint()`.
 
-The method must return the optional `hint` parameter of the represented [*Markdom code block*](#domain-codeblock).
+The method must return the optional `hint` parameter of the represented [*Markdom code block*][](#domain-codeblock).
 
 ###### `setHint` {#api-dom-codeblock-sethint}
   
-A [`CodeBlock`](#api-dom-codeblock) object must have a method with signature `setHint(String? hint)`.
+A [`CodeBlock`][] object must have a method with signature `setHint(String? hint)`.
 
-This method must set the `hint` parameter of the represented [*Markdom code block*](#domain-codeblock). 
+This method must set the value of the `hint` parameter of the represented [*Markdom code block*][](#domain-codeblock). 
  	
 ##### `CodeContent` {#api-dom-codecontent}
 
-A [`CodeContent`](#api-dom-codecontent) object is a [`Content`](#api-dom-content) object that represents a [*Markdom code content*](#domain-codecontent).
+A [`CodeContent`][] object is a [`Content`][] object that represents a [*Markdom code content*][].
 
-The initial value of the `code` parameter should be the empty string.
+The initial value of the value of the `code` parameter should be the empty string.
 
 ###### Constructors {#api-dom-codecontent-constructors}
 
@@ -522,21 +521,21 @@ For convenience, an implementation of `CodeContent` should have a constructor wi
 
 ###### `getCode` {#api-dom-codecontent-getcode}
 
-A [`CodeContent`](#api-dom-codecontent) object must have a method with signature `String getCode()`.
+A [`CodeContent`][] object must have a method with signature `String getCode()`.
 
-The method must return the `code` parameter of the represented [*Markdom code content*](#domain-codecontent).
+The method must return the value of the `code` parameter of the represented [*Markdom code content*][].
 
 ###### `setCode` {#api-dom-codecontent-setcode}
 
-A [`CodeContent`](#api-dom-codecontent) object must have a method with signature `setCode(String code)`.
+A [`CodeContent`][] object must have a method with signature `setCode(String code)`.
 
-This method must set the `code` parameter of the represented [*Markdom code content*](#domain-codecontent). 
+This method must set the value of the `code` parameter of the represented [*Markdom code content*][]. 
   
 This method must fail if `code` is not present.
 
 ##### `Content` {#api-dom-content}
 
-A Content` object is a [`Node`](#api-dom-node) object that represents a [*Markdom content*](#domain-content).
+A Content` object is a [`Node`][] object that represents a [*Markdom content*][].
 
 ###### Constructors {#api-dom-content-constructor} 
 
@@ -544,30 +543,30 @@ An implementation of `Content` should have a constructor with signature `Content
 
 ###### `getContentType` {#api-dom-content-getcontenttype}
 
-A [`Content`](#api-dom-content) object must have a method with signature `ContentType getContentType()`.  
+A [`Content`][] object must have a method with signature `ContentType getContentType()`.  
 
-This method must return the `ContentType` value that corresponds to the type of the represented [*Markdom content*](#domain-content).
+This method must return the [`ContentType`][] value that corresponds to the type of the represented [*Markdom content*][].
 
 ###### `getBlock` {#api-dom-content-getblock}
 
-A [`Content`](#api-dom-content) object must have a method with signature `Block getBlock()`.
+A [`Content`][] object must have a method with signature `Block getBlock()`.
 
-This method must return the nearest [`Block`](#api-dom-block) object object the `Content` in the tree of Markdom nodes  the [`Content`](#api-dom-content) object is part of, which is the [`Block`](#api-dom-block) object of the `ContentParent` this [`Content`](#api-dom-content) object is currently attached to.
+This method must return the nearest [`Block`][] object object the `Content` in the tree of Markdom nodes  the [`Content`][] object is part of, which is the [`Block`][] object of the `ContentParent` this [`Content`][] object is currently attached to.
 
-This method must fail if the [`Content`](#api-dom-content) object doesn't [have](#api-dom-node-hasparent) a [parent](#api-dom-node-getparent) [`ContentParent`](#api-dom-node) object.
+This method must fail if the [`Content`][] object doesn't [have](#api-dom-node-hasparent) a [parent](#api-dom-node-getparent) [`ContentParent`][] object.
 
 ##### `ContentParent` {#api-dom-contentparent}
 
-A [`ContentParent`](#api-dom-contentparent) object is a [`Node`](#api-dom-node) object that represents a [*Markdom node*](#domain-node) that contains [*Markdom contents*](#domain-content).
+A [`ContentParent`][] object is a [`Node`][] object that represents a [*Markdom node*][] that contains [*Markdom contents*][].
 
-An implementation of `ContentParent` must have a final and initially empty companion `Sequence` of [`Content`](#api-dom-content) objects that is associated with the [`ContentParent`](#api-dom-contentparent) object.
+An implementation of `ContentParent` must have a final and initially empty companion `Sequence` of [`Content`][] objects that is associated with the [`ContentParent`][] object.
 
-Any structural modification (insert, remove, clear, replace) to the associated `Sequence` of [`Content`](#api-dom-content) objects must reflect the fact, that a [`Content`](#api-dom-content) object that is added to the associated `Sequence` object is attached to the [`ContentParent`](#api-dom-contentparent) object until is is removed from the associated `Sequence` of [`Content`](#api-dom-content) objects.
+Any structural modification (insert, remove, clear, replace) to the associated `Sequence` of [`Content`][] objects must reflect the fact, that a [`Content`][] object that is added to the associated `Sequence` object is attached to the [`ContentParent`][] object until is is removed from the associated `Sequence` of [`Content`][] objects.
 
-Attaching a [`Content`](#api-dom-content) object to the [`ContentParent`](#api-dom-contentparent) object  must fail
-* if the [`Content`](#api-dom-content) object is not present, or  
-* if the [`Content`](#api-dom-content) object is already attached to a [`ContentParent`](#api-dom-contentparent) object, or 
-* if attaching the [`Content`](#api-dom-content) object to the [`ContentParent`](#api-dom-contentparent) object would create a [cycle](#api-dom-detecting-cycles) in the tree of Markdom nodes that the [`ContentParent`](#api-dom-contentparent) object is part of.
+Attaching a [`Content`][] object to the [`ContentParent`][] object  must fail
+* if the [`Content`][] object is not present, or  
+* if the [`Content`][] object is already attached to a [`ContentParent`][] object, or 
+* if attaching the [`Content`][] object to the [`ContentParent`][] object would create a [cycle](#api-dom-detecting-cycles) in the tree of Markdom nodes that the [`ContentParent`][] object is part of.
 
 ###### Constructors {#api-dom-contentparent-constructor}
 
@@ -577,38 +576,39 @@ For convenience, an implementation of `ContentParent` should have a constructor 
 
 ###### `getContentParentType` {#api-dom-listblock-getcontentparenttype}
 
-A [`ContentParent`](#api-dom-contentparent) object must have a method with signature `ContentParentType getContentParentType()`.  
+A [`ContentParent`][] object must have a method with signature `ContentParentType getContentParentType()`.  
 
-This method must return the [`ContentParentType`](#api-dom-contentparenttype) value that corresponds to the type of the [`ContentParent`](#api-dom-contentparent) object.
+This method must return the [`ContentParentType`][] value that corresponds to the type of the [`ContentParent`][] object.
 
 ###### `getContents` {#api-dom-contentparent-getcontents}
 
-A [`ContentParent`](#api-dom-contentparent) object must have a method with signature `Sequence getContents()`.
+A [`ContentParent`][] object must have a method with signature `Sequence getContents()`.
 
-This method must return the associated `Sequence` of [`Content`](#api-dom-content) objects.
+This method must return the associated `Sequence` of [`Content`][] objects.
 
 ###### `addContent` {#api-dom-contentparent-addcontent}
 
-For convenience, a [`ContentParent`](#api-dom-contentparent) object should have a method with signature `addContent(Content content)`.
+For convenience, a [`ContentParent`][] object should have a method with signature `addContent(Content content)`.
 
-This method must add `content` at the end of the associated `Sequence` of [`Content`](#api-dom-content) objects. This attaches `content` to the [`ContentParent`](#api-dom-contentparent) object.
+This method must add `content` at the end of the associated `Sequence` of [`Content`][] objects. This attaches `content` to the [`ContentParent`][] object.
 
-This method must fail if add `content` to the  associated `Sequence` of [`Content`](#api-dom-content) objects failed.
+This method must fail if adding `content` to the  associated `Sequence` of [`Content`][] objects failed.
 
 ###### `addContents` {#api-dom-contentparent-addcontents}
 
-For convenience, a [`ContentParent`](#api-dom-contentparent) object should have a method with signature `addContents(Content... contents)`.
+For convenience, a [`ContentParent`][] object should have a method with signature `addContents(Content... contents)`.
 
-This method must add all [`Content`](#api-dom-content) objects from `contents` in the given order at the end of the `Sequence` of [`Content`](#api-dom-content) objects of the [`ContentParent`](#api-dom-contentparent) object, as if `addContent(Content content)` has been called repeatedly for all [`Content`](#api-dom-content) objects from `contents`.  This attaches all [`Content`](#api-dom-content) objects from `contents` to the [`ContentParent`](#api-dom-contentparent) object.
+This method must add all [`Content`][] objects from `contents` in the given order at the end of the `Sequence` of [`Content`][] objects of the [`ContentParent`][] object, as if `addContent(Content content)` has been called repeatedly for all [`Content`][] objects from `contents`.  This attaches all [`Content`][] objects from `contents` to the [`ContentParent`][] object.
   
 This method must fail if `contents` is not present.
-This method must fail if adding any [`Content`](#api-dom-content) object from `contents` to the  associated `Sequence` of [`Content`](#api-dom-content) objects failed.
+
+This method must fail if adding any [`Content`][] object from `contents` to the  associated `Sequence` of [`Content`][] objects failed.
   
-Because this method is a short hand for repeated calls to `addContent(Content content)`, it must add all prior [`Content`](#api-dom-content) objects from `contents` to the  associated `Sequence` of [`Content`](#api-dom-content) objects, if it fails because of a violating [`Content`](#api-dom-content) object from `contents`.
+Because this method is a short hand for repeated calls to `addContent(Content content)`, it must add all prior [`Content`][] objects from `contents` to the  associated `Sequence` of [`Content`][] objects, if it fails because of a violating [`Content`][] object from `contents`.
    
 ##### `ContentParentBlock` {#api-dom-contentparentblock}
 
-A [`ContentParentBlock`](#api-dom-contentparentblock) object is a [`Block`](#api-dom-block) object and a [`ContentParent`](#api-dom-contentparent) object that represents a [*Markdom block*](#domain-block) that contains [*Markdom content*](#domain-content).
+A [`ContentParentBlock`][] object is a [`Block`][] object and a [`ContentParent`][] object that represents a [*Markdom block*][] that contains [*Markdom content*][].
 
 ###### Constructors {#api-dom-contentparentblock-constructor}
 
@@ -618,7 +618,7 @@ For convenience, an implementation of `ContentParentBlock` should have a constru
 
 ##### `ContentParentContent` {#api-dom-contentparentcontent}
 
-A [`ContentParentContent`](#api-dom-contentparentcontent) object is a [`Content`](#api-dom-content) object and a [`ContentParent`](#api-dom-contentparent) object that represents a [*Markdom content*](#domain-content) that contains [*Markdom content*](#domain-content).
+A [`ContentParentContent`][] object is a [`Content`][] object and a [`ContentParent`][] object that represents a [*Markdom content*][] that contains [*Markdom content*][].
 
 ###### Constructors {#api-dom-contentparentcontent-constructor}
 
@@ -628,7 +628,7 @@ For convenience, an implementation of `ContentParentContent` should have a const
   
 ##### `DivisionBlock` {#api-dom-divisionblock}
 
-A [`DivisionBlock`](#api-dom-divisionblock) object is a [`Block`](#api-dom-block) object that represents a [*Markdom division block*](#domain-divisionblock)
+A [`DivisionBlock`][] object is a [`Block`][] object that represents a [*Markdom division block*][].
 
 ###### Constructors {#api-dom-divisionblock-constructors}
 
@@ -636,7 +636,7 @@ An implementation of `DivisionBlock` should have a constructor with signature `D
   
 ##### `Document` {#api-dom-document}
 
-A [`Document`](#api-dom-document) object is a [`BlockParent`](#api-dom-blockparent) object and a [`Dispatcher`](#api-handler-dispatcher) object that represents a [*Markdom document*](#domain-document).
+A [`Document`][] object is a [`BlockParent`][] object and a [`Dispatcher`][] object that represents a [*Markdom document*][].
 
 ###### Constructors {#api-dom-document-constructor}
 
@@ -644,7 +644,7 @@ For convenience, an implementation of `Document` should have a constructor with 
 
 ##### `EmphasisContent` {#api-dom-emphasiscontent}
 
-An [`EmphasisContent`](#api-dom-emphasiscontent) object is a [`ContentParentContent`](#api-dom-contentparentcontent) object that represents a [*Markdom emphasis content*](#domain-emphasiscontent).  
+An [`EmphasisContent`][] object is a [`ContentParentContent`][] object that represents a [*Markdom emphasis content*][].  
 
 The initial value of the `level` parameter should be `LEVEL_1`.
 
@@ -658,21 +658,21 @@ For convenience, an implementation of `EmphasisContent` should have a constructo
 
 ###### `getLevel` {#api-dom-emphasiscontent-getlevel}
 
-An [`EmphasisContent`](#api-dom-emphasiscontent) object must have a method with signature `EmphasisLevel getLevel()`.
+An [`EmphasisContent`][] object must have a method with signature `EmphasisLevel getLevel()`.
 
-This method must return the `level` parameter of the represented [*Markdom emphasis content*](#domain-emphasiscontent).
+This method must return the value of the `level` parameter of the represented [*Markdom emphasis content*][].
 
 ###### `setLevel` {#api-dom-emphasiscontent-setlevel}
 
-An [`EmphasisContent`](#api-dom-emphasiscontent) object must have a method with signature `setLevel(EmphasisLevel level)`.
+An [`EmphasisContent`][] object must have a method with signature `setLevel(EmphasisLevel level)`.
 
-This method must set the `level` parameter of the represented [*Markdom emphasis content*](#domain-emphasiscontent). 
+This method must set the value of the `level` parameter of the represented [*Markdom emphasis content*][]. 
   
 This method must fail if `level` is not present.
    
 ##### `HeadingBlock` {#api-dom-headingblock}
 
-A [`HeadingBlock`](#api-dom-headingblock) object is a [`ContentParentBlock`](#api-dom-contentparentblock) object that represents a [*Markdom heading blocks*](#domain-headingblock).  
+A [`HeadingBlock`][] object is a [`ContentParentBlock`][] object that represents a [*Markdom heading block*][].  
 
 The initial value of the `level` parameter should be `LEVEL_1`.
 
@@ -686,21 +686,21 @@ For convenience, an implementation of `HeadingBlock` should have a constructor w
 
 ###### `getLevel` {#api-dom-headingblock-getlevel}
 
-A [`HeadingBlock`](#api-dom-headingblock) object must have a method with signature `HeadingLevel getLevel()`.
+A [`HeadingBlock`][] object must have a method with signature `HeadingLevel getLevel()`.
 
-This method must return the `level` parameter of the represented [*Markdom heading blocks*](#domain-headingblock).
+This method must return the value of the `level` parameter of the represented [*Markdom heading block*][].
 
 ###### `setLevel` {#api-dom-headingblock-setlevel}
 
-A [`HeadingBlock`](#api-dom-headingblock) object must have a method with signature `setLevel(HeadingLevel level)`.
+A [`HeadingBlock`][] object must have a method with signature `setLevel(HeadingLevel level)`.
 
-This method must set the `level` parameter of the represented [*Markdom heading blocks*](#domain-headingblock). 
+This method must set the value of the `level` parameter of the represented [*Markdom heading block*][]. 
   
 This method must fail if `level` is not present.
    
 ##### `ImageContent` {#api-dom-imagecontent}
 
-An [`ImageContent`](#api-dom-imagecontent) object is a [`Content`](#api-dom-content) object that represents a [*Markdom image content*](#domain-imagecontent).  
+An [`ImageContent`][] object is a [`Content`][] object that represents a [*Markdom image content*][].  
 
 The initial value of the `uri` parameter should be the empty string. The initial value of the `title` parameter should be not present. The initial value of the `alternative` parameter should be not present.
 
@@ -714,47 +714,47 @@ For convenience, an implementation of `ImageContent` should have a constructor w
 
 ###### `getUri` {#api-dom-imagecontent-geturi}
 
-A [`ImageContent`](#api-dom-imagecontent) object must have a method with signature `String getUri()`.
+A [`ImageContent`][] object must have a method with signature `String getUri()`.
 
-This method must return the `uri` parameter of the represented [*Markdom image content*](#domain-imagecontent).
+This method must return the value of the `uri` parameter of the represented [*Markdom image content*][].
 
 ###### `setUri` {#api-dom-imagecontent-seturi}
 
-An [`ImageContent`](#api-dom-imagecontent) object must have a method with signature `setUri(String uri)`.
+An [`ImageContent`][] object must have a method with signature `setUri(String uri)`.
 
-This method must set the `uri` parameter of the represented [*Markdom image content*](#domain-imagecontent).
+This method must set the value of the `uri` parameter of the represented [*Markdom image content*][].
   
 This method must fail if `uri` is not present.
 
-This method must fail if `uri` is not a valid URI reference.
+This method must fail if value of the `uri` is not a valid URI reference.
 
 ###### `getTitle` {#api-dom-imagecontent-gettitle}
 
-A [`ImageContent`](#api-dom-imagecontent) object must have a method with signature `String getTitle()`.
+A [`ImageContent`][] object must have a method with signature `String getTitle()`.
 
-This method must return the `title` parameter of the represented [*Markdom image content*](#domain-imagecontent).
+This method must return the value of the `title` parameter of the represented [*Markdom image content*][].
 
 ###### `setTitle`{#api-dom-imagecontent-settitle}
   
-An [`ImageContent`](#api-dom-imagecontent) object must have a method with signature `setTitle(String? title)`.
+An [`ImageContent`][] object must have a method with signature `setTitle(String? title)`.
 
-This method must set the `title` parameter of the represented [*Markdom image content*](#domain-imagecontent).
+This method must set the value of the `title` parameter of the represented [*Markdom image content*][].
 
 ###### `getAlternative` {#api-dom-imagecontent-getalternative}
 
-A [`ImageContent`](#api-dom-imagecontent) object must have a method with signature `String getAlternative()`.
+A [`ImageContent`][] object must have a method with signature `String getAlternative()`.
 
-This method must return the `alternative` parameter of the represented [*Markdom image content*](#domain-imagecontent).
+This method must return the value of the `alternative` parameter of the represented [*Markdom image content*][].
 
 ###### `setAlternative` {#api-dom-imagecontent-setalternative}
 
-An [`ImageContent`](#api-dom-imagecontent) object must have a method with signature `setAlternative(String? alternative)`.
+An [`ImageContent`][] object must have a method with signature `setAlternative(String? alternative)`.
 
-This method must set the `alternative` parameter of the represented [*Markdom image content*](#domain-imagecontent).
+This method must set the value of the `alternative` parameter of the represented [*Markdom image content*][].
 
 ##### `LineBreakContent` {#api-dom-linebreakcontent}
 
-A [`LineBreakContent`](#api-dom-linebreakcontent) object is a [`Content`](#api-dom-content) object that represents a [*Markdom line break content*](#domain-linebreakcontent).
+A [`LineBreakContent`][] object is a [`Content`][] object that represents a [*Markdom line break content*][].
 
 The initial value of the `hard` parameter should be `false`.
 
@@ -766,21 +766,21 @@ For convenience, an implementation of `LineBreakContent` should have a construct
 
 ###### `isHard` {#api-dom-linebreakcontent-ishard}
 
-A [`LineBreakContent`](#api-dom-linebreakcontent) object must have a method with signature `Boolean isHard()`.
+A [`LineBreakContent`][] object must have a method with signature `Boolean isHard()`.
 
-This method must return the `hard` parameter of the represented [*Markdom line break content*](#domain-linebreakcontent).
+This method must return the value of the `hard` parameter of the represented [*Markdom line break content*][].
 
 ###### `setHard` {#api-dom-linebreakcontent-sethard}
 
-A [`LineBreakContent`](#api-dom-linebreakcontent) object must have a method with signature `setHard(Boolean hard)`.
+A [`LineBreakContent`][] object must have a method with signature `setHard(Boolean hard)`.
 
-This method must set the `hard` parameter of the represented [*Markdom line break content*](#domain-linebreakcontent).
+This method must set the value of the `hard` parameter of the represented [*Markdom line break content*][].
   
 This method must fail if `hard` is not present.
    
 ##### `LinkContent` {#api-dom-linkcontent}
 
-A [`LinkContent`](#api-dom-linkcontent) object is a [`ContentParentContent`](#api-dom-contentparentcontent) object that represents a [*Markdom link content*](#domain-linkcontent).
+A [`LinkContent`][] object is a [`ContentParentContent`][] object that represents a [*Markdom link content*][].
 
 The initial value of the `uri` parameter should be the empty string.
 
@@ -794,32 +794,32 @@ For convenience, an implementation of `LinkContent` should have a constructor wi
 
 ###### `getUri` {#api-dom-imagecontent-geturi}
 
-A [`LinkContent`](#api-dom-linkcontent) object must have a method with signature `String getUri()`.
+A [`LinkContent`][] object must have a method with signature `String getUri()`.
 
-This method must return the `uri` parameter of the represented [*Markdom link content*](#domain-linkcontent).
+This method must return the value of the `uri` parameter of the represented [*Markdom link content*][].
 
 ###### `setUri` {#api-dom-linkcontent-seturi}
 
-A [`LinkContent`](#api-dom-linkcontent) object must have a method with signature `setUri(String uri)`.
+A [`LinkContent`][] object must have a method with signature `setUri(String uri)`.
 
-This method must set the `uri` parameter of the represented [*Markdom link content*](#domain-linkcontent).
+This method must set the value of the `uri` parameter of the represented [*Markdom link content*][].
   
 This method must fail if `uri` is not present.
 
-This method must fail if `uri` is not a valid URI reference.
+This method must fail if value of the `uri` is not a valid URI reference.
    
 ##### `ListBlock` {#api-dom-listblock}
 
-A [`ListBlock`](#api-dom-listblock) object is a [`Block`](#api-dom-block) object that represents a [*Markdom list block*](#domain-listblock)  
+A [`ListBlock`][] object is a [`Block`][] object that represents a *Markdom list block*.  
 
-An implementation of `ListBlock` must have a final and initially empty companion `Sequence` of [`ListItem`](#api-dom-listitem) objects that is associated with the [`ListBlock`](#api-dom-listblock) object.
+An implementation of `ListBlock` must have a final and initially empty companion `Sequence` of [`ListItem`][] objects that is associated with the [`ListBlock`][] object.
 
-Any structural modification (insert, remove, clear, replace) to the associated `Sequence` of [`ListItem`](#api-dom-listitem) objects must reflect the fact, that a [`ListItem`](#api-dom-listitem) object that is added to the associated `Sequence` object is attached to the [`ListBlock`](#api-dom-listblock) object until is is removed from the associated `Sequence` of [`ListItem`](#api-dom-listitem) objects.
+Any structural modification (insert, remove, clear, replace) to the associated `Sequence` of [`ListItem`][] objects must reflect the fact, that a [`ListItem`][] object that is added to the associated `Sequence` object is attached to the [`ListBlock`][] object until is is removed from the associated `Sequence` of [`ListItem`][] objects.
 
-Attaching a [`ListItem`](#api-dom-listitem) object to the [`ListBlock`](#api-dom-listblock) object  must fail
-* if the [`ListItem`](#api-dom-listitem) object is not present, or  
-* if the [`ListItem`](#api-dom-listitem) object is already attached to a [`ListBlock`](#api-dom-listblock) object, or 
-* if attaching the [`ListItem`](#api-dom-listitem) object to the [`ListBlock`](#api-dom-listblock) object would create a [cycle](#api-dom-detecting-cycles) in the tree of Markdom nodes that the [`ListBlock`](#api-dom-listblock) object is part of.
+Attaching a [`ListItem`][] object to the [`ListBlock`][] object  must fail
+* if the [`ListItem`][] object is not present, or  
+* if the [`ListItem`][] object is already attached to a [`ListBlock`][] object, or 
+* if attaching the [`ListItem`][] object to the [`ListBlock`][] object would create a [cycle](#api-dom-detecting-cycles) in the tree of Markdom nodes that the [`ListBlock`][] object is part of.
 
 ###### Constructors {#api-dom-listblock-constructor}
 
@@ -829,38 +829,39 @@ For convenience, an implementation of `ListBlock` should have a constructor with
 
 ###### `getListBlockType` {#api-dom-listblock-getlistblocktype}
 
-A [`ListBlock`](#api-dom-listblock) object must have a method with signature `ListBlockType getListBlockType()`.  
+A [`ListBlock`][] object must have a method with signature `ListBlockType getListBlockType()`.  
 
-This method must return the [`ListBlockType`](#api-dom-listblocktype) value that corresponds to the type of the [`ListBlock`](#api-dom-listblock) object.
+This method must return the [`ListBlockType`][] value that corresponds to the type of the [`ListBlock`][] object.
 
 ###### `getListItems` {#api-dom-listblock-getitems}
 
-A [`ListItem`](#api-dom-listitem) object must have a method with signature `Sequence getListItems()`.
+A [`ListItem`][] object must have a method with signature `Sequence getListItems()`.
 
-This method must return the associated `Sequence` of [`ListItem`](#api-dom-listitem) objects.
+This method must return the associated `Sequence` of [`ListItem`][] objects.
 
 ###### `addItem` {#api-dom-listblock-additem}
 
-For convenience, a [`ListBlock`](#api-dom-listblock) object should have a method with signature `addItem(ListItem item)`.
+For convenience, a [`ListBlock`][] object should have a method with signature `addItem(ListItem item)`.
 
-This method must add `item` at the end of the associated `Sequence` of [`ListItem`](#api-dom-listitem) objects. This attaches `item` to the [`ListBlock`](#api-dom-listblock) object.
+This method must add `item` at the end of the associated `Sequence` of [`ListItem`][] objects. This attaches `item` to the [`ListBlock`][] object.
 
-This method must fail if add `item` to the  associated `Sequence` of [`ListItem`](#api-dom-listitem) objects failed.
+This method must fail if adding `item` to the  associated `Sequence` of [`ListItem`][] objects failed.
 
 ###### `addItems` {#api-dom-listblock-additems}
 
-For convenience, a [`ListBlock`](#api-dom-listblock) object should have a method with signature `addItems(ListItem... items)`.
+For convenience, a [`ListBlock`][] object should have a method with signature `addItems(ListItem... items)`.
 
-This method must add all [`ListItem`](#api-dom-listitem) objects from `items` in the given order at the end of the `Sequence` of [`ListItem`](#api-dom-listitem) objects of the [`ListBlock`](#api-dom-listblock) object, as if `addItem(ListItem item)` has been called repeatedly for all [`ListItem`](#api-dom-listitem) objects from `items`.  This attaches all [`ListItem`](#api-dom-listitem) objects from `items` to the [`ListBlock`](#api-dom-listblock) object.
+This method must add all [`ListItem`][] objects from `items` in the given order at the end of the `Sequence` of [`ListItem`][] objects of the [`ListBlock`][] object, as if `addItem(ListItem item)` has been called repeatedly for all [`ListItem`][] objects from `items`.  This attaches all [`ListItem`][] objects from `items` to the [`ListBlock`][] object.
   
 This method must fail if `items` is not present.
-This method must fail if adding any [`ListItem`](#api-dom-listitem) object from `items` to the  associated `Sequence` of [`ListItem`](#api-dom-listitem) objects failed.
+
+This method must fail if adding any [`ListItem`][] object from `items` to the  associated `Sequence` of [`ListItem`][] objects failed.
   
-Because this method is a short hand for repeated calls to `addItem(ListItem item)`, it must add all prior [`ListItem`](#api-dom-listitem) objects from `items` to the  associated `Sequence` of [`ListItem`](#api-dom-listitem) objects, if it fails because of a violating [`ListItem`](#api-dom-listitem) object from `items`.
+Because this method is a short hand for repeated calls to `addItem(ListItem item)`, it must add all prior [`ListItem`][] objects from `items` to the  associated `Sequence` of [`ListItem`][] objects, if it fails because of a violating [`ListItem`][] object from `items`.
 
 ##### `ListItem` {#api-dom-listitem}
 
-A [`ListItem`](#api-dom-listitem) object is a [`BlockParent`](#api-dom-blockparent) object that represents a [*Markdom list item*](#domain-listitem).
+A [`ListItem`][] object is a [`BlockParent`][] object that represents a [*Markdom list item*][].
 
 ###### Constructors {#api-dom-listitem-constructor}
 
@@ -870,101 +871,101 @@ For convenience, an implementation of `ListItem` should have a constructor with 
 
 ##### `Node` {#api-dom-node}
 
-A [`Node`](#api-dom-node) object represents a [*Markdom node*](#domain-node).
+A [`Node`][] object represents a [*Markdom node*][].
 
 ###### `getNodeType` {#api-dom-node-getnodetype}
 
-A [`Node`](#api-dom-node) object must have a method with signature `NodeType getNodeType()`.  
+A [`Node`][] object must have a method with signature `NodeType getNodeType()`.  
 
-This method must return the [`NodeType`](#api-dom-nodetype) value that corresponds to the type of the [`Node`](#api-dom-node) object.
+This method must return the [`NodeType`][] value that corresponds to the type of the [`Node`][] object.
 
 ###### `hasParent` {#api-dom-node-hasparent}
 
-A [`Node`](#api-dom-node) object must have a method with signature `Boolean hasParent()`.
+A [`Node`][] object must have a method with signature `Boolean hasParent()`.
 
-This method must return whether the `Node` has a parent [`Node`](#api-dom-node) object.  
+This method must return whether the `Node` has a parent [`Node`][] object.  
 
 Specifically, this method must return `true`
-* if the [`Node`](#api-dom-node) object is a [`Block`](#api-dom-block) object and currently attached to a [`BlockParent`](#api-dom-blockparent) object, or
-* if the [`Node`](#api-dom-node) object is a [`ListItem`](#api-dom-listitem) object and currently attached to a [`ListBlock`](#api-dom-listblock) object, or
-* if the [`Node`](#api-dom-node) object is a [`Content`](#api-dom-content) object and currently attached to a [`ContentParent`](#api-dom-contentparent) object.
+* if the [`Node`][] object is a [`Block`][] object and currently attached to a [`BlockParent`][] object, or
+* if the [`Node`][] object is a [`ListItem`][] object and currently attached to a [`ListBlock`][] object, or
+* if the [`Node`][] object is a [`Content`][] object and currently attached to a [`ContentParent`][] object.
 
 Specifically, this method must return `false`
-* if the [`Node`](#api-dom-node) object is a `Document`, or
-* if the [`Node`](#api-dom-node) object is a [`Block`](#api-dom-block) object and currently not attached to a [`BlockParent`](#api-dom-blockparent) object, or
-* if the [`Node`](#api-dom-node) object is a [`ListItem`](#api-dom-listitem) object and currently not attached to a [`ListBlock`](#api-dom-listblock) object, or
-* if the [`Node`](#api-dom-node) object is a [`Content`](#api-dom-content) object and currently not attached to a [`ContentParent`](#api-dom-contentparent) object.
+* if the [`Node`][] object is a `Document`, or
+* if the [`Node`][] object is a [`Block`][] object and currently not attached to a [`BlockParent`][] object, or
+* if the [`Node`][] object is a [`ListItem`][] object and currently not attached to a [`ListBlock`][] object, or
+* if the [`Node`][] object is a [`Content`][] object and currently not attached to a [`ContentParent`][] object.
 
 ###### `getParent` {#api-dom-node-getparent}
 
-A [`Node`](#api-dom-node) object must have a method with signature `Node getParent()`.
+A [`Node`][] object must have a method with signature `Node getParent()`.
 
-This method must return the parent [`Node`](#api-dom-node) object of the [`Node`](#api-dom-node) object. 
+This method must return the parent [`Node`][] object of the [`Node`][] object. 
 
 Specifically, this method must return 
-* the [`BlockParent`](#api-dom-blockparent) object it is currently attached to, if the [`Node`](#api-dom-node) object is a [`Block`](#api-dom-block) object, or
-* the [`ListBlock`](#api-dom-listblock) object it is currently attached to, if the [`Node`](#api-dom-node) object is a [`ListItem`](#api-dom-listitem) object, or
-* the [`ContentParent`](#api-dom-contentparent) object it is currently attached, if the [`Node`](#api-dom-node) object is a [`Content`](#api-dom-content) object.
+* the [`BlockParent`][] object it is currently attached to, if the [`Node`][] object is a [`Block`][] object, or
+* the [`ListBlock`][] object it is currently attached to, if the [`Node`][] object is a [`ListItem`][] object, or
+* the [`ContentParent`][] object it is currently attached, if the [`Node`][] object is a [`Content`][] object.
 
-This method must fail if the [`Node`](#api-dom-node) object doesn't [have](#api-dom-node-hasparent) a [parent](#api-dom-node-getparent) [`Node`](#api-dom-node) object.
+This method must fail if the [`Node`][] object doesn't [have](#api-dom-node-hasparent) a [parent](#api-dom-node-getparent) [`Node`][] object.
 
 ###### `getDocument` {#api-dom-node-getdocument}
 
-A [`Node`](#api-dom-node) object must have a method with signature `Document getDocument()`.
+A [`Node`][] object must have a method with signature `Document getDocument()`.
 
-This method must return the [`Document`](#api-dom-document) object that is the root of the tree of [Markdom nodes](#domain-node) the [`Node`](#api-dom-node) object is part of.
+This method must return the [`Document`][] object that is the root of the tree of [Markdom nodes](#domain-node) the [`Node`][] object is part of.
 
 Specifically, this method must return 
-* the [`Node`](#api-dom-node) object, if the [`Node`](#api-dom-node) object is a [`Document`](#api-dom-document) object, or
-* the [`Document`](#api-dom-document) object of the parent [`Node`](#api-dom-node) object, if the [`Node`](#api-dom-node) object has a parent [`Node`](#api-dom-node) object.
+* the [`Node`][] object, if the [`Node`][] object is a [`Document`][] object, or
+* the [`Document`][] object of the parent [`Node`][] object, if the [`Node`][] object has a parent [`Node`][] object.
   
-This method must fail if the [`Node`](#api-dom-node) object doesn't [have](#api-dom-node-hasparent) a [parent](#api-dom-node-getparent) [`Node`](#api-dom-node) object.
+This method must fail if the [`Node`][] object doesn't [have](#api-dom-node-hasparent) a [parent](#api-dom-node-getparent) [`Node`][] object.
 
 ###### `getIndex` {#api-dom-node-getindex}
 
-A [`Node`](#api-dom-node) object must have a method with signature `Integer getIndex()`.
+A [`Node`][] object must have a method with signature `Integer getIndex()`.
 
-This method must return the index of the [`Node`](#api-dom-node) object in the `Source` of child [`Node`](#api-dom-node) object of the parent `Node`.
+This method must return the index of the [`Node`][] object in the `Source` of child [`Node`][] object of the parent `Node`.
 
 Specifically, this method must return 
-* the index in the attached `Sequence` of [`Block`](#api-dom-block) objects of the [`BlockParent`](#api-dom-blockparent) object it is currently attached to, if the [`Node`](#api-dom-node) object is a [`Block`](#api-dom-block) object, or
-* the index in the attached `Sequence` of [`ListItem`](#api-dom-listitem) objects of the [`ListBlock`](#api-dom-listblock) object it is currently attached to, if the [`Node`](#api-dom-node) object is a [`ListItem`](#api-dom-listitem) object, or
-* the index in the attached `Sequence` of [`Content`](#api-dom-content) objects of the [`ContentParent`](#api-dom-contentparent) object it is currently attached to, if the [`Node`](#api-dom-node) object is a [`Content`](#api-dom-content) object, or
+* the index in the attached `Sequence` of [`Block`][] objects of the [`BlockParent`][] object it is currently attached to, if the [`Node`][] object is a [`Block`][] object, or
+* the index in the attached `Sequence` of [`ListItem`][] objects of the [`ListBlock`][] object it is currently attached to, if the [`Node`][] object is a [`ListItem`][] object, or
+* the index in the attached `Sequence` of [`Content`][] objects of the [`ContentParent`][] object it is currently attached to, if the [`Node`][] object is a [`Content`][] object, or
 
-This method must fail if the [`Node`](#api-dom-node) object doesn't [have](#api-dom-node-hasparent) a [parent](#api-dom-node-getparent) [`Node`](#api-dom-node) object.
+This method must fail if the [`Node`][] object doesn't [have](#api-dom-node-hasparent) a [parent](#api-dom-node-getparent) [`Node`][] object.
 
 ###### `hasChildren`
 
-A [`Node`](#api-dom-node) object must have a method with signature `Integer getIndex()`.
+A [`Node`][] object must have a method with signature `Integer getIndex()`.
 
-This method must return whether the [`Node`](#api-dom-node) object has child [`Node`](#api-dom-node) objects.
+This method must return whether the [`Node`][] object has child [`Node`][] objects.
 
 Specifically, this method must return `true`
-* if the [`Node`](#api-dom-node) object is a [`BlockParent`](#api-dom-blockparent) object and currently has a [`Block`](#api-dom-block) object attached to it, or
-* if the [`Node`](#api-dom-node) object is a [`ListBlock`](#api-dom-listblock) object and currently has a [`ListItem`](#api-dom-listitem) object attached to it, or
-* if the [`Node`](#api-dom-node) object is a [`ContentParent`](#api-dom-contentparent) object and currently has a [`Content`](#api-dom-content) object attached to it.
+* if the [`Node`][] object is a [`BlockParent`][] object and currently has a [`Block`][] object attached to it, or
+* if the [`Node`][] object is a [`ListBlock`][] object and currently has a [`ListItem`][] object attached to it, or
+* if the [`Node`][] object is a [`ContentParent`][] object and currently has a [`Content`][] object attached to it.
 
 Specifically, this method must return `false`
-* if the [`Node`](#api-dom-node) object is a [`BlockParent`](#api-dom-blockparent) object and currently has no [`Block`](#api-dom-block) object attached to it, or
-* if the [`Node`](#api-dom-node) object is a [`ListBlock`](#api-dom-listblock) object and currently has no [`ListItem`](#api-dom-listitem) object attached to it, or
-* if the [`Node`](#api-dom-node) object is a [`ContentParent`](#api-dom-contentparent) object and currently has no [`Content`](#api-dom-content) object attached to it, or
-* if the [`Node`](#api-dom-node) object is a [`CodeBlock`](#api-dom-codeblock) object or a [`CodeContent`](#api-dom-codecontent) object or a [`DivisionBlock`](#api-dom-divisionblock) object or an [`ImageContent`](#api-dom-imagecontent) object or a [`LineBreakContent`](#api-dom-linebreakcontent) object or a [`TextContent`](#api-dom-textcontent) object.
+* if the [`Node`][] object is a [`BlockParent`][] object and currently has no [`Block`][] object attached to it, or
+* if the [`Node`][] object is a [`ListBlock`][] object and currently has no [`ListItem`][] object attached to it, or
+* if the [`Node`][] object is a [`ContentParent`][] object and currently has no [`Content`][] object attached to it, or
+* if the [`Node`][] object is a [`CodeBlock`][] object or a [`CodeContent`][] object or a [`DivisionBlock`][] object or an [`ImageContent`][] object or a [`LineBreakContent`][] object or a [`TextContent`][] object.
 
 ###### `getChildren`
 
-A [`Node`](#api-dom-node) object must have a method with signature `Source getChildren()`.
+A [`Node`][] object must have a method with signature `Source getChildren()`.
 
-This method must return a `Source` object that yields the child [`Node`](#api-dom-node) objects of the [`Node`](#api-dom-node) object.
+This method must return a `Source` object that yields the child [`Node`][] objects of the [`Node`][] object.
 
 Specifically, this method must return `true`
-* the attached `Sequence` of [`Block`](#api-dom-block) objects, if the [`Node`](#api-dom-node) object is a [`BlockParent`](#api-dom-blockparent) object, or
-* the attached `Sequence` of [`ListItem`](#api-dom-listitem) objects, if the [`Node`](#api-dom-node) object is a [`ListBlock`](#api-dom-listblock) object, or
-* the attached `Sequence` of [`Content`](#api-dom-content) objects, if the [`Node`](#api-dom-node) object is a [`ContentParent`](#api-dom-contentparent) object, or
-* an emty `Source` object, if the [`Node`](#api-dom-node) object is a [`CodeBlock`](#api-dom-codeblock) object or a [`CodeContent`](#api-dom-codecontent) object or a [`DivisionBlock`](#api-dom-divisionblock) object or an [`ImageContent`](#api-dom-imagecontent) object or a [`LineBreakContent`](#api-dom-linebreakcontent) object or a [`TextContent`](#api-dom-textcontent) object.
+* the attached `Sequence` of [`Block`][] objects, if the [`Node`][] object is a [`BlockParent`][] object, or
+* the attached `Sequence` of [`ListItem`][] objects, if the [`Node`][] object is a [`ListBlock`][] object, or
+* the attached `Sequence` of [`Content`][] objects, if the [`Node`][] object is a [`ContentParent`][] object, or
+* an emty `Source` object, if the [`Node`][] object is a [`CodeBlock`][] object or a [`CodeContent`][] object or a [`DivisionBlock`][] object or an [`ImageContent`][] object or a [`LineBreakContent`][] object or a [`TextContent`][] object.
 
 ##### `OrderedListBlock` {#api-dom-orderedlistblock}
 
-An [`OrderedListBlock`](#api-dom-orderedlistblock) object is a [`ListBlock`](#api-dom-listblock) object that represents an [*ordered Markdom list block*](#domain-orderedlistblock).
+An [`OrderedListBlock`][] object is a [`ListBlock`][] object that represents an [*ordered Markdom list block*][].
 
 The initial value of the `startIndex` parameter should be `1`.
 
@@ -978,22 +979,23 @@ For convenience, an implementation of `OrderedListBlock` should have a construct
 
 ###### getStartIndex {#api-dom-orderedlistblock-getstartindex}
 
-An [`OrderedListBlock`](#api-dom-orderedlistblock) object must have a method with signature `Integer getStratIndex()`.
+An [`OrderedListBlock`][] object must have a method with signature `Integer getStratIndex()`.
 
-This method must return the `startIndex` parameter of the represented [*ordered Markdom list block*](#domain-orderedlistblock).
+This method must return the value of the `startIndex` parameter of the represented [*ordered Markdom list block*][].
 
 ###### setStartIndex {#api-dom-orderedlistblock-setstartindex}
 
-An [`OrderedListBlock`](#api-dom-orderedlistblock) object must have a method with signature `setStartIndex(Integer startIndex)`.
+An [`OrderedListBlock`][] object must have a method with signature `setStartIndex(Integer startIndex)`.
 
-This method must set the `startIndex` parameter of the represented [*ordered Markdom list block*](#domain-orderedlistblock).
+This method must set the value of the `startIndex` parameter of the represented [*ordered Markdom list block*][].
   
-This method must fail if `startIndex` is not present.  
-This method must fail if `startIndex` is negative.
+This method must fail if `startIndex` is not present. 
+ 
+This method must fail if value of the `startIndex` is negative.
   
 ##### `ParagraphBlock` {#api-dom-paragraphblock}
 
-A [`ParagraphBlock`](#api-dom-paragraphblock) object is a [`ContentParentBlock`](#api-dom-contentparentblock) object that represents a [*Markdom paragraph block*](#domain-paragraphblock).
+A [`ParagraphBlock`][] object is a [`ContentParentBlock`][] object that represents a [*Markdom paragraph block*][].
 
 ###### Constructors {#api-dom-paragraphblock-constructor}
 
@@ -1003,7 +1005,7 @@ For convenience, an implementation of `ParagraphBlock` should have a constructor
 
 ##### `QuoteBlock` {#api-dom-quoteblock}
 
-A [`QuoteBlock`](#api-dom-quoteblock) object is a [`Block`](#api-dom-block) object and a [`BlockParent`](#api-dom-blockparent) object that represents a [*Markdom quote block*](#domain-quoteblock).
+A [`QuoteBlock`][] object is a [`Block`][] object and a [`BlockParent`][] object that represents a [*Markdom quote block*][].
 
 ###### Constructors {#api-dom-quoteblock-constructor}
 
@@ -1013,7 +1015,7 @@ For convenience, an implementation of `QuoteBlock` should have a constructor wit
     
 ##### `TextContent` {#api-dom-textcontent}
 
-A [`TextContent`](#api-dom-textcontent) object is [`ContentParentContent`](#api-dom-contentparentcontent) object that represents a [*Markdom text content*](#domain-textcontent).
+A [`TextContent`][] object is [`ContentParentContent`][] object that represents a [*Markdom text content*][].
 
 The initial value of the `text` parameter should be the empty string.
 
@@ -1025,21 +1027,21 @@ For convenience, an implementation of `TextContent` should have a constructor wi
 
 ###### `getText` {#api-dom-textcontent-gettext}
 
-A [`TextContent`](#api-dom-textcontent) object must have a method with signature `String getText()`.
+A [`TextContent`][] object must have a method with signature `String getText()`.
 
-This method must return the `text` parameter of the represented [*Markdom text content*](#domain-textcontent).
+This method must return the value of the `text` parameter of the represented [*Markdom text content*][].
 
 ###### `setText` {#api-dom-textcontent-settext}
 
-A [`TextContent`](#api-dom-textcontent) object must have a method with signature `setText(String text)`.
+A [`TextContent`][] object must have a method with signature `setText(String text)`.
 
-This method must set the `text` parameter of the represented [*Markdom text content*](#domain-textcontent).
+This method must set the value of the `text` parameter of the represented [*Markdom text content*][].
   
 This method must fail if `text` is not present.
    
 ##### `UnorderedListBlock` {#api-dom-unorderedlistblock}
 
-An [`UnorderedListBlock`](#api-dom-unorderedlistblock) object is a [`ListBlock`](#api-dom-listblock) object that represents an [*unordered Markdom list block*](#domain-unorderedlistblock).
+An [`UnorderedListBlock`][] object is a [`ListBlock`][] object that represents an *unordered Markdom list block*.
 
 ###### Constructors {#api-dom-unorderedlistblock-constructor}
 
@@ -1053,7 +1055,7 @@ The Domain Model API has the following enumerations:
 
 ##### `BlockParentType` {#api-dom-blockparenttype}  
 
-The `BlockParentType` enum represents the type of a [`BlockParent`](#api-dom-blockparent) and has the following constants:
+The [`BlockParentType`][] enum represents the type of a `BlockParent` and has the following constants:
 
 * `DOCUMENT`,
 * `QUOTE_BLOCK`, 
@@ -1061,7 +1063,7 @@ The `BlockParentType` enum represents the type of a [`BlockParent`](#api-dom-blo
 
 ##### `ContentParentType` {#api-dom-contentparenttype}  
 
-The `ContentParentType` enum represents the type of a [`ContentParent`](#api-dom-blockparent) and has the following constants:
+The [`ContentParentType`][] enum represents the type of a `ContentParent` and has the following constants:
 
 * `HEADING_BLOCK`,
 * `PARAGRAPH_BLOCK`, 
@@ -1070,7 +1072,7 @@ The `ContentParentType` enum represents the type of a [`ContentParent`](#api-dom
 
 ##### `NodeType` {#api-dom-nodetype}
 
-The `NodeType` enum represents the type of a [`Node`](#api-dom-node) object and has the following constants:
+The [`NodeType`][] enum represents the type of a [`Node`][] object and has the following constants:
 
 * `DOCUMENT`,
 * `BLOCK`,
@@ -1079,7 +1081,7 @@ The `NodeType` enum represents the type of a [`Node`](#api-dom-node) object and 
 
 ##### `ListBlockType` {#api-dom-listblocktype}  
 
-The `ListBlockType` enum represents the type of a [`ListBlock`](#api-dom-listblock) and has the following constants:
+The [`ListBlockType`][] enum represents the type of a `ListBlock` and has the following constants:
 
 * `ORDERED_LIST_BLOCK`,
 * `UNORDERED_LIST_BLOCK`.
@@ -1090,456 +1092,496 @@ The following Domain Model API object graph represents the [example document](#e
 
 ![](resource/markdom-objectgraph.png)
 
-Every `BlockParent`, `ListBlock` or `ContentParent` object has a reference to its companion `Sequence` object. A companion `Sequence` object holds references to the [children](#api-dom-node-getchildren) of the corresponding `BlockParent`, `ListBlock` or `ContentParent` object. Each child has a reference to its [parent](#api-dom-node-getparent).
+Every `BlockParent`, `ListBlock` or [`ContentParent`][] object has a reference to its companion `Sequence` object. A companion `Sequence` object holds references to the [children](#api-dom-node-getchildren) of the corresponding `BlockParent`, `ListBlock` or [`ContentParent`][] object. Each child has a reference to its [parent](#api-dom-node-getparent).
 
 #### Additional information
 
 ##### Up navigation
 
-The following image shows the possible methods to navigate from an `Node` object upwards from the leaf `TextContent` object with `text` value `Baz` of the [example document](#example).
+The following image shows the possible methods to navigate from an [`Node`][] object upwards from the leaf [`TextContent`][] object with `text` value `Baz` of the [example document](#example).
 
 ![](resource/markdom-navigation-up.png)
 
-Every `Node` object in a Domain Model API object graph that is not a `Document` object has a reference to its [parent](#api-dom-node-getparent), which is
+Every [`Node`][] object in a Domain Model API object graph that is not a [`Document`][] object has a reference to its [parent](#api-dom-node-getparent), which is
 
-* a `BlockParent` object, if the `Node` object is a `Block` object,
-* a `ListBlock` object, if the `Node` object is a `ListItem` object, or
-* a `ContentParent` object, if the `Node` object is a `Content` object.
+* a [`BlockParent`][] object, if the [`Node`][] object is a [`Block`][] object,
+* a [`ListBlock`][] object, if the [`Node`][] object is a [`ListItem`][] object, or
+* a [`ContentParent`][] object, if the [`Node`][] object is a [`Content`][] object.
 
 Depending on the kind of the parent, either `getBlockParentType`, `getListBlockType` or `getContentParentType` can be used to find out the actual type of the parent.
 
-For example: Consider a method that gets leaf `Node` object as a parameter without any knowledge about it. Calling `getNodeType` reveals that is it a `Content` object. Calling `getContentType()` reveals that it is a `TextContent` object. Calling `getParent()` returns the parent as a `ContentParent` object. Calling `getContentParentType()` on the parent reveals that the parent is en `EmphasisContent` object.
+For example: Consider a method that gets leaf [`Node`][] object as a parameter without any knowledge about it. Calling `getNodeType` reveals that is it a [`Content`][] object. Calling `getContentType()` reveals that it is a [`TextContent`][] object. Calling `getParent()` returns the parent as a [`ContentParent`][] object. Calling `getContentParentType()` on the parent reveals that the parent is en [`EmphasisContent`][] object.
 
-Each `Node` object in a Domain Model API object graph can, through its predecessors, retrieve the root `Document` object. Each `Content` object in a Domain Model API object graph can, through its predecessors, retrieve its `Block` object.
+Each [`Node`][] object in a Domain Model API object graph can, through its predecessors, retrieve the root [`Document`][] object. Each [`Content`][] object in a Domain Model API object graph can, through its predecessors, retrieve its [`Block`][] object.
 
 ##### Down navigation
 
-The following image shows the possible methods to navigate from an `Node` object downwards to the leaf `TextContent` object with `text` value `Baz` of the [eample document](#example).
+The following image shows the possible methods to navigate from an [`Node`][] object downwards to the leaf [`TextContent`][] object with `text` value `Baz` of the [eample document](#example).
 
 ![](resource/markdom-navigation-down.png)
 
-Every `Node` object in a Domain Model API object graph that is parent object has a reference to its companion `Sequence` object which has references to the [children](#api-dom-node-getchildren) of the `Node` object.
+Every [`Node`][] object in a Domain Model API object graph that is parent object has a reference to its companion `Sequence` object which has references to the [children](#api-dom-node-getchildren) of the [`Node`][] object.
 
-For example: Consider a method that gets the root `Node` as a parameter without any knowledge about it. Calling `getNodeType()` reveals that is it a `Document` object. Calling `getBlocks` returns the companion `Sequence` object. Calling `size` reveals that the companion `Sequence` object contains three `Block` objects. Calling `get(1)` returns the second child. Calling `getBlockType()` on the second child reveals that it is a `OrderedListBlock` object.
+For example: Consider a method that gets the root `Node` as a parameter without any knowledge about it. Calling `getNodeType()` reveals that is it a [`Document`][] object. Calling `getBlocks` returns the companion `Sequence` object. Calling `size` reveals that the companion `Sequence` object contains three [`Block`][] objects. Calling `get(1)` returns the second child. Calling `getBlockType()` on the second child reveals that it is a [`OrderedListBlock`][] object.
 
 ##### Detecting cycles {#api-dom-detecting-cycles}
 
-If a `Block`, `ListItem` or `Content` object is about to be attached to a `BlockParent`, `ListBlock` or `ContentParent` object, it is necessary to check, whether this would create a cycle.
+If a `Block`, `ListItem` or [`Content`][] object is about to be attached to a `BlockParent`, `ListBlock` or [`ContentParent`][] object, it is necessary to check, whether this would create a cycle.
 
-If the designated parent object is part of a *Markdom document* (i.e. a tree of `Node` objects which has a root `Document` object), it is not possible to create a cycle, because repeatedly retrieving the [parent](#api-dom-node-getparent) will eventually yield the root `Document` object which by definition doesn't [have](#api-dom-node-hasparent) a parent object and thus ending the path after a finite number of repetitions.
+If the designated parent object is part of a [*Markdom document*][] (i.e. a tree of [`Node`][] objects which has a root [`Document`][] object), it is not possible to create a cycle, because repeatedly retrieving the [parent](#api-dom-node-getparent) will eventually yield the root [`Document`][] object which by definition doesn't [have](#api-dom-node-hasparent) a parent object and thus ending the path after a finite number of repetitions.
 
-If the designated parent object is not part of a *Markdom document* (and therefore part of a tree fragment where one `Node` object that isn't a `Document` object doesn't have a parent), it is possible to create a cycle. The object that is about to be attached doesnt't currently have a parent or otherwise it wouldn't be eligible to be attached to the a parent. The only object in the tree fragment the designated parent is a part of that doesn't have a parent is the root object of that tree fragment. It is therefore necessary and sufficient to check whether the object that is about to be attached is not the root of the tree fragment that the designated parent is a part of, to ensure that no cycle is created.
+If the designated parent object is not part of a [*Markdom document*][] (and therefore part of a tree fragment where one [`Node`][] object that isn't a [`Document`][] object doesn't have a parent), it is possible to create a cycle. The object that is about to be attached doesnt't currently have a parent or otherwise it wouldn't be eligible to be attached to the a parent. The only object in the tree fragment the designated parent is a part of that doesn't have a parent is the root object of that tree fragment. It is therefore necessary and sufficient to check whether the object that is about to be attached is not the root of the tree fragment that the designated parent is a part of, to ensure that no cycle is created.
 
-This can be accomplished by repeatedly retrieving the parent of the designated parent until a `Node` object that doesn't have a parent is found and check whether the last `Node` object in the chain of parent is the object that is about to be added.
+This can be accomplished by repeatedly retrieving the parent of the designated parent until a [`Node`][] object that doesn't have a parent is found and check whether the last [`Node`][] object in the chain of parent is the object that is about to be added.
 
-For example: Assuming a `QuoteBlock` object is about to be attached to a `BlockParent` object. That `BlockParent` object might be another `QuoteBlock` object which is attached to a `ListItem` object which is attached to an `UnorderedListBlock` object which is attached to a `QuoteBlock` object which isn't attached to a `BlockParent` object.  The last `QuoteBlock` in the chain of parents might be the same `QuoteBlock` object that is about to be attached. Attaching the `QuoteBlock` object to its designated parent would therefore create a cycle. The following image illustrates this example.
+For example: Assuming a [`QuoteBlock`][] object is about to be attached to a [`BlockParent`][] object. That [`BlockParent`][] object might be another [`QuoteBlock`][] object which is attached to a [`ListItem`][] object which is attached to an [`UnorderedListBlock`][] object which is attached to a [`QuoteBlock`][] object which isn't attached to a [`BlockParent`][] object.  The last `QuoteBlock` in the chain of parents might be the same [`QuoteBlock`][] object that is about to be attached. Attaching the [`QuoteBlock`][] object to its designated parent would therefore create a cycle. The following image illustrates this example.
 
 ![](resource/markdom-cycles.png)
 
 ### Handler API {#api-handler}
 
-The Handler API represents a [*Markdom document*](#domain-document) as a succession of events.
+The Handler API represents a [*Markdom document*][] as a succession of events.
 
 #### Events {#api-handler-event}
 
-The Handler API defines several events and the order in which the must occur to successfully describe a [*Markdom document*](#domain-document).
+The Handler API defines several events and the order in which the must occur to successfully describe a [*Markdom document*][].
 
-To help different handler implementations to process the described [*Markdom document*](#domain-document) easily, some of the events carry redundant information:
- * Every event concerning a [*Markdom node*](#domain-node) of a polymorph kind (i.e. [*Markdom blocks*](#domain-block) and [*Markdom contents*](#domain-content)) is reported twice. Once in a general form and once in a specific form with the specific parameters. This allows to execute general or specific behavior when necessary.
+To help different handler implementations to process the described [*Markdom document*][] easily, some of the events carry redundant information:
+ * Every event concerning a [*Markdom node*][] of a polymorph kind (i.e. [*Markdom blocks*][] and [*Markdom contents*][]) is reported twice. Once in a general form and once in a specific form with the specific parameters. This allows to execute general or specific behavior when necessary.
  * Every event that is part of a pair (i.e. opening and closing events) and has parameters, carries the same values for the parameters as its counterpart. This usually eliminates the need to remember previously reported values.
 
 ##### Document {#api-handler-event-document}
 
-A [*Markdom document*](#domain-document) is represented by an `onDocumentBegin` event and an `onDocumentEnd` event that frame the events that describe the sequence of [*Markdom blocks*](#domain-block) the described [*Markdom document*](#domain-document) consists of. 
+A [*Markdom document*][] is represented by an `onDocumentBegin` event and an `onDocumentEnd` event that frame the events that describe the sequence of [*Markdom blocks*][] the described [*Markdom document*][] consists of. 
 
 ![](resource/markdom-events-document.png)
 
 ##### Blocks {#api-handler-event-blocks}
 
-A sequence of [*Markdom blocks*](#domain-block) is represented by an `onBlocksBegin` event and an `onBlocksEnd` event that frame the events that describe the [*Markdom blocks*](#domain-block). Consecutive [*Markdom blocks*](#domain-block) are separated by an `onNextBlock` event.
+A sequence of [*Markdom blocks*][] is represented by an `onBlocksBegin` event and an `onBlocksEnd` event that frame the events that describe the [*Markdom blocks*][]. Consecutive [*Markdom blocks*][] are separated by an `onNextBlock` event.
 
 ![](resource/markdom-events-blocks.png)
 
 ##### Block {#api-handler-event-block}
 
-A [*Markdom block*](#domain-block) is represented by an `onBlockBegin` event and an `onBlockEnd` event that frame the events that describe the [*Markdom block*](#domain-block). Both events carry the [`BlockType`](#api-common-blocktype)  value that corresponds to the type of the described [*Markdom block*](#domain-block) as a parameter.
+A [*Markdom block*][] is represented by an `onBlockBegin` event and an `onBlockEnd` event that frame the events that describe the [*Markdom block*][]. Both events carry the [`BlockType`][] value that corresponds to the type of the described [*Markdom block*][] as a parameter.
 
-* If the [*Markdom block*](#domain-block) is a [*Markdom code block*](#domain-codeblock), it is represented as an `onCodeBlock` event. The event carries the `code` parameter of the [*Markdom code block*](#domain-codeblock).
-* If the [*Markdom block*](#domain-block) is a [*Markdom heading content*](#domain-headingblock), it is represented as an `onHeadingBlockBegin` event and an `onHeadingBlockEnd` event that frame the events that describe the sequence of [*Markdom contents*](#domain-content) the described *Markdom heading* consists of. Both events carry the `level` parameter of the described [*Markdom heading content*](#domain-headingblock).
-* If the [*Markdom block*](#domain-block) is a [*Markdom division content*](#domain-divisionblock), it is represented as an `onDivisionBlock` event.
-* If the [*Markdom block*](#domain-block) is an [*ordered Markdom list block*](#domain-orderedlistblock), it is represented as an `onOrderedListBlockBegin` event and an `onOrderedListBlockEnd` event that frame the events that describe the sequence of *Markdom list items* the described [*ordered Markdom list block*](#domain-orderedlistblock) consists of. Both events carry the `startIndex` parameter of the described [*ordered Markdom list block*](#domain-orderedlistblock).
-* If the [*Markdom block*](#domain-block) is a [*Markdom paragraph content*](#domain-paragraphblock), it is represented as an `onParagraphBlockBegin` event and an `onParagraphBlockEnd` event that frame the events that describe the sequence of [*Markdom contents*](#domain-content) the described [*Markdom paragraph content*](#domain-paragraphblock) consists of.
-* If the [*Markdom block*](#domain-block) is a [*Markdom quote content*](#domain-quoteblock), it is represented as an `onQuoteBlockBegin` event and an `onQuoteBlockEnd` event that frame the events that describe the sequence of [*Markdom blocks*](#domain-block) the described [*Markdom quote content*](#domain-quoteblock) consists of.
-* If the [*Markdom block*](#domain-block) is an [*unordered Markdom list block*](#domain-unorderedlistblock), it is represented as an `onUNorderedListBlockBegin` event and an `onUnorderedListBlockEnd` event that frame the events that describe the sequence of *Markdom list items* the described [*unordered Markdom list block*](#domain-unorderedlistblock) consists of.
+* If the [*Markdom block*][] is a [*Markdom code block*][], it is represented as an `onCodeBlock` event. The event carries the `code` parameter of the [*Markdom code block*][].
+* If the [*Markdom block*][] is a [*Markdom heading block*][], it is represented as an `onHeadingBlockBegin` event and an `onHeadingBlockEnd` event that frame the events that describe the sequence of [*Markdom contents*][] the described [*Markdom heading block*][] consists of. Both events carry the `level` parameter of the described [*Markdom heading block*][].
+* If the [*Markdom block*][] is a [*Markdom division block*][], it is represented as an `onDivisionBlock` event.
+* If the [*Markdom block*][] is an [*ordered Markdom list block*][], it is represented as an `onOrderedListBlockBegin` event and an `onOrderedListBlockEnd` event that frame the events that describe the sequence of [*Markdom list items*][] the described [*ordered Markdom list block*][] consists of. Both events carry the `startIndex` parameter of the described [*ordered Markdom list block*][].
+* If the [*Markdom block*][] is a [*Markdom paragraph block*][], it is represented as an `onParagraphBlockBegin` event and an `onParagraphBlockEnd` event that frame the events that describe the sequence of [*Markdom contents*][] the described [*Markdom paragraph block*][] consists of.
+* If the [*Markdom block*][] is a [*Markdom quote block*][], it is represented as an `onQuoteBlockBegin` event and an `onQuoteBlockEnd` event that frame the events that describe the sequence of [*Markdom blocks*][] the described [*Markdom quote block*][] consists of.
+* If the [*Markdom block*][] is an *unordered Markdom list block*, it is represented as an `onUNorderedListBlockBegin` event and an `onUnorderedListBlockEnd` event that frame the events that describe the sequence of [*Markdom list items*][] the described *unordered Markdom list block* consists of.
 
 ![](resource/markdom-events-block.png)
 
 ##### List Items {#api-handler-event-listitems}
 
-A sequence of *Markdom list items* is represented by an `onListItemsBegin` event and an `onListItemEnd` event that frame the events that describe the *Markdom list items*. Consecutive *Markdom list items* are separated by an `onNextListItem` event.
+A sequence of [*Markdom list items*][] is represented by an `onListItemsBegin` event and an `onListItemEnd` event that frame the events that describe the [*Markdom list items*][]. Consecutive [*Markdom list items*][] are separated by an `onNextListItem` event.
 
 ![](resource/markdom-events-listitems.png)
 
 ##### List Item {#api-handler-event-listitem}
 
-A *Markdom list item* is represented by an `onListItemBegin` event and an `onListItemEnd` event that frame the events that describe the sequence of [*Markdom blocks*](#domain-block) the described *Markdom list item* consists of. 
+A [*Markdom list item*][] is represented by an `onListItemBegin` event and an `onListItemEnd` event that frame the events that describe the sequence of [*Markdom blocks*][] the described [*Markdom list item*][] consists of. 
 
 ![](resource/markdom-events-listitem.png)
 
 ##### Contents {#api-handler-event-contents}
 
-A sequence of [*Markdom contents*](#domain-content) is represented by an `onContentsBegin` event and an `onContentsEnd` event that frame the events that describe the *Markdom contents*. Consecutive [*Markdom contents*](#domain-content) are separated by an `onNextContent` event.
+A sequence of [*Markdom contents*][] is represented by an `onContentsBegin` event and an `onContentsEnd` event that frame the events that describe the [*Markdom contents*][]. Consecutive [*Markdom contents*][] are separated by an `onNextContent` event.
 
 ![](resource/markdom-events-contents.png)
 
 ##### Content {#api-handler-event-content}
 
-A [*Markdom content*](#domain-content) is represented by an `onContentBegin` event and an `onContentEnd` event that frame the events that describe the *Markdom content*. Both events carry the `ContentType` value that corresponds to the type of the of the described [*Markdom content*](#domain-content) as a parameter.
+A [*Markdom content*][] is represented by an `onContentBegin` event and an `onContentEnd` event that frame the events that describe the [*Markdom content*][]. Both events carry the [`ContentType`][] value that corresponds to the type of the of the described [*Markdom content*][] as a parameter.
 
-* If the [*Markdom content*](#domain-content) is a [*Markdom code content*](#domain-codecontent), it is represented as an `onCodeContent` event. The event carries `code` parameter of the described [*Markdom code content*](#domain-codecontent).
-* If the [*Markdom content*](#domain-content) is a [*Markdom emphasis content*](#domain-emphasiscontent), it is represented as an `onEmphasisContentBegin` event and an `onEmphasisContentEnd` event that frame the events that describe the sequence of [*Markdom contents*](#domain-content) the described *Markdom conent* consists of. Both events carry the `level` parameter of the described [*Markdom emphasis content*](#domain-emphasiscontent).
-* If the [*Markdom content*](#domain-content) is a [*Markdom image content*](#domain-imagecontent), it is represented as an `onImageContent` event. The event carries the `uri`, `title` and `alternative` parameters of the described [*Markdom image content*](#domain-imagecontent).
-If the [*Markdom content*](#domain-content) is a [*Markdom line break content*](#domain-linebreakcontent), it is represented as an `onLineBreakContent` event. The event carries the `hard` parameter of the described [*Markdom line break content*](#domain-linebreakcontent).
-* If the [*Markdom content*](#domain-content) is a [*Markdom link content*](#domain-linkcontent), it is represented as an `onLinkContentBegin` event and an `onLinkContentEnd` event that frame the events that describe the sequence of [*Markdom contents*](#domain-content) the described [*Markdom link content*](#domain-linkcontent) consists of. Both events carry the `uri` parameter of the described [*Markdom link content*](#domain-linkcontent).
+* If the [*Markdom content*][] is a [*Markdom code content*][], it is represented as an `onCodeContent` event. The event carries `code` parameter of the described [*Markdom code content*][].
+* If the [*Markdom content*][] is a [*Markdom emphasis content*][], it is represented as an `onEmphasisContentBegin` event and an `onEmphasisContentEnd` event that frame the events that describe the sequence of [*Markdom contents*][] the described [*Markdom emphasis content*][] consists of. Both events carry the `level` parameter of the described [*Markdom emphasis content*][].
+* If the [*Markdom content*][] is a [*Markdom image content*][], it is represented as an `onImageContent` event. The event carries the `uri`, `title` and `alternative` parameters of the described [*Markdom image content*][].
+If the [*Markdom content*][] is a [*Markdom line break content*][], it is represented as an `onLineBreakContent` event. The event carries the `hard` parameter of the described [*Markdom line break content*][].
+* If the [*Markdom content*][] is a [*Markdom link content*][], it is represented as an `onLinkContentBegin` event and an `onLinkContentEnd` event that frame the events that describe the sequence of [*Markdom contents*][] the described [*Markdom link content*][] consists of. Both events carry the `uri` parameter of the described [*Markdom link content*][].
 
 ![](resource/markdom-events-content.png)
 
 #### Interfaces {#api-handler-interface}
 
 ##### `Dispatcher` {#api-handler-dispatcher}
-A `Dispatcher` is a component that is able to describe a [*Markdom document*](#domain-document) to a [`Handler`](#api-handler-handler) by dispatching a sequence of [*Markdom events*](#api-handler-event).
+A `Dispatcher` is a component that is able to describe a [*Markdom document*][] to a `Handler` by dispatching a sequence of [*Markdom events*][].
 
 ###### `handle` {#api-handler-dispatcher-handle}
 
-A [`Dispatcher`](#api-handler-dispatcher) object must have a method with signature `Object handle(Handler handler)`.
+A [`Dispatcher`][] object must have a method with signature `Object handle(Handler handler)`.
 
-This method must dispatch [*Markdom events*](#api-handler-event) that describe the [*Markdom document*](#domain-document) to `handler` in the correct order.
+This method must dispatch [*Markdom events*][] that describe the [*Markdom document*][] to `handler` in the correct order.
   
 This method must return the [result](#api-handler-handler-getresult) of `handler`.
 
-Calling this method multiple times on a [`Dispatcher`](#api-handler-dispatcher) that is not [repeatable](#api-handler-isrepeatable) has an undefined behavior, unless explicitly stated otherwise.
+Calling this method multiple times on a `Dispatcher` that is not [repeatable](#api-handler-isrepeatable) has an undefined behavior, unless explicitly stated otherwise.
   
 This method must fail if `handler` is not present.
 
 ###### `isRepeatable` {#api-handler-isrepeatable}
 
-A [`Dispatcher`](#api-handler-dispatcher) object must have a method with signature `Boolean isRepeatable()`.
+A [`Dispatcher`][] object must have a method with signature `Boolean isRepeatable()`.
   
-This method must return whether the [`Dispatcher`](#api-handler-dispatcher) object is able to describe a [*Markdom document*](#domain-document) multiple times (e.g. a [`Document`](#api-dom-document) object can describe itself multiple times, but a CommonMark parsing [`Handler`](#api-handler-handler) object that consumes its input can't).
+This method must return whether the [`Dispatcher`][] object is able to describe a [*Markdom document*][] multiple times (e.g. a [`Document`][] object can describe itself multiple times, but a CommonMark parsing [`Handler`][] object that consumes its input can't).
   
 ##### `Handler` {#api-handler-handler}
 
-A `Handler` is a component that is able to receive a a sequence of [*Markdom events*](#api-handler-event) that describe a [*Markdom document*](#domain-document) from a [`Dispatcher`](#api-handler-dispatcher) and calculate a result or causes side effects that corresponds to the described [*Markdom document*](#domain-document) (e.g. a [`Handler`](#api-handler-dispatcher) object can generate a [`Document`](#api-dom-document) object or write CommonMark text into a file).
+A `Handler` is a component that is able to receive a a sequence of [*Markdom events*][] that describe a [*Markdom document*][] from a `Dispatcher` and calculate a result or causes side effects that corresponds to the described [*Markdom document*][] (e.g. a [`Handler`][] object can generate a [`Document`][] object or write CommonMark text into a file).
 
-Calling methods on a  [`Handler`](#api-handler-handler) in an order that doesn't properly describe a [*Markdom document*](#domain-document) has an undefined behavior.
+Calling methods on a  `Handler` in an order that doesn't properly describe a [*Markdom document*][] has an undefined behavior.
 
 ###### `getResult` {#api-handler-handler-getresult}
 
-A [`Handler`](#api-handler-handler) object must have a method with signature `Object getResult()`.
+A [`Handler`][] object must have a method with signature `Object getResult()`.
 
-This method must return the calculated result that corresponds to the described [*Markdom document*](#domain-document) (e.g. a [`Handler`](#api-handler-dispatcher) object that generates a [`Document`](#api-dom-document) object returns that [`Document`](#api-dom-document) object and a [`Handler`](#api-handler-dispatcher) object that writes CommonMark text into a file returns `null`).
+This method must return the calculated result that corresponds to the described [*Markdom document*][] (e.g. a [`Handler`][] object that generates a [`Document`][] object returns that [`Document`][] object and a [`Handler`][] object that writes CommonMark text into a file returns `null`).
 
-Calling this method before the [`onDocumentEnd`](#api-handler-handler-ondocumentend) event has been received yields an undefined result, unless explicitly stated otherwise.
+Calling this method before `onDocumentend()` has been called yields an undefined result, unless explicitly stated otherwise.
 
 ###### `onBlockBegin` {#api-handler-handler-onblockbegin}
 
-A [`Handler`](#api-handler-handler) object must have a method with signature `onBlockBegin(BlockType type)`.
+A [`Handler`][] object must have a method with signature `onBlockBegin(BlockType type)`.
 
-The `type` parameter determines the type of the represented [*Markdom block*](#domain-block).
+This event represents the general form of the begin of a [*Markdom block*][]. The `type` parameter determines the type of the represented [*Markdom block*][].
 
-The behavior of this method is undefined, If `type` is not present.
+Calling this method must be must be, depending on the value of the `type` parameter, followed by a call to `onCodeBlock` or `onHeadinBlockBegin` or `onDivisionBlock` or `onOrderedListBlockBegin` or `onParagraphBlockBegin` or `onQuoteBlockBegin` or `onUnorderedListBlockBegin`. A corresponding call to `onBlockEnd` withe the same `type` value must eventually occur.
 
-Calling this method must be must be, depending on the value of the `type` parameter, followed by a call to `onCodeBlock` or `onHeadinBlockBegin` or `onDivisionBlock` or `onOrderedListBlockBegin` or `onParagraphBlockBegin` or `onQuoteBlockBegin` or `onUnorderedListBlockBegin`. A corresponding call to `onBlockEnd` must eventually occur.
+The behavior of this method is undefined, if `type` is not present.
 
 ###### `onBlockEnd` {#api-handler-handler-onblockend}
 
-A [`Handler`](#api-handler-handler) object must have a method with signature `onBlockEnd(BlockType type)`.
+A [`Handler`][] object must have a method with signature `onBlockEnd(BlockType type)`.
 
-The `type` parameter must have the same value as the corresponding call to `onBlockBegin`.
+This event represents the general form of the end of a [*Markdom block*][]. The `type` parameter determines the type of the represented [*Markdom block*][].
 
-The behavior of this method is undefined, If `type` is not present.
+A corresponding call to `onBlockBegin` with the same `type` value must have occurred. Calling this method must be followed by a call to `onNextBlock` or `onBlocksEnd.
 
-A corresponding call to `onBlockBegin` must have occurred. Calling this method must be followed by a call to `onNextBlock` or `onBlocksEnd.
+The behavior of this method is undefined, if `type` is not present.
 
 ###### `onBlocksBegin` {#api-handler-handler-onblocksbegin}
 
-A [`Handler`](#api-handler-handler) object must have a method with signature `onBlocksBegin()`.
+A [`Handler`][] object must have a method with signature `onBlocksBegin()`.
+
+This event represents the begin of a sequence ob [*Markdom blocks*][].
 
 Calling this method must be must be followed by a call to `onBlockBegin` or `onBlocksEnd`. A corresponding call to `onBlocksEnd` must eventually occur.
 
 ###### `onBlocksEnd` {#api-handler-handler-onblocksend}
 
-A [`Handler`](#api-handler-handler) object must have a method with signature `onBlocksEnd()`.
+A [`Handler`][] object must have a method with signature `onBlocksEnd()`.
+
+This event represents the end of a sequence ob [*Markdom blocks*][].
 
 A corresponding call to `onBlocksBegin` must have occurred. Calling this method must be followed by a call to `onDocumentEnd` or `onQuoteBlockEnd` or `onListItemEnd`.
 
 ###### `onCodeBlock` {#api-handler-handler-oncodeblock}
 
-A [`Handler`](#api-handler-handler) object must have a method with signature `onCodeBlock(String code, String? hint)`.
+A [`Handler`][] object must have a method with signature `onCodeBlock(String code, String? hint)`.
 
-The parameters determine the `code` parameter and the `hint` parameter of the represented [*Markdom code block*](#domain-codeblock).
-
-The behavior of this method is undefined, If `code` is not present.
+This event represents a [*Markdom code block*][] with the given values for the `code` and `hint` parameters.
 
 Calling this method must be must be followed by a call to `onBlockEnd`.
+
+The behavior of this method is undefined, if `code` is not present.
 
 ###### `onCodeContent` {#api-handler-handler-oncodecontent}
 
-A [`Handler`](#api-handler-handler) object must have a method with signature `onCodeContent(String code)`.
+A [`Handler`][] object must have a method with signature `onCodeContent(String code)`.
 
-The parameter determines the `code` parameter of the represented [*Markdom code content*](#domain-codecontent).
+This event represents a [*Markdom code content*][] with the given value for the `code` parameter.
 
-The behavior of this method is undefined, If `code` is not present.
+Calling this method must be must be followed by a call to `onContentEnd`.
 
-Calling this method must be must be followed by a call to `onBlockEnd`.
+The behavior of this method is undefined, if `code` is not present.
 
 ###### `onContentBegin` {#api-handler-handler-oncontentbegin}
 
-A [`Handler`](#api-handler-handler) object must have a method with signature `onContenBegin(ContentType type)`.
+A [`Handler`][] object must have a method with signature `onContenBegin(ContentType type)`.
 
-The `type` parameter determines the type of the represented [*Markdom content*](#domain-content).
+This event represents the general form of the begin of a [*Markdom content*][]. The `type` parameter determines the type of the represented [*Markdom content*][].
 
-The behavior of this method is undefined, If `type` is not present.
+Calling this method must be must be, depending on the value of the `type` parameter, followed by a call to `onCodeContent` or `onEmphasisContentBegin` or `onImageContent` or `onLineBreakContent` or `onLinkContentBegin` or `onTextContent`. A corresponding call to `onContentEnd` with the same `type` value must eventually occur.
 
-Calling this method must be must be, depending on the value of the `type` parameter, followed by a call to `onCodeContent` or `onEmphasisContentBegin` or `onImageContent` or `onLineBreakContent` or `onLinkContentBegin` or `onTextContent`. A corresponding call to `onContentEnd` must eventually occur.
+The behavior of this method is undefined, if `type` is not present.
 
 ###### `onContentEnd` {#api-handler-handler-oncontentend}
 
-A [`Handler`](#api-handler-handler) object must have a method with signature `onContentEnd(ContentType type)`.
+A [`Handler`][] object must have a method with signature `onContentEnd(ContentType type)`.
 
-The `type` parameter must have the same value as the corresponding call to `onContentBegin`.
+This event represents the general form of the end of a [*Markdom content*][]. The `type` parameter determines the type of the represented [*Markdom content*][].
 
-The behavior of this method is undefined, If `type` is not present.
+A corresponding call to `onContentBegin` with the same `type` value must have occurred. Calling this method must be followed by a call to `onNextContent` or `onContentsEnd.
 
-A corresponding call to `onContentBegin` must have occurred. Calling this method must be followed by a call to `onNextContent` or `onContentsEnd.
+The behavior of this method is undefined, if `type` is not present.
 
 ###### `onContentsBegin` {#api-handler-handler-oncontentsbegin}
 
-A [`Handler`](#api-handler-handler) object must have a method with signature `onContentsBegin()`.
+A [`Handler`][] object must have a method with signature `onContentsBegin()`.
+
+This event represents the begin of a sequence ob [*Markdom contents*][].
 
 Calling this method must be must be followed by a call to `onContentBEgin` or `onContentsEnd`. A corresponding call to `onContentsEnd` must eventually occur.
 
 ###### `onContentsEnd` {#api-handler-handler-oncontentsend}
 
-A [`Handler`](#api-handler-handler) object must have a method with signature `onContentsEnd()`.
+A [`Handler`][] object must have a method with signature `onContentsEnd()`.
+
+This event represents the end of a sequence ob [*Markdom contents*][].
 
 A corresponding call to `onContentsBegin` must have occurred. Calling this method must be followed by a call to `onHeadingBlockEnd` or `onParagraphBlockEnd` or `onEmphasisContentEnd` or `onLinkContentEnd`.
 
 ###### `onDivisionBlock` {#api-handler-handler-ondivisionblock}
 
-A [`Handler`](#api-handler-handler) object must have a method with signature `onDivisionBlock()`.
+A [`Handler`][] object must have a method with signature `onDivisionBlock()`.
+
+This event represents a [*Markdom division block*][].
 
 Calling this method must be must be followed by a call to `onBlockEnd`.
 
 ###### `onDocumentBegin` {#api-handler-handler-ondocumentbegin}
 
-A [`Handler`](#api-handler-handler) object must have a method with signature `onDocumentBegin()`.
+A [`Handler`][] object must have a method with signature `onDocumentBegin()`.
+
+This event represents the begin of a [*Markdom document*][].
 
 This is the first method that must be called. Calling this method must be must be followed by a call to `onBlocksBegin`. A corresponding call to `onDocumentEnd` must eventually occur.
 
 ###### `onDocumentEnd` {#api-handler-handler-ondocumentend}
 
-A [`Handler`](#api-handler-handler) object must have a method with signature `onDocumentEnd()`.
+A [`Handler`][] object must have a method with signature `onDocumentEnd()`.
+
+This event represents the end of a [*Markdom document*][].
 
 A corresponding call to `onDocumentBegin` must have occurred. Calling this method may be followed by a call to `getResult`.
 
 ###### `onHeadingBlockBegin` {#api-handler-handler-onheadingblockbegin}
 
-A [`Handler`](#api-handler-handler) object must have a method with signature `onHeadingBlockBegin(HeadingLevel level)`.
+A [`Handler`][] object must have a method with signature `onHeadingBlockBegin(HeadingLevel level)`.
 
-The parameter determines the `level` parameter of the represented [*Markdom heading block*](#domain-headingblock).
+This event represents the begin of a [*Markdom heading block*][] with the given value for the `level` parameter.
 
-The behavior of this method is undefined, If `level` is not present.
+Calling this method must be must be followed by a call to `onContentsBegin`. A corresponding call to `onHeadingBlockEnd` with the same `level` value must eventually occur.
 
-Calling this method must be must be followed by a call to `onContentsBegin`. A corresponding call to `onHeadingBlockEnd` must eventually occur.
+The behavior of this method is undefined, if `level` is not present.
 
 ###### `onHeadingBlockEnd` {#api-handler-handler-onheadingblockend}
 
-A [`Handler`](#api-handler-handler) object must have a method with signature `onHeadingBlockEnd(HeadingLevel level)`.
+A [`Handler`][] object must have a method with signature `onHeadingBlockEnd(HeadingLevel level)`.
 
-The `level` parameter must have the same value as the corresponding call to `onHeadingBlockBegin`.
+This event represents the end of a [*Markdom heading block*][] with the given value for the `level` parameter.
 
-The behavior of this method is undefined, If `level` is not present.
+A corresponding call to `onHeadingBlockBegin` with the same `level` value must have occurred. Calling this method must be followed by a call to `onBlockEnd`.
 
-A corresponding call to `onHeadingBlockBegin` must have occurred. Calling this method must be followed by a call to `onBlockEnd`.
+The behavior of this method is undefined, if `level` is not present.
 
 ###### `onEmphasisContentBegin` {#api-handler-handler-onemphasiscontentbegin}
 
-A [`Handler`](#api-handler-handler) object must have a method with signature `onEmphasisContentBegin(EmphasisLevel level)`.
+A [`Handler`][] object must have a method with signature `onEmphasisContentBegin(EmphasisLevel level)`.
 
-The parameter determines the `level` parameter of the represented [*Markdom emphasis content*](#domain-emphasiscontent).
+This event represents the begin of a [*Markdom emphasis content*][] with the given value for the `level` parameter.
 
-The behavior of this method is undefined, If `level` is not present.
+Calling this method must be must be followed by a call to `onContentsBegin`. A corresponding call to `onEmphasisContentEnd` with the same `level` value must eventually occur.
 
-Calling this method must be must be followed by a call to `onContentsBegin`. A corresponding call to `onEmphasisContentEnd` must eventually occur.
+The behavior of this method is undefined, if `level` is not present.
 
 ###### `onEmphasisContentEnd` {#api-handler-handler-onemphasiscontentend}
 
-A [`Handler`](#api-handler-handler) object must have a method with signature `onEmphasisContentEnd(EmphasisLevel level)`.
+A [`Handler`][] object must have a method with signature `onEmphasisContentEnd(EmphasisLevel level)`.
 
-The `level` parameter must have the same value as the corresponding call to `onEmphasisContentBegin`.
+This event represents the end of a [*Markdom emphasis content*][] with the given value for the `level` parameter.
 
-The behavior of this method is undefined, If `level` is not present.
+A corresponding call to `onEmphasisContentBegin` with the same `level` value must have occurred. Calling this method must be followed by a call to `onContentEnd`.
 
-A corresponding call to `onEmphasisContentBegin` must have occurred. Calling this method must be followed by a call to `onContentEnd`.
+The behavior of this method is undefined, if `level` is not present.
 
 ###### `onImageContent` {#api-handler-handler-onimagecontent}
 
-A [`Handler`](#api-handler-handler) object must have a method with signature `onImageContent(String uri, String? title, String? alternative)`.
+A [`Handler`][] object must have a method with signature `onImageContent(String uri, String? title, String? alternative)`.
 
-The parameters determine the `uri` parameter and the `title` parameter and the `alternative` parameter of the represented [*Markdom image content*](#domain-imagecontent).
+This event represents a [*Markdom image content*][] with the given values for the `uri`, `title` and `alternative` parameters.
 
-The behavior of this method is undefined, If `uri` is not present.
+Calling this method must be must be followed by a call to `onContentEnd`.
 
-The behavior of this method is undefined, If `uri` is not a valid URI reference.
+The behavior of this method is undefined, if `uri` is not present.
 
-Calling this method must be must be followed by a call to `onBlockEnd`.
+The behavior of this method is undefined, if `uri` is not a valid URI reference.
 
 ###### `onLineBreakContent` {#api-handler-handler-onlinebreakcontent}
 
-A [`Handler`](#api-handler-handler) object must have a method with signature `onLineBreakContent(Boolean hard)`.
+A [`Handler`][] object must have a method with signature `onLineBreakContent(Boolean hard)`.
 
-The parameter determines the `hard` parameter of the represented [*Markdom line break content*](#domain-linebreakcontent).
+This event represents a [*Markdom line break content*][] with the given value for the `hard` parameter.
 
-The behavior of this method is undefined, If `hard` is not present.
+Calling this method must be must be followed by a call to `onContentEnd`.
 
-Calling this method must be must be followed by a call to `onBlockEnd`.
+The behavior of this method is undefined, if `hard` is not present.
 
 ###### `onLinkContentBegin` {#api-handler-handler-onlinkcontentbegin}
 
-A [`Handler`](#api-handler-handler) object must have a method with signature `onLinkContentBegin(String uri)`.
+A [`Handler`][] object must have a method with signature `onLinkContentBegin(String uri)`.
 
-The parameter determines the `uri` parameter of the represented [*Markdom link content*](#domain-linkcontent).
+This event represents the begin of a [*Markdom link content*][] with the given value for the `uri` parameter.
 
-The behavior of this method is undefined, If `uri` is not present.
+Calling this method must be must be followed by a call to `onContentsBegin`. A corresponding call to `onLinkContentEnd` with the same `uri` value must eventually occur.
 
-The behavior of this method is undefined, If `uri` is not a valid URI reference.
+The behavior of this method is undefined, if `uri` is not present.
 
-Calling this method must be must be followed by a call to `onContentsBegin`. A corresponding call to `onLinkContentEnd` must eventually occur.
+The behavior of this method is undefined, if `uri` is not a valid URI reference.
 
 ###### `onLinkContentEnd` {#api-handler-handler-onlincontentend}
 
-A [`Handler`](#api-handler-handler) object must have a method with signature `onLinkContentEnd(String uri)`.
+A [`Handler`][] object must have a method with signature `onLinkContentEnd(String uri)`.
 
-The `uri` parameter must have the same value as the corresponding call to `onLinkContentBegin`.
+This event represents the begin of a [*Markdom link content*][] with the given value for the `uri` parameter.
 
-The behavior of this method is undefined, If `uri` is not present.
+A corresponding call to `onLinkContentBegin` with the same `uri` value must have occurred. Calling this method must be followed by a call to `onContentEnd`.
 
-The behavior of this method is undefined, If `uri` is not a valid URI reference.
+The behavior of this method is undefined, if `uri` is not present.
 
-A corresponding call to `onLinkContentBegin` must have occurred. Calling this method must be followed by a call to `onContentEnd`.
+The behavior of this method is undefined, if `uri` is not a valid URI reference.
 
 ###### `onListItemBegin` {#api-handler-handler-onlistitembegin}
 
-A [`Handler`](#api-handler-handler) object must have a method with signature `onListItemBegin()`.
+A [`Handler`][] object must have a method with signature `onListItemBegin()`.
+
+This event represents the begin of a [*Markdom list item*][].
 
 Calling this method must be must be followed by a call to `onBlocksBegin`. A corresponding call to `onListItemEnd` must eventually occur.
 
 ###### `onListItemEnd` {#api-handler-handler-onlistitemend}
 
-A [`Handler`](#api-handler-handler) object must have a method with signature `onListItemEnd()`.
+A [`Handler`][] object must have a method with signature `onListItemEnd()`.
+
+This event represents the end of a [*Markdom list item*][].
 
 A corresponding call to `onListItemBegin` must have occurred. Calling this method must be followed by a call to `onNextListItem` or `onListItemsEnd.
 
 ###### `onListItemsBegin` {#api-handler-handler-onlistitemsbegin}
 
-A [`Handler`](#api-handler-handler) object must have a method with signature `onListItemsBegin()`.
+A [`Handler`][] object must have a method with signature `onListItemsBegin()`.
+
+This event represents the begin of a sequence of [*Markdom list items*][].
 
 Calling this method must be must be followed by a call to `onListItemBegin` or `onListItemsEnd`. A corresponding call to `onListItemsEnd` must eventually occur.
 
 ###### `onListItemsEnd` {#api-handler-handler-onlistitemsend}
 
-A [`Handler`](#api-handler-handler) object must have a method with signature `onListItemsEnd()`.
+A [`Handler`][] object must have a method with signature `onListItemsEnd()`.
+
+This event represents the end of a sequence of [*Markdom list items*][].
 
 A corresponding call to `onListItemsBegin` must have occurred. Calling this method must be followed by a call to `onOrderedListBlockEnd` or `onUnorderedListBlockEnd`.
 
 ###### `onNextBlock` {#api-handler-handler-onnextblock}
 
-A [`Handler`](#api-handler-handler) object must have a method with signature `onNextBlock()`.
+A [`Handler`][] object must have a method with signature `onNextBlock()`.
+
+This event represents the continuation of a sequence of [*Markdom blocks*][].
 
 Calling this method must be must be followed by a call to `onBlockBegin`.
 
 ###### `onNextContent` {#api-handler-handler-onnextcontent}
 
-A [`Handler`](#api-handler-handler) object must have a method with signature `onNextContent()`.
+A [`Handler`][] object must have a method with signature `onNextContent()`.
+
+This event represents the continuation of a sequence of [*Markdom contents*][].
 
 Calling this method must be must be followed by a call to `onContentBegin`.
 
 ###### `onNextListItem` {#api-handler-handler-onnextlistitem}
 
-A [`Handler`](#api-handler-handler) object must have a method with signature `onNextListItem()`.
+A [`Handler`][] object must have a method with signature `onNextListItem()`.
+
+This event represents the continuation of a sequence of [*Markdom list items*][].
 
 Calling this method must be must be followed by a call to `onListItemBegin`.
 
 ###### `onOrderedListBlockBegin` {#api-handler-handler-onorderedlistblockbegin}
 
-A [`Handler`](#api-handler-handler) object must have a method with signature `onOrderedListBlockBegin(Integer startIndex)`.
+A [`Handler`][] object must have a method with signature `onOrderedListBlockBegin(Integer startIndex)`.
 
-The parameter determines the `startIndex` parameter of the represented [*ordered Markdom list block*](#domain-orderedlistblock).
+This event represents the begin of an [*ordered Markdom list block*][] with the given value for the `startIndex` parameter.
 
-The behavior of this method is undefined, If `startIndex` is not present.
+Calling this method must be must be followed by a call to `onListItemsBegin`. A corresponding call to `onOrderedListBlockEnd`  with the same `startIndex` value must eventually occur.
 
-The behavior of this method is undefined, If `startIndex` is negative.
+The behavior of this method is undefined, if `startIndex` is not present.
 
-Calling this method must be must be followed by a call to `onListItemsBegin`. A corresponding call to `onOrderedListBlockEnd` must eventually occur.
+The behavior of this method is undefined, if `startIndex` is negative.
 
 ###### `onOrderedListBlockEnd` {#api-handler-handler-onorderedlistblockend}
 
-A [`Handler`](#api-handler-handler) object must have a method with signature `onOrderedListBlockEnd(Integer startIndex)`.
+A [`Handler`][] object must have a method with signature `onOrderedListBlockEnd(Integer startIndex)`.
 
-The `startIndex` parameter must have the same value as the corresponding call to `onOrderedListBlockBegin`.
+This event represents the end of an [*ordered Markdom list block*][] with the given value for the `startIndex` parameter.
 
-The behavior of this method is undefined, If `startIndex` is not present.
+A corresponding call to `onOrderedListBlockBegin` wit the same `startIndex` value must have occurred. Calling this method must be followed by a call to `onBlockEnd`.
 
-The behavior of this method is undefined, If `startIndex` is negative.
+The behavior of this method is undefined, if `startIndex` is not present.
 
-A corresponding call to `onOrderedListBlockBegin` must have occurred. Calling this method must be followed by a call to `onBlockEnd`.
+The behavior of this method is undefined, if `startIndex` is negative.
 
 ###### `onParagraphBlockBegin` {#api-handler-handler-onquoteblockbegin}
 
-A [`Handler`](#api-handler-handler) object must have a method with signature `onParagraphBlockBegin()`.
+A [`Handler`][] object must have a method with signature `onParagraphBlockBegin()`.
+
+This event represents the begin of a [*Markdom paragraph block*][].
 
 Calling this method must be must be followed by a call to `onContentsBegin`. A corresponding call to `onParagraphBlockEnd` must eventually occur.
 
 ###### `onParagraphBlockEnd` {#api-handler-handler-onquoteblockend}
 
-A [`Handler`](#api-handler-handler) object must have a method with signature `onParagraphBlockEnd()`.
+A [`Handler`][] object must have a method with signature `onParagraphBlockEnd()`.
+
+This event represents the end of a [*Markdom paragraph block*][].
 
 A corresponding call to `onParagraphBlockBegin` must have occurred. Calling this method must be followed by a call to `onBlockEnd`.
 
 ###### `onQuoteBlockBegin` {#api-handler-handler-onquoteblockbegin}
 
-A [`Handler`](#api-handler-handler) object must have a method with signature `onQuoteBlockBegin()`.
+A [`Handler`][] object must have a method with signature `onQuoteBlockBegin()`.
+
+This event represents the begin of a [*Markdom quote block*][].
 
 Calling this method must be must be followed by a call to `onBlocksBegin`. A corresponding call to `onQuoteBlockEnd` must eventually occur.
 
 ###### `onQuoteBlockEnd` {#api-handler-handler-onquoteblockend}
 
-A [`Handler`](#api-handler-handler) object must have a method with signature `onQuoteBlockEnd()`.
+A [`Handler`][] object must have a method with signature `onQuoteBlockEnd()`.
+
+This event represents the end of a [*Markdom quote block*][].
 
 A corresponding call to `onQuoteBlockBegin` must have occurred. Calling this method must be followed by a call to `onBlockEnd`.
 
+###### `onTextContent` {#api-handler-handler-ontextcontent}
+
+A [`Handler`][] object must have a method with signature `onTextContent(String text)`.
+
+This event represents a [*Markdom text content*][] with the given value for the `text`.
+
+Calling this method must be must be followed by a call to `onBlockEnd`.
+
+The behavior of this method is undefined, if `text` is not present.
+
 ###### `onUnorderedListBlockBegin` {#api-handler-handler-onunorderedlistblockbegin}
 
-A [`Handler`](#api-handler-handler) object must have a method with signature `onUnorderedListBlockBegin()`.
+A [`Handler`][] object must have a method with signature `onUnorderedListBlockBegin()`.
+
+This event represents the begin of an *unordered Markdom list block*.
 
 Calling this method must be must be followed by a call to `onListItemsBegin`. A corresponding call to `onUnorderedListBlockEnd` must eventually occur.
 
 ###### `onUnorderedListBlockEnd` {#api-handler-handler-onunorderedlistblockend}
 
-A [`Handler`](#api-handler-handler) object must have a method with signature `onUnorderedListBlockEnd()`.
+A [`Handler`][] object must have a method with signature `onUnorderedListBlockEnd()`.
+
+This event represents the end of an *unordered Markdom list block*.
 
 A corresponding call to `onUnorderedListBlockBegin` must have occurred. Calling this method must be followed by a call to `onBlockEnd`.
-
-###### `onTextContent` {#api-handler-handler-ontextcontent}
-
-A [`Handler`](#api-handler-handler) object must have a method with signature `onTextContent(String text)`.
-
-The parameter determines the `text` parameter of the represented [*Markdom text content*](#domain-textcontent).
-
-The behavior of this method is undefined, If `text` is not present.
-
-Calling this method must be must be followed by a call to `onBlockEnd`.
 
 #### Additional information
 
@@ -1927,4 +1969,63 @@ The following XHTML 5 document represents the [example document](#example):
 
 ```
 
+[*Markdom node*]: #domain-node
+[*Markdom nodes*]: #domain-node
+[*Markdom document*]: #domain-document
+[*Markdom documents*]: #domain-document
+[*Markdom block*]: #domain-block
+[*Markdom blocks*]: #domain-block
+[*Markdom code block*]: #domain-codeblock
+[*Markdom division block*]: #domain-divisionblock
+[*Markdom heading block*]: #domain-headingblock
+[*ordered Markdom list block*]: #domain-orderedlistblock
+[*Markdom paragraph block*]: #domain-paragraphblock
+[*Markdom quote block*]: #domain-quoteblock
+[*unordered Markdom List block*]: #domain-unorderedlistblock
+[*Markdom list item*]: #domain-listitem
+[*Markdom list items*]: #domain-listitem
+[*Markdom content*]: #domain-content
+[*Markdom contents*]: #domain-content
+[*Markdom code content*]: #domain-codecontent
+[*Markdom emphasis content*]: #domain-emphasiscontent
+[*Markdom image content*]: #domain-imagecontent
+[*Markdom line break content*]: #domain-linebreakcontent
+[*Markdom link content*]: #domain-linkcontent
+[*Markdom text content*]: #domain-textcontent
+[*Markdom event*]: api-handler-event
+[*Markdom events*]: api-handler-event
+
+[`BlockType]: #api-common-blocktype
+[`ContentType]: #api-common-contenttype
+[`EmphasisLevel]: #api-common-emphasislevel
+[`HeadingLevel]: #api-common-headinglevel
+[`BlockParentType]: #api-dom-blockparenttype
+[`ContentParentType]: #api-dom-contentparenttype
+[`NodeType]: #api-dom-nodetype
+[`ListBlockType]: #api-dom-listblocktype
+[`Block`]: #api-dom-block
+[`BlockParent`]: #api-dom-blockparent
+[`CodeBlock`]: #api-dom-codeblock
+[`CodeContent`]: #api-dom-codecontent
+[`Content`]: #api-dom-content
+[`ContentParent`]: #api-dom-contentparent
+[`ContentParentBlock`]: #api-dom-contentparentblock
+[`ContentParentContent`]: #api-dom-contentparentcontent
+[`DivisionBlock`]: #api-dom-divisionblock
+[`Document`]: #api-dom-document
+[`EmphasisContent`]: #api-dom-emphasiscontent
+[`HeadingBlock`]: #api-dom-headingblock
+[`ImageContent`]: #api-dom-imagecontent
+[`LineBreakContent`]: #api-dom-linebreakcontent
+[`LinkContent`]: #api-dom-linkcontent
+[`ListBlock`]: #api-dom-listblock
+[`ListItem`]: #api-dom-listitem
+[`Node`]: #api-dom-node
+[`OrderedListBlock`]: #api-dom-orderedlistblock
+[`ParagraphBlock`]: #api-dom-paragraphblock
+[`QuoteBlock`]: #api-dom-quoteblock
+[`TextContent`]: #api-dom-textcontent
+[`UnorderedListBlock`]: #api-dom-unorderedlistblock
+[`Handler`]: #api-handler-handler
+[`Dispatcher`]: #api-handler-dispatcher
 
