@@ -329,30 +329,61 @@ It is commonly recommended to implement an algorithms that processes a [*Markdom
    
 ### Common {#api-common}
 
+#### Considerations
+
+It is safe to assume that some of the requirements from specification don't go along well with established conventions or formal rules of a given programming language. This includes, but is not limited to naming conventions (e.g. prefixes and suffixes for interfaces, traits, abstract classes and methods).
+
+Implementers should find a reasonable compromise between the two. In doubt, programming language idiosyncrasies should be preferred over requirements from this specification, as long as the general spirit of this specification is preserved (e.g. adding or removing prefixes or suffixes is okay, but no unnecessary renaming of the actual thing in question is not).
+
+The return type of methods is therefor omitted where possible. Implementers should select a return type that best fits the spirit of the programming language.
+
+This should ensure that the implementation is acceptable to programmers familiar with that programming language and that implementations (e.g. a particular [`Handler`][] object) are easily translatable into other programming languages.
+
+It is recommended that implementations contain a section about such implementation considerations in their readme file.
+
 #### Dependencies {#api-common-dependencies}
 
+Obviously, both Markdom APIs require some support from the programming language a particular implementation is written in. This specification is written with an object orientated programming language is mind, but it should be little effort to interpret this specification for programming languages that follow another programming paradigm.
 
+#### Mandatory and optional parameters
 
+The Markdom APIs use mandatory and optional parameters. Mandatory parameters must always have a value. Optional parameters may or may not have a value. Mandatory parameters are hereafter notes as `Type name` where `Type` is value type and `name` is the parameter name. Optional parameters are hereafter notes as `Type? name` where `Type` is value type and `name` is the parameter name.
 
+There are common implementations for mandatory and optional parameters.
+1. For a programming languages that has `null` values and can't enforce non-`null` values for a method parameter, `null` may be used to indicate that an optional parameter has no value. Explicit `null`-checks must be implemented for mandatory parameters.
+1. For a Programming languages that has `null` values and can enforce non-`null` values for a method parameter, `null` may be used to indicate that an optional parameter has no value. No explicit `null`-checks must be implemented for mandatory parameters.
+1. For a Programming languages that doesn't have `null` values an explicit `Optional` type must be used to for an optional parameter. No explicit `null`-checks must be implemented for mandatory parameters.
 
+#### Primitive Values
 
+The Markdom APIs use parameters and return values that represent values of primitive type. Specifically for boolean values, numbers and Unicode character sequences. Such types are hereafter noted as `Boolean`, `Integer` and `String` respectively. 
 
+#### Iterables
 
+The Markdom APIs use parameters and return values that represent a linear ordered concatenation of values of a given type that can be iterated over in that order. Such types are hereafter noted as `Type...` where `Type` is the value type.
 
+This should usually be implemented as a data structure that is eligible to be processed in a `foreach`-loop.
 
+As a method parameter, this may also be implemented as a variable argument list.
 
+#### Sequences
 
-The [Domain Model API](#api-dom) uses the following classes:
+The Markdom APIs use parameters and return values that represent a modifiable linear ordered concatenation of values of values of a given type that allows random access. Such types are hereafter noted as `[Type]` where `Type` is the value type.
 
-// hint**
+This should usually be implemented as a data structure that has at least the following (or comparable) methods:
 
-// arrays (var arg), iterator and iterable
-
-// source
-
-// sequence
-
-// primitives (int, ), unicode string,
+* `Boolean isEmpty()`
+* `Integer getLength()`
+* `Boolean contains(Object object)`
+* `Integer indexOf(Object object)`
+* `Object get(int index)`
+* `set(int index, Object object)`
+* `add(Object object)`
+* `add(int index, Object... objects)`
+* `addAll(Object object)`
+* `addAll(int index, Object.. objects)`
+* `remove(Object object)`
+* `removeAll(Object... objects)`
 
 #### Enumerations {#api-common-enumerations}
 
@@ -452,7 +483,7 @@ This method must return the [`BlockParentType`][] value that corresponds to the 
 
 ###### `getBlocks` {#api-dom-blockparent-getblocks}
 
-A `BlockParent` object must have a method with signature `Sequence getBlocks()`.
+A `BlockParent` object must have a method with signature `[Block] getBlocks()`.
 
 This method must return the associated `Sequence` of [`Block`][] objects.
 
@@ -591,7 +622,7 @@ This method must return the [`ContentParentType`][] value that corresponds to th
 
 ###### `getContents` {#api-dom-contentparent-getcontents}
 
-A `ContentParent` object must have a method with signature `Sequence getContents()`.
+A `ContentParent` object must have a method with signature `[Content] getContents()`.
 
 This method must return the associated `Sequence` of [`Content`][] objects.
 
@@ -844,7 +875,7 @@ This method must return the [`ListBlockType`][] value that corresponds to the ty
 
 ###### `getListItems` {#api-dom-listblock-getitems}
 
-A [`ListItem`][] object must have a method with signature `Sequence getListItems()`.
+A [`ListItem`][] object must have a method with signature `[ListItem] getListItems()`.
 
 This method must return the associated `Sequence` of [`ListItem`][] objects.
 
@@ -934,7 +965,7 @@ This method must fail if the `Node` object doesn't [have](#api-dom-node-hasparen
 
 A `Node` object must have a method with signature `Integer getIndex()`.
 
-This method must return the index of the `Node` object in the `Source` of child `Node` object of the parent `Node`.
+This method must return the index of the `Node` object in the `Iterable` object of [child](#api-dom-node-getchildren) `Node` object of the parent `Node`.
 
 Specifically, this method must return 
 * the index in the attached `Sequence` of [`Block`][] objects of the [`BlockParent`][] object it is currently attached to, if the `Node` object is a [`Block`][] object, or
@@ -943,7 +974,7 @@ Specifically, this method must return
 
 This method must fail if the `Node` object doesn't [have](#api-dom-node-hasparent) a [parent](#api-dom-node-getparent) `Node` object.
 
-###### `hasChildren`
+###### `hasChildren` {#api-dom-node-haschildren}
 
 A `Node` object must have a method with signature `Integer getIndex()`.
 
@@ -960,17 +991,17 @@ Specifically, this method must return `false`
 * if the `Node` object is a [`ContentParent`][] object and currently has no [`Content`][] object attached to it, or
 * if the `Node` object is a [`CodeBlock`][] object or a [`CodeContent`][] object or a [`DivisionBlock`][] object or an [`ImageContent`][] object or a [`LineBreakContent`][] object or a [`TextContent`][] object.
 
-###### `getChildren`
+###### `getChildren` {#api-dom-node-getchildren}
 
-A `Node` object must have a method with signature `Source getChildren()`.
+A `Node` object must have a method with signature `Node... getChildren()`.
 
-This method must return a `Source` object that yields the child `Node` objects of the `Node` object.
+This method must return an `Iterable` object that yields the child `Node` objects of the `Node` object.
 
-Specifically, this method must return `true`
-* the attached `Sequence` of [`Block`][] objects, if the `Node` object is a [`BlockParent`][] object, or
-* the attached `Sequence` of [`ListItem`][] objects, if the `Node` object is a [`ListBlock`][] object, or
-* the attached `Sequence` of [`Content`][] objects, if the `Node` object is a [`ContentParent`][] object, or
-* an empty `Source` object, if the `Node` object is a [`CodeBlock`][] object or a [`CodeContent`][] object or a [`DivisionBlock`][] object or an [`ImageContent`][] object or a [`LineBreakContent`][] object or a [`TextContent`][] object.
+Specifically, this method must return
+* an `Iterable` object for the attached `Sequence` of [`Block`][] objects, if the `Node` object is a [`BlockParent`][] object, or
+* an `Iterable` object for the attached `Sequence` of [`ListItem`][] objects, if the `Node` object is a [`ListBlock`][] object, or
+* an `Iterable` object for the attached `Sequence` of [`Content`][] objects, if the `Node` object is a [`ContentParent`][] object, or
+* an empty `Iterable` object, if the `Node` object is a [`CodeBlock`][] object or a [`CodeContent`][] object or a [`DivisionBlock`][] object or an [`ImageContent`][] object or a [`LineBreakContent`][] object or a [`TextContent`][] object.
 
 ##### `OrderedListBlock` {#api-dom-orderedlistblock}
 
