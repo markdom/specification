@@ -1995,14 +1995,14 @@ The following XHTML 5 document represents the [example document](#example):
 [*Markdom event*]: api-handler-event
 [*Markdom events*]: api-handler-event
 
-[`BlockType]: #api-common-blocktype
-[`ContentType]: #api-common-contenttype
-[`EmphasisLevel]: #api-common-emphasislevel
-[`HeadingLevel]: #api-common-headinglevel
-[`BlockParentType]: #api-dom-blockparenttype
-[`ContentParentType]: #api-dom-contentparenttype
-[`NodeType]: #api-dom-nodetype
-[`ListBlockType]: #api-dom-listblocktype
+[`BlockType`]: #api-common-blocktype
+[`ContentType`]: #api-common-contenttype
+[`EmphasisLevel`]: #api-common-emphasislevel
+[`HeadingLevel`]: #api-common-headinglevel
+[`BlockParentType`]: #api-dom-blockparenttype
+[`ContentParentType`]: #api-dom-contentparenttype
+[`NodeType`]: #api-dom-nodetype
+[`ListBlockType`]: #api-dom-listblocktype
 [`Block`]: #api-dom-block
 [`BlockParent`]: #api-dom-blockparent
 [`CodeBlock`]: #api-dom-codeblock
