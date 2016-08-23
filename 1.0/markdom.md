@@ -143,7 +143,7 @@ A [*Markdom block*][] is either a
 * [*ordered Markdom list block*][], or a
 * [*Markdom paragraph block*][], or a
 * [*Markdom quote block*][], or an
-* [*ordered Markdom list block*][].
+* [*unordered Markdom list block*][].
 
 ##### Code Block {#domain-codeblock}
 
@@ -311,7 +311,7 @@ This specification describes two distinct APIs:
    
 * The [Handler API](#api-dom) contains a `Handler` interface that describes how a [*Markdom document*][] is represented as a succession of events.
 
-  The Handler API allows to process a [*Markdom document*][] on the fly without the necessity to create an object graph. Events that describe a [*Markdom document*][] might be dispatched by an object graph from the [Domain Model API](#api-dom) or by a specific event dispatcher implementation that process a [data representation](#data) or a [markup representation](#markup) of a [*Markdom document*][].
+  The Handler API allows to process a [*Markdom document*][] on the fly without the necessity to create an object graph. Events that describe a [*Markdom document*][] might be dispatched by an object graph from the Domain Model API or by a specific event dispatcher implementation that process a [data representation](#data) or a [markup representation](#markup) of a [*Markdom document*][].
    
 This specifications primarily covers the interfaces and enumerations for both APIs. A concrete implementation of this specification for a given programming language should consist of corresponding interface definitions as well as an concrete implementation of the Domain Model API interfaces and some commonly useful concrete implementations of the Handler API. 
 
@@ -325,15 +325,24 @@ Depending on the programming language, it might be sensible to divide the interf
 
 ![](resource/markdom-packages.png)
 
-It is commonly recommended to implement an algorithms that processes a [*Markdom document*][] as a `Handler` rather than a method that directly processes a [Domain Model API](#api-dom) object graph. This allows to use the algorithm implementation in a multitude of scenarios (e.g. converting the [XML representation](#data-xml) of a [*Markdom document*][] into a corresponding [HTML representation](#text-html) as a stream without creating an object graph for XML, Markdom or HTML). The Domain Model API should generally only be used if it is necessary to temporarily store a [*Markdom document*][] in the memory or to programmatically modify a [*Markdom document*][] before it is further processed with a `Handler`.
+It is commonly recommended to implement an algorithms that processes a [*Markdom document*][] as a [`Handler`][] object rather than a method that directly processes a Domain Model API object graph. This allows to use the algorithm implementation in a multitude of scenarios (e.g. converting the [XML representation](#data-xml) of a [*Markdom document*][] into a corresponding [HTML representation](#text-html) as a stream without creating an object graph for XML, Markdom or HTML). The Domain Model API should generally only be used if it is necessary to temporarily store a [*Markdom document*][] in the memory or to programmatically modify a [*Markdom document*][] before it is further processed with a `Handler`.
    
 ### Common {#api-common}
 
 #### Dependencies {#api-common-dependencies}
 
-*This section lists the interfaces, enumerations and classes that are used by the Domain Model API.*
 
-The Domain Model API uses the following classes:
+
+
+
+
+
+
+
+
+
+
+The [Domain Model API](#api-dom) uses the following classes:
 
 // hint**
 
@@ -469,7 +478,7 @@ Because this method is a short hand for repeated calls to `addBlock(Block block)
 
 ##### `CodeBlock` {#api-dom-codeblock}
 
-A [`CodeBlock`][] objects is a [`Block`][] object that represents a [*Markdom code block*][](#domain-codeblock).
+A [`CodeBlock`][] objects is a [`Block`][] object that represents a [*Markdom code block*][].
 
 The initial value of the `code` parameter should be the empty string. The initial value of the `hint` parameter should be not present.
 
@@ -485,13 +494,13 @@ For convenience, an implementation of `CodeBlock` should have a constructor with
 
 A [`CodeBlock`][] object must have a method with signature `String getCode()`.
 
-The method must return the value of the `code` parameter of the represented [*Markdom code block*][](#domain-codeblock).
+The method must return the value of the `code` parameter of the represented [*Markdom code block*][].
 
 ###### `setCode` {#api-dom-codeblock-setcode}
 
 A [`CodeBlock`][] object must have a method with signature `setCode(String code)`.
 
-This method must set the value of the `code` parameter of the represented [*Markdom code block*][](#domain-codeblock). 
+This method must set the value of the `code` parameter of the represented [*Markdom code block*][]. 
   
 This method must fail if `code` is not present.
 
@@ -499,13 +508,13 @@ This method must fail if `code` is not present.
 
 A [`CodeBlock`][] object must have a method with signature `String? getHint()`.
 
-The method must return the optional `hint` parameter of the represented [*Markdom code block*][](#domain-codeblock).
+The method must return the optional `hint` parameter of the represented [*Markdom code block*][].
 
 ###### `setHint` {#api-dom-codeblock-sethint}
   
 A [`CodeBlock`][] object must have a method with signature `setHint(String? hint)`.
 
-This method must set the value of the `hint` parameter of the represented [*Markdom code block*][](#domain-codeblock). 
+This method must set the value of the `hint` parameter of the represented [*Markdom code block*][]. 
  	
 ##### `CodeContent` {#api-dom-codecontent}
 
@@ -1051,7 +1060,7 @@ For convenience, an implementation of `UnorderedListBlock` should have a constru
 
 #### Enumerations {#api-enumerations}
 
-The Domain Model API has the following enumerations:
+The [Domain Model API](#api-dom) has the following enumerations:
 
 ##### `BlockParentType` {#api-dom-blockparenttype}  
 
@@ -1088,11 +1097,11 @@ The [`ListBlockType`][] enum represents the type of a `ListBlock` and has the fo
 
 #### Example Document {#api-dom-example}  
 
-The following Domain Model API object graph represents the [example document](#example):
+The following [Domain Model API](#api-dom) object graph represents the [example document](#example):
 
 ![](resource/markdom-objectgraph.png)
 
-Every `BlockParent`, `ListBlock` or [`ContentParent`][] object has a reference to its companion `Sequence` object. A companion `Sequence` object holds references to the [children](#api-dom-node-getchildren) of the corresponding `BlockParent`, `ListBlock` or [`ContentParent`][] object. Each child has a reference to its [parent](#api-dom-node-getparent).
+Every [`BlockParent`][], [`ListBlock`][] or [`ContentParent`][] object has a reference to its companion `Sequence` object. A companion `Sequence` object holds references to the [children](#api-dom-node-getchildren) of the corresponding [`BlockParent`][], [`ListBlock`][] or [`ContentParent`][] object. Each child has a reference to its [parent](#api-dom-node-getparent).
 
 #### Additional information
 
@@ -1102,7 +1111,7 @@ The following image shows the possible methods to navigate from an [`Node`][] ob
 
 ![](resource/markdom-navigation-up.png)
 
-Every [`Node`][] object in a Domain Model API object graph that is not a [`Document`][] object has a reference to its [parent](#api-dom-node-getparent), which is
+Every [`Node`][] object in a [Domain Model API](#api-dom) object graph that is not a [`Document`][] object has a reference to its [parent](#api-dom-node-getparent), which is
 
 * a [`BlockParent`][] object, if the [`Node`][] object is a [`Block`][] object,
 * a [`ListBlock`][] object, if the [`Node`][] object is a [`ListItem`][] object, or
@@ -1120,7 +1129,7 @@ The following image shows the possible methods to navigate from an [`Node`][] ob
 
 ![](resource/markdom-navigation-down.png)
 
-Every [`Node`][] object in a Domain Model API object graph that is parent object has a reference to its companion `Sequence` object which has references to the [children](#api-dom-node-getchildren) of the [`Node`][] object.
+Every [`Node`][] object in a [Domain Model API](#api-dom) object graph that is parent object has a reference to its companion `Sequence` object which has references to the [children](#api-dom-node-getchildren) of the [`Node`][] object.
 
 For example: Consider a method that gets the root `Node` as a parameter without any knowledge about it. Calling `getNodeType()` reveals that is it a [`Document`][] object. Calling `getBlocks` returns the companion `Sequence` object. Calling `size` reveals that the companion `Sequence` object contains three [`Block`][] objects. Calling `get(1)` returns the second child. Calling `getBlockType()` on the second child reveals that it is a [`OrderedListBlock`][] object.
 
@@ -1209,7 +1218,7 @@ If the [*Markdom content*][] is a [*Markdom line break content*][], it is repres
 #### Interfaces {#api-handler-interface}
 
 ##### `Dispatcher` {#api-handler-dispatcher}
-A `Dispatcher` is a component that is able to describe a [*Markdom document*][] to a `Handler` by dispatching a sequence of [*Markdom events*][].
+A [`Dispatcher`][] object is a component that is able to describe a [*Markdom document*][] to a `Handler` by dispatching a sequence of [*Markdom events*][].
 
 ###### `handle` {#api-handler-dispatcher-handle}
 
@@ -1219,7 +1228,7 @@ This method must dispatch [*Markdom events*][] that describe the [*Markdom docum
   
 This method must return the [result](#api-handler-handler-getresult) of `handler`.
 
-Calling this method multiple times on a `Dispatcher` that is not [repeatable](#api-handler-isrepeatable) has an undefined behavior, unless explicitly stated otherwise.
+Calling this method multiple times on a [`Dispatcher`][] object that is not [repeatable](#api-handler-isrepeatable) has an undefined behavior, unless explicitly stated otherwise.
   
 This method must fail if `handler` is not present.
 
@@ -1231,9 +1240,9 @@ This method must return whether the [`Dispatcher`][] object is able to describe 
   
 ##### `Handler` {#api-handler-handler}
 
-A `Handler` is a component that is able to receive a a sequence of [*Markdom events*][] that describe a [*Markdom document*][] from a `Dispatcher` and calculate a result or causes side effects that corresponds to the described [*Markdom document*][] (e.g. a [`Handler`][] object can generate a [`Document`][] object or write CommonMark text into a file).
+A [`Handler`][] object is a component that is able to receive a a sequence of [*Markdom events*][] that describe a [*Markdom document*][] from a [`Dispatcher`][] object and calculate a result or causes side effects that corresponds to the described [*Markdom document*][] (e.g. a [`Handler`][] object can generate a [`Document`][] object or write CommonMark text into a file).
 
-Calling methods on a  `Handler` in an order that doesn't properly describe a [*Markdom document*][] has an undefined behavior.
+Calling methods on a  [`Handler`][] object in an order that doesn't properly describe a [*Markdom document*][] has an undefined behavior.
 
 ###### `getResult` {#api-handler-handler-getresult}
 
@@ -1872,7 +1881,7 @@ The following XML document represents the [example document](#example):
 </Document>
 ```
 
-## Markdup representations {#markup}
+## Markup representations {#markup}
 
 ### CommonMark {#markup-cm}
 
