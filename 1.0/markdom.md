@@ -1957,9 +1957,9 @@ Assume an [*unordered Markdom list block*][] that is followed by a [*Markdom cod
 
 Representing a [*Markdom code block*][] as a fenced code block is always possible. If the `code` parameter contains lines that consist of nothing but a succession of `BACKTICK` (` ` `) characters, the fence must be elongated accordingly:
 
-````
-```
-````
+    ````
+    ```
+    ````
 
 ##### Division Block
 
