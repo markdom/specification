@@ -2101,6 +2101,12 @@ How to handle a CommonMark document that contains HTML is application dependent.
 * treat the raw HTML as a [*Markdom code content*][] or [*Markdom text content*][], or
 * removing the HTML altogether.
 
+##### Image description
+
+CommonMark allows arbitrary [inline](http://spec.commonmark.org/0.26/#inline) elements as an [image description](http://spec.commonmark.org/0.26/#image-description) wgile Markdom only allows plain text as the value of the `alternative` attribute of a [*Markdom text content*][]. 
+
+The image description should be reduced to plain text as if it would be used as the `alt` attribute when converting the CommonMark document to HTML.
+
 #### Example Document {#markup-cm-example}
 
 The following CommonMark document represents the [example document](#example):
@@ -2224,7 +2230,7 @@ The following XHTML 5 document represents the [example document](#example):
 [*Markdom line break content*]: #domain-linebreakcontent
 [*Markdom link content*]: #domain-linkcontent
 [*Markdom text content*]: #domain-textcontent
-[*Markdom text contents]: #domain-textcontent
+[*Markdom text contents*]: #domain-textcontent
 [*Markdom event*]: api-handler-event
 [*Markdom events*]: api-handler-event
 
