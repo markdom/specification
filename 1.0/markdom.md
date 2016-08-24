@@ -345,7 +345,7 @@ It is recommended that implementations contain a section about such implementati
 
 Obviously, both Markdom APIs require some support from the programming language a particular implementation is written in. This specification is written with an object orientated programming language is mind, but it should be little effort to interpret this specification for programming languages that follow another programming paradigm.
 
-#### Mandatory and optional parameters
+##### Mandatory and optional parameters
 
 The Markdom APIs use mandatory and optional parameters. Mandatory parameters must always have a value. Optional parameters may or may not have a value. Mandatory parameters are hereafter notes as `Type name` where `Type` is value type and `name` is the parameter name. Optional parameters are hereafter notes as `Type? name` where `Type` is value type and `name` is the parameter name.
 
@@ -354,11 +354,11 @@ There are common implementations for mandatory and optional parameters.
 1. For a Programming languages that has `null` values and can enforce non-`null` values for a method parameter, `null` may be used to indicate that an optional parameter has no value. No explicit `null`-checks must be implemented for mandatory parameters.
 1. For a Programming languages that doesn't have `null` values an explicit `Optional` type must be used to for an optional parameter. No explicit `null`-checks must be implemented for mandatory parameters.
 
-#### Primitive Values
+##### Primitive Values
 
 The Markdom APIs use parameters and return values that represent values of primitive type. Specifically for boolean values, numbers and Unicode character sequences. Such types are hereafter noted as `Boolean`, `Integer` and `String` respectively. 
 
-#### Iterables
+##### Iterables
 
 The Markdom APIs use parameters and return values that represent a linear ordered concatenation of values of a given type that can be iterated over in that order. Such types are hereafter noted as `Type...` where `Type` is the value type.
 
@@ -366,7 +366,7 @@ This should usually be implemented as a data structure that is eligible to be pr
 
 As a method parameter, this may also be implemented as a variable argument list.
 
-#### Sequences
+##### Sequences
 
 The Markdom APIs use parameters and return values that represent a modifiable linear ordered concatenation of values of values of a given type that allows random access. Such types are hereafter noted as `[Type]` where `Type` is the value type.
 
