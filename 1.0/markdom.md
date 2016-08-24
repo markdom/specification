@@ -1924,9 +1924,7 @@ Interpreting a markup language as a [*Markdom document*][] is generally not easi
 
 *This section discusses [CommonMark 0.26](http://spec.commonmark.org/0.26/).*
 
-Markdom was designed with CommonMark in mind. It is possible to represent any [*Markdom document*][] as CommonMark text with minimal changes, if any. It is generally possible to interpret CommonMark text as a [*Markdom document*][] as long as an actual interpreter is available, that produces a programmatically processable output (e.g. a domain model, a walker or visitor, or events).
-
-CommonMark has direct support for all formatting instructions used in Markdom.
+Markdom was designed with CommonMark in mind. It is possible to represent any [*Markdom document*][] as CommonMark text with minimal changes, if any. CommonMark has direct support for all formatting instructions used in Markdom.
 
 #### Block
 
@@ -2090,7 +2088,7 @@ which should be corrected to
 
 #### Interpretation
 
-It is generally simple to interpret a given CommonMark document as a [*Markdom document*][]. The mapping of CommonMark formatting instructions to [*Markdom nodes*][] is (almost) straight forward because the structure of a [*Markdom document*][] has no special edge cases that need to be considered.
+It is generally possible to interpret CommonMark text as a [*Markdom document*][] as long as an actual interpreter is available, that produces a programmatically processable output (e.g. a domain model, a walker or visitor, or events). The mapping of CommonMark formatting instructions to [*Markdom nodes*][] is (almost) straight forward because the structure of a [*Markdom document*][] has no special edge cases that need to be considered.
 
 ##### HTML 
 
@@ -2127,6 +2125,30 @@ The following CommonMark document represents the [example document](#example):
 
 ### HTML {#markup-html}
 
+Representing a [*Markdom document*][] as a HTML document is always possible. HTML has direct support for all formatting instructions used in Markdom.
+
+#### Block
+
+* A [*Markdom code block*][] should be represented as a `<code>` element nested into a `<pre>` element.
+* A [*Markdom division block*][] should be represented as a `<hr>` element.
+* A [*Markdom heading block*][] should be represented as a `<h1>` to `<h6>` element, depending on the value of the `level` parameter.
+* An [*ordered Markdom list block*][] should be represented as an `<ol>` element with the value of the `startIndex` parameter as its `start` attribute.
+* A [*Markdom paragraph block*][] should be represented as a `<p>` element.
+* A [*Markdom quote block*][] should be represented as a `<blockquote>` element.
+* An [*unordered Markdom list block*][] should be represented as an `<ul>` element.
+
+#### List Item
+
+* A [*Markdom list item*][] should be represented as a `<li>` tag.
+
+#### Content
+
+* A [*Markdom code content*][] should be represented as a `<code>` element with the value of the `code` parameter as its text content.
+* A [*Markdom emphasis content*][] should be represented as a `<em>` element or a `<strong>` element, depending on the value of the `level` parameter.
+* A [*Markdom image content*][] should be represented as an `<img>` element with the value of the `uri` parameter as its `href` attribute, the value of the `title` parameter, if present, as its `title` attribute and the value of the `alternative` parameter, if present, as its `alt` attribute.
+* A [*Markdom line break content*][] should be represented as a `<br>` element if the value of the `hard` attribute is `true` and ignored otherwise.
+* A [*Markdom link content*][] should be represented as an `<a>` element with the value of the `uri` parameter as its `href` attribute.
+* A [*Markdom text content*][] should be represented as a text node with the value of the `text` parameter as its content.
 
 #### Interpretation
 
