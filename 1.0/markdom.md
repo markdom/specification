@@ -1926,9 +1926,13 @@ Interpreting a markup language as a [*Markdom document*][] is generally not easi
 
 Markdom was designed with CommonMark in mind. It is possible to represent any [*Markdom document*][] as CommonMark text with minimal changes, if any. CommonMark has direct support for all formatting instructions used in Markdom.
 
-#### Block
+#### Document {#markup-cm-document}
 
-##### Code Block
+No special considerations are necessary to represent a [*Markdom document*][].
+
+#### Block {#markup-cm-block}
+
+##### Code Block {#markup-cm-codeblock}
 
 It is recommended to represent [*Markdom code blocks*][] as [fenced code blocks](http://spec.commonmark.org/0.26/#code-fence), because these work properly in any context.
 
@@ -1961,37 +1965,41 @@ Representing a [*Markdom code block*][] as a fenced code block is always possibl
        
 [Control](http://www.fileformat.info/info/unicode/category/Cc/list.htm) characters other then `LINE_FEED` (`\n`) or `CHARACTER_TABULATION` (`\t`) should be removed or replaced.
 
-##### Division Block
+##### Division Block {#markup-cm-divisionblock}
 
 A [*Markdom division block*][] should be represented as a [thematic break](http://spec.commonmark.org/0.26/#thematic-break).
 
-##### Heading Block
+##### Heading Block {#markup-cm-headingblock}
 
 It is recommended to represent [*Markdom heading blocks*][] as [ATX headings](http://spec.commonmark.org/0.26/#atx-heading), because these work properly in any context.
 
 Using a [setext heading](http://spec.commonmark.org/0.26/#setext-headings) generally introduces inconsistency if  the `level` parameter of a [*Markdom heading block*][] is larger than `2`.
 
-##### Ordered List Block
+##### Ordered List Block {#markup-cm-orderedlistblock}
 
 An [*ordered Markdom list block*][] should be represented as a [ordered list](http://spec.commonmark.org/0.26/#ordered-list).
 
 Because CommonMark doesn't support adjacent lists, it is necessary to place another [block](http://spec.commonmark.org/0.26/#blocks) between two adjacent [*ordered Markdom list block*][] or [*unordered Markdom list block*][]. A [*Markdom division block*][] is recommended, because it introduced the least amount of clutter and is still used in its intended purpose (other than, for instance, a paragraph containing a zero width space character).
 
-##### Quote Block
+##### Paragraph Block {#markup-cm-paragraphblock}
+
+A [*Markdom paragraph block*][] should be represented as a [paragraph](http://spec.commonmark.org/0.26/#paragraphs).
+
+##### Quote Block {#markup-cm-quoteblock}
 
 A [*Markdom quote block*][] should be represented as a [block quote](http://spec.commonmark.org/0.26/#block-quotes).
 
-##### Unordered List Block
+##### Unordered List Block {#markup-cm-unorderedlistblock}
 
 An [*unordered Markdom list block*][] should be represented as a [bullet list](http://spec.commonmark.org/0.26/#bullet-list).
 
-#### List Item  
+#### List Item {#markup-cm-listitem}
 
 A [*Markdom list items*][] should be represented as a [list item](http://spec.commonmark.org/0.26/#list-items).
 
-#### Content
+#### Content {#markup-cm-content}
 
-##### Code Content
+##### Code Content {#markup-cm-codecontent}
 
 A [*Markdom code content*][] should be represented as a [code span](http://spec.commonmark.org/0.26/#code-spans).
 
@@ -2005,7 +2013,7 @@ If the value of the `code` parameter begins or ends with a `BACKTICK` (` ` `) ch
        
 [Control](http://www.fileformat.info/info/unicode/category/Cc/list.htm) characters in the value of the `code` parameter should be removed or replaced. `LINE_FEED` (`\n`) or `CHARACTER_TABULATION` (`\t`) should be treated as a single space character.
 
-##### Emphasis Content
+##### Emphasis Content {#markup-cm-emphasiscontent}
 
 A [*Markdom emphasis content*][] should be represented as an [emphasis or strong emphasis](http://spec.commonmark.org/0.26/#emphasis-and-strong-emphasis), depending on the value of the `level` parameter.
 
@@ -2013,7 +2021,7 @@ Consequent usage of `*` or `**` instead of `_` or `__` is recommended as the emp
 
 A [*Markdom emphasis content*][] can be ignored if it contains nothing or only the empty string.
 
-##### Image Content
+##### Image Content {#markup-cm-imagecontent}
 
 A [*Markdom image content*][] should be represented as an [image](http://spec.commonmark.org/0.26/#images).
 
@@ -2021,33 +2029,33 @@ A [*Markdom image content*][] should be represented as an [image](http://spec.co
 
 The value of the `alternative` parameter, if present, should be used as if it was the `text` parameter of a [*Markdom text content*][] and serve as the [image description](http://spec.commonmark.org/0.26/#image-description).
 
-##### Line Break Content
+##### Line Break Content {#markup-cm-linebreakcontent}
 
 A [*Markdom line break content*][] should be represented as a [hard line break](http://spec.commonmark.org/0.26/#hard-line-breaks) or a [soft line break](http://spec.commonmark.org/0.26/#hard-line-breaks), depending on the value of the `hard` parameter.
 
-##### Link Content
+##### Link Content {#markup-cm-linkcontent}
 
 A [*Markdom link content*][] should be represented as a [link](http://spec.commonmark.org/0.26/#links).
 
 A [*Markdom link content*][] that contains nothing or only the empty string should use the value of the `uri` parameter as if it was the `text` parameter of a [*Markdom text content*][] and serve as the [link description](http://spec.commonmark.org/0.26/#link-destination). The [*Markdom link content*][] can be ignored if the value of the `uri` parameter is the empty string.
 
-##### Text Content
+##### Text Content {#markup-cm-textcontent}
 
 A [*Markdom text content*][] should be represented as [textual content](http://spec.commonmark.org/0.26/#textual-content).
 
 [Control](http://www.fileformat.info/info/unicode/category/Cc/list.htm) characters in the value of the `text` parameter should be removed or replaced. `LINE_FEED` (`\n`) or `CHARACTER_TABULATION` (`\t`) should be treated as a single space character).
 
-#### Adjacent lists
+#### Adjacent lists {#markup-cm-interpretation-whitespace-adjacentlists}
 
 Because CommonMark doesn't support adjacent lists, it is necessary to place another [block](http://spec.commonmark.org/0.26/#blocks) between two adjacent [*ordered Markdom list block*][] or [*unordered Markdom list block*][]. A [*Markdom division block*][] is recommended, because it introduced the least amount of clutter and is still used in its intended purpose (other than, for instance, a paragraph containing a zero width space character).
 
-#### Whitespace handling
+#### Whitespace handling {#markup-cm-interpretation-whitespace}
 
-##### Whitespace compression
+##### Whitespace compression {#markup-cm-interpretation-whitespace-compression}
 
 Consecutive whitespace characters should be compressed to a single space character.
 
-##### Whitespace removal
+##### Whitespace removal {#markup-cm-interpretation-whitespace-removal}
 
 The representation of the content of a [*Markdom paragraph block*][] should not begin with whitespace, because the additional indentation can lead to unintended side effects.
 
@@ -2065,7 +2073,7 @@ Assume an [*unordered Markdom list block*][] hat is followed by a [*Markdom para
       
 For consistency, whitespace that follows a [*Markdom line break content*][] should also be removed.
 
-##### Whitespace shift
+##### Whitespace shift {#markup-cm-interpretation-whitespace-shift}
 
 Because of manner the [delimiter run](http://spec.commonmark.org/0.26/#delimiter-run) works, it is not possible for the content of a [*Markdom emphasis content*][] or a [*Markdom link content*][] to begin or end with a whitespace character. It is therefore recommended to shift whitespace to the surrounding of the [*Markdom content*][].
 
@@ -2086,11 +2094,11 @@ which should be corrected to
 
     `foo *[**lorem** ipsum](#bar)* baz`
 
-#### Interpretation
+#### Interpretation {#markup-cm-interpretation}
 
 It is generally possible to interpret CommonMark text as a [*Markdom document*][] as long as an actual interpreter is available, that produces a programmatically processable output (e.g. a domain model, a walker or visitor, or events). The mapping of CommonMark formatting instructions to [*Markdom nodes*][] is (almost) straight forward because the structure of a [*Markdom document*][] has no special edge cases that need to be considered.
 
-##### HTML 
+##### HTML  {#markup-cm-interpretation-html}
 
 CommonMark allows [HTML blocks](http://spec.commonmark.org/0.26/#html-blocks) and [raw HTML](http://spec.commonmark.org/0.26/#raw-html) as part of a CommonMark document while Markdom explicitly doesn't. 
 
@@ -2099,7 +2107,7 @@ How to handle a CommonMark document that contains HTML is application dependent.
 * treat the raw HTML as a [*Markdom code content*][] or [*Markdom text content*][], or
 * removing the HTML altogether.
 
-##### Image description
+##### Image description {#markup-cm-interpretation-imagedescription}
 
 CommonMark allows arbitrary [inline](http://spec.commonmark.org/0.26/#inline) elements as an [image description](http://spec.commonmark.org/0.26/#image-description) wgile Markdom only allows plain text as the value of the `alternative` attribute of a [*Markdom text content*][]. 
 
@@ -2127,30 +2135,71 @@ The following CommonMark document represents the [example document](#example):
 
 Representing a [*Markdom document*][] as a HTML document is always possible. HTML has direct support for all formatting instructions used in Markdom.
 
-#### Block
+#### Document {#markup-html-document}
 
-* A [*Markdom code block*][] should be represented as a `<code>` element nested into a `<pre>` element.
-* A [*Markdom division block*][] should be represented as a `<hr>` element.
-* A [*Markdom heading block*][] should be represented as a `<h1>` to `<h6>` element, depending on the value of the `level` parameter.
-* An [*ordered Markdom list block*][] should be represented as an `<ol>` element with the value of the `startIndex` parameter as its `start` attribute.
-* A [*Markdom paragraph block*][] should be represented as a `<p>` element.
-* A [*Markdom quote block*][] should be represented as a `<blockquote>` element.
-* An [*unordered Markdom list block*][] should be represented as an `<ul>` element.
+Depending on the application, a [*Markdom document*][] should be represented as the node list that contains the representations of the [*Markdom blocks*][] the [*Markdom document*][] consists of and may be enclosed by arbitrary HTML markup up to the point where the representation is an entire HTML document.
 
-#### List Item
+#### Block {#markup-html-block}
+
+##### Code Block {#markup-html-codeblock}
+
+A [*Markdom code block*][] should be represented as a `<code>` element nested into a `<pre>` element.
+
+##### Division Block {#markup-html-divisionblock}
+
+A [*Markdom division block*][] should be represented as a `<hr>` element.
+
+##### Heading Block {#markup-html-headingblock}
+
+A [*Markdom heading block*][] should be represented as a `<h1>` to `<h6>` element, depending on the value of the `level` parameter.
+
+##### Ordered List Block {#markup-html-orderedlistblock}
+
+An [*ordered Markdom list block*][] should be represented as an `<ol>` element with the value of the `startIndex` parameter as its `start` attribute.
+
+##### Paragraph Block {#markup-html-paragraphblock}
+
+A [*Markdom paragraph block*][] should be represented as a `<p>` element.
+
+##### Quote Block {#markup-html-quoteblock}
+
+A [*Markdom quote block*][] should be represented as a `<blockquote>` element.
+
+##### Unordered List Block {#markup-html-unorderedlistblock}
+
+An [*unordered Markdom list block*][] should be represented as an `<ul>` element.
+
+#### List Item {#markup-html-listitem}
 
 * A [*Markdom list item*][] should be represented as a `<li>` tag.
 
-#### Content
+#### Content {#markup-html-content}
 
-* A [*Markdom code content*][] should be represented as a `<code>` element with the value of the `code` parameter as its text content.
-* A [*Markdom emphasis content*][] should be represented as a `<em>` element or a `<strong>` element, depending on the value of the `level` parameter.
-* A [*Markdom image content*][] should be represented as an `<img>` element with the value of the `uri` parameter as its `href` attribute, the value of the `title` parameter, if present, as its `title` attribute and the value of the `alternative` parameter, if present, as its `alt` attribute.
-* A [*Markdom line break content*][] should be represented as a `<br>` element if the value of the `hard` attribute is `true` and ignored otherwise.
-* A [*Markdom link content*][] should be represented as an `<a>` element with the value of the `uri` parameter as its `href` attribute.
-* A [*Markdom text content*][] should be represented as a text node with the value of the `text` parameter as its content.
+##### Code Content {#markup-html-codecontent}
 
-#### Interpretation
+A [*Markdom code content*][] should be represented as a `<code>` element with the value of the `code` parameter as its text content.
+
+##### Emphasis Content {#markup-html-emphasiscontent}
+
+A [*Markdom emphasis content*][] should be represented as a `<em>` element or a `<strong>` element, depending on the value of the `level` parameter.
+
+##### Image Content {#markup-html-imagecontent}
+
+A [*Markdom image content*][] should be represented as an `<img>` element with the value of the `uri` parameter as its `href` attribute, the value of the `title` parameter, if present, as its `title` attribute and the value of the `alternative` parameter, if present, as its `alt` attribute.
+
+##### Line Break Content {#markup-html-linebreakcontent}
+
+A [*Markdom line break content*][] should be represented as a `<br>` element if the value of the `hard` attribute is `true` and ignored otherwise.
+
+##### Link Content {#markup-html-linkcontent}
+
+A [*Markdom link content*][] should be represented as an `<a>` element with the value of the `uri` parameter as its `href` attribute.
+
+##### Text Content {#markup-html-textcontent}
+
+A [*Markdom text content*][] should be represented as a text node with the value of the `text` parameter as its content.
+
+#### Interpretation {#markup-html-interpretation}
 
 It is generally not simple or even possible to interpret a given HTML document as a [*Markdom document*][].
 
