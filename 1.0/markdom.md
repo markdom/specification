@@ -1729,11 +1729,17 @@ Formats that are eligible to be used as a data exchange format must have a well 
 
 ### JSON {#data-json}
 
+[JSON](http://www.json.org/) is a  data exchange format. The following sections describe how to represent a [*Markdom document*][] as a JSON document. Interpreting a JSON document as a a [*Markdom document*][] is always possible, if the JSON document is well-formed and a valid representation of a [*Markdom document*][]. 
+
+#### Schema {#data-json-schema}
+
+A [JSON Schema](http://json-schema.org/) schema for JSON documents that represent a [*Markdom document*][] exists and is located at [`http://schema.markdom.io/markdom-1.0.json#"`](http://schema.markdom.io/markdom-1.0.json#).
+
 #### Document {#markup-json-document}
 
 A [*Markdom document*][] must be represented as a JSON object.
 
-The JSON object may have an entry with name `$schema` and value [`http://schema.markdom.io/markdom-1.0.json#"`](http://schema.markdom.io/markdom-1.0.json#) that allows automated schema validation with [JSON Schema](http://json-schema.org/).
+The JSON object may have an entry with name `$schema` and value `http://schema.markdom.io/markdom-1.0.json#"` that allows automated schema validation. 
 
 The JSON object must have an entry with name `version` and value `1.0`.
 
@@ -1965,6 +1971,20 @@ The following JSON document represents the [example document](#example):
 
 ### YAML {#data-yaml}
 
+[YAML](http://yaml.org/) is a data exchange format that is a superset of JSON. The description of[JSON representation](#data-json) is therefore also a description for YAML representations and can be used as such. 
+
+Any JSON document that represents a [*Markdom document*][] is also a YAML document that represents the [*Markdom document*][]. Interpreting a YAML document as a a [*Markdom document*][] is always possible, if the YAML document is well-formed and a valid representation of a [*Markdom document*][]. 
+
+#### Tags
+
+It would be possible to use a YAML specific parts of the YAML specification that are not compatible with JSON. [Tags](http://www.yaml.org/spec/1.2/spec.html#id2784064) could be used to distinguish between the polymorphic [*Markdom blocks*][] and [*Markdom contents*][] instead of the `type` entries, but this would defeat compatibility between JSON and YAML representations.
+
+#### Anchors and Aliases
+
+It is possible, but not very useful and not recommended, to use [anchors and aliases](http://www.yaml.org/spec/1.2/spec.html#id2785586) in a YAML representation of a [*Markdom document*][].
+
+As long as the data structure is still a tree, is must be possible to interpret it as a [*Markdom document*][]. If the data structure is an acyclic graph, is may be possible to interpret it as a [*Markdom document*][].
+
 #### Example Document {#data-yaml-example}
 
 ```yaml
@@ -2177,6 +2197,8 @@ A [*Markdom division block*][] should be represented as a [thematic break](http:
 It is recommended to represent [*Markdom heading blocks*][] as [ATX headings](http://spec.commonmark.org/0.26/#atx-heading), because these work properly in any context.
 
 Using a [setext heading](http://spec.commonmark.org/0.26/#setext-headings) generally introduces inconsistency if  the `level` parameter of a [*Markdom heading block*][] is larger than `2`.
+
+[*Markdom line break contents*][], contained in the contents a [*Markdom heading block*][] consitst of, should be ignored and, if necessary, replaced with a single space character.
 
 ##### Ordered List Block {#markup-cm-orderedlistblock}
 
