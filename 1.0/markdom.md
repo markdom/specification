@@ -77,7 +77,7 @@ A typical application of Markdom may involve the following use cases.
 When an editor uses a backend to create content:
 
 * The server allows an editor to enter CommonMark text.
-* The server parses the markup with any suitable parser (i.e. with an actual parser, not just a regex-based converter) that is available for the language the server is written in, and creates a Markdom document.
+* The server parses the markup with any suitable interpreter (i.e. with an actual interpreter, not just a regex-based converter) that is available for the language the server is written in, and creates a Markdom document.
 * The server generates a HTML representation of the Markdom document and delivers it to the editor.
 * The server generates a XML representation of the Markdom document and stores is for later use.
 
@@ -1914,7 +1914,99 @@ The following XML document represents the [example document](#example):
 
 ## Markup representations {#markup}
 
+Since Markdom has been designed with the intent, that the largest possible number of applications, which includes markup languages, can produce a reasonable output, is should generally be possible to represent a [*Markdom document*][] in a given rich text or markup language. 
+
+This includes lightweight markup languages that use formatting instructions that closely resemble their intended purpose (e.g. CommonMark, ...), structural formatting languages (e.g. HTML, ...) and procedural formatting languages (e.g. LaTeX).
+
+Interpreting a markup language as a [*Markdom document*][] is generally not easily possible, unless the markup language has a set of formatting instructions that is similar to that of Markdom (e.g. CommonMark, ...).
+
 ### CommonMark {#markup-cm}
+
+*This section discusses [CommonMark 0.26](http://spec.commonmark.org/0.26/).*
+
+Markdom was designed with CommonMark in mind. It is possible to represent any [*Markdom document*][] as CommonMark text with minimal changes, if any. It is generally possible to interpret CommonMark text as a [*Markdom document*][] as long as an actual interpreter is available, that produces a programmatically processable output (e.g. a domain model, a walker or visitor, or events).
+
+CommonMark has direct support for all formatting instructions used in Markdom.
+
+#### Block
+
+##### Code Block
+
+It is recommended to represent [*Markdom code blocks*][] as [fenced code blocks](http://spec.commonmark.org/0.26/#code-fence), because these work properly in any context.
+
+Using an [indented code block](http://spec.commonmark.org/0.26/#indented-code-block) might yield a problem if a [*Markdom code block*][] follows a complex block and  the `code` parameter starts with a `CHARACTER_TABULATION` (`\t`).
+
+Assume an [*unordered Markdom list block*][] that is followed by a [*Markdom code blocks*][]. [This](http://spec.commonmark.org/dingus/?text=*%20foo%0A%0A%60%60%60%0A%09bar%0Abaz%0A%60%60%60) representation yields the expected output:
+
+
+    * foo
+    
+    ```
+    	bar
+    baz
+    ```
+    
+[This](http://spec.commonmark.org/dingus/?text=*%20foo%0A%0A%09%09bar%0A%09baz) representation doesn't yield the expected output:
+    
+```
+* foo
+
+		bar
+	baz
+```
+
+Representing a [*Markdom code block*][] as a fenced code block is always possible. If the `code` parameter contains lines that consist of nothing but a succession of `BACKTICK` (` ` `) characters, the fence must be elongated accordingly:
+
+````
+```
+````
+
+##### Division Block
+
+##### Heading Block
+
+##### Ordered List Block
+
+##### Quote Block
+
+##### unordered List Block
+
+#### List Item  
+
+#### Content
+
+##### Code Content
+
+##### Emphasis Content
+
+##### Image Content
+
+##### Line Break Content
+
+##### Link Content
+
+##### Text Content
+
+
+empty code
+code with backticks
+
+
+adjacent lists
+
+
+image alternative text
+
+
+control characters
+leading spaces
+
+space reordering
+
+empty lists
+empty headings, quotes and paragraphs
+
+#### Interpretation
 
 #### Example Document {#markup-cm-example}
 
@@ -1935,6 +2027,10 @@ The following CommonMark document represents the [example document](#example):
     ```
 
 ### HTML {#markup-html}
+
+#### Representation
+
+#### Interpretation
 
 #### Example Document {#markup-html-example}
 
