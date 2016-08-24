@@ -1783,7 +1783,7 @@ A [*Markdom paragraph block*][] must be represented as a JSON object.
 
 The JSON object must have an entry with name `type` and value `PARAGRAPH`.
 
-The JSON object may have an entry with name `contents`. The value of this entry, if present, must be a JSON array that contains the representations of the [*Markdom contents*][] the represented [*Markdom paragrapg block*][] consists of.
+The JSON object may have an entry with name `contents`. The value of this entry, if present, must be a JSON array that contains the representations of the [*Markdom contents*][] the represented [*Markdom paragraph block*][] consists of.
 
 ##### Quote Block {#markup-json-quoteblock}
 
@@ -1803,7 +1803,7 @@ The JSON object may have an entry with name `items`. The value of this entry, if
 
 #### List Item {#markup-json-listitem}
 
-* A [*Markdom list item*][] must be represented as a JSON object.
+A [*Markdom list item*][] must be represented as a JSON object.
 
 The JSON object may have an entry with name `blocks`. The value of this entry, if present, must be a JSON array that contains the representations of the [*Markdom blocks*][] the represented [*Markdom list item*][] consists of.
 
