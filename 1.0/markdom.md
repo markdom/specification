@@ -1934,9 +1934,9 @@ CommonMark has direct support for all formatting instructions used in Markdom.
 
 It is recommended to represent [*Markdom code blocks*][] as [fenced code blocks](http://spec.commonmark.org/0.26/#code-fence), because these work properly in any context.
 
-Using an [indented code block](http://spec.commonmark.org/0.26/#indented-code-block) might yield a problem if a [*Markdom code block*][] follows a complex block and  the `code` parameter starts with a `CHARACTER_TABULATION` (`\t`).
+Using an [indented code block](http://spec.commonmark.org/0.26/#indented-code-block) might yield a problem if a [*Markdom code block*][] follows a complex block and  the `code` parameter starts with whitespace.
 
-Assume an [*unordered Markdom list block*][] that is followed by a [*Markdom code blocks*][]. [This](http://spec.commonmark.org/dingus/?text=*%20foo%0A%0A%60%60%60%0A%09bar%0Abaz%0A%60%60%60) representation yields the expected output:
+Assume an [*unordered Markdom list block*][] that is followed by a [*Markdom code block*][]. [This](http://spec.commonmark.org/dingus/?text=*%20foo%0A%0A%60%60%60%0A%09bar%0Abaz%0A%60%60%60) representation yields the expected output:
 
 
     * foo
@@ -1960,51 +1960,120 @@ Representing a [*Markdom code block*][] as a fenced code block is always possibl
     ````
     ```
     ````
+       
+[Control](http://www.fileformat.info/info/unicode/category/Cc/list.htm) characters other then `LINE_FEED` (`\n`) or `CHARACTER_TABULATION` (`\t`) should be removed or replaced.
 
 ##### Division Block
 
+A [*Markdom division block*][] should be represented as a [thematic break](http://spec.commonmark.org/0.26/#thematic-break).
+
 ##### Heading Block
+
+It is recommended to represent [*Markdom heading blocks*][] as [ATX headings](http://spec.commonmark.org/0.26/#atx-heading), because these work properly in any context.
+
+Using a [setext heading](http://spec.commonmark.org/0.26/#setext-headings) generally introduces inconsistency if  the `level` parameter of a [*Markdom heading block*][] is larger than `2`.
 
 ##### Ordered List Block
 
+An [*ordered Markdom list block*][] should be represented as a [ordered list](http://spec.commonmark.org/0.26/#ordered-list).
+
+Because CommonMark doesn't support adjacent lists, it is necessary to place another [block](http://spec.commonmark.org/0.26/#blocks) between two adjacent [*ordered Markdom list block*][] or [*unordered Markdom list block*][]. A [*Markdom division block*][] is recommended, because it introduced the least amount of clutter and is still used in its intended purpose (other than, for instance, a paragraph containing a  `ZERO WIDTH SPACE` (`​`)).
+
 ##### Quote Block
 
-##### unordered List Block
+A [*Markdom quote block*][] should be represented as a [block quote](http://spec.commonmark.org/0.26/#block-quotes).
+
+##### Unordered List Block
+
+An [*unordered Markdom list block*][] should be represented as a [bullet list](http://spec.commonmark.org/0.26/#bullet-list).
 
 #### List Item  
+
+A [*Markdom list items*][] should be represented as a [list item](http://spec.commonmark.org/0.26/#list-items).
 
 #### Content
 
 ##### Code Content
 
+A [*Markdom code content*][] should be represented as a [code span](http://spec.commonmark.org/0.26/#code-spans).
+
+Representing a [*Markdom code content*][] as a code span is always possible. If the value of the `code` parameter contains succession of `BACKTICK` (` ` `) characters, the fence must be elongated accordingly:
+
+    ``foo`bar``
+    
+If the value of the `code` parameter begins or ends with a `BACKTICK` (` ` `) character, leading or trailing whitespace can be added:
+
+    `` `foo` ``
+       
+[Control](http://www.fileformat.info/info/unicode/category/Cc/list.htm) characters in the value of the `code` parameter should be removed or replaced. `LINE_FEED` (`\n`) or `CHARACTER_TABULATION` (`\t`) should be treated as a single `SPACE` (` `).
+
 ##### Emphasis Content
+
+A [*Markdom emphasis content*][] should be represented as an [emphasis or strong emphasis](http://spec.commonmark.org/0.26/#emphasis-and-strong-emphasis), depending on the value of the `level` parameter.
+
+Consequent usage of `*` or `**` instead of `_` or `__` is recommended as the emphasis delimiter, because it simplifies the correct representation of the [*Markdom emphasis content*][] if it is not surrounded by whitespace.
+
+A [*Markdom emphasis content*][] can be ignored if it contains nothing or only the empty string.
 
 ##### Image Content
 
+A [*Markdom image content*][] should be represented as an [image](http://spec.commonmark.org/0.26/#images).
+
+[Control](http://www.fileformat.info/info/unicode/category/Cc/list.htm) characters in the value of the `title` parameter, if present, should be removed or replaced. `LINE_FEED` (`\n`) or `CHARACTER_TABULATION` (`\t`) should be treated as a single `SPACE` (` `).
+
+The value of the `alternative` parameter, if present, should be used as if it was the `text` parameter of a [*Markdom text content*][] and serve as the [image description](http://spec.commonmark.org/0.26/#image-description).
+
 ##### Line Break Content
+
+A [*Markdom line break content*][] should be represented as a [hard line break](http://spec.commonmark.org/0.26/#hard-line-breaks) or a [soft line break](http://spec.commonmark.org/0.26/#hard-line-breaks), depending on the value of the `hard` parameter.
 
 ##### Link Content
 
+A [*Markdom link content*][] should be represented as a [link](http://spec.commonmark.org/0.26/#links).
+
+A [*Markdom link content*][] that contains nothing or only the empty string should use the value of the `uri` parameter as if it was the `text` parameter of a [*Markdom text content*][] and serve as the [link description](http://spec.commonmark.org/0.26/#link-destination). The [*Markdom link content*][] can be ignored if the value of the `uri` parameter is the empty string.
+
 ##### Text Content
 
+A [*Markdom text content*][] should be represented as [textual content](http://spec.commonmark.org/0.26/#textual-content).
 
-empty code
-code with backticks
+[Control](http://www.fileformat.info/info/unicode/category/Cc/list.htm) characters in the value of the `text` parameter should be removed or replaced. `LINE_FEED` (`\n`) or `CHARACTER_TABULATION` (`\t`) should be treated as a single space character).
 
+#### Adjacent lists
 
-adjacent lists
+Because CommonMark doesn't support adjacent lists, it is necessary to place another [block](http://spec.commonmark.org/0.26/#blocks) between two adjacent [*ordered Markdom list block*][] or [*unordered Markdom list block*][]. A [*Markdom division block*][] is recommended, because it introduced the least amount of clutter and is still used in its intended purpose (other than, for instance, a paragraph containing a zero width space character).
 
+#### Whitespace handling
 
-image alternative text
+##### Whitespace compression
 
+Consecutive whitespace characters should be compressed to a single space character.
 
-control characters
-leading spaces
+##### Whitespace removal
 
-space reordering
+The representation of the content of a [*Markdom paragraph content*][] should not begin with whitespace, because the additional indentation can lead to unintended side effects.
 
-empty lists
-empty headings, quotes and paragraphs
+Assume an [*unordered Markdom list block*][] hat is followed by a [*Markdom paragraph block*][] with content that starts with two space characters. [This](http://spec.commonmark.org/dingus/?text=*%20foo%0A%0Abar) representation yields the expected output:
+
+    * foo
+    
+    bar
+
+[This](http://spec.commonmark.org/dingus/?text=*%20foo%0A%0A%20%20bar) representation doesn't yield the expected output:
+
+    * foo
+    
+      bar
+      
+For consistency, whitespace that follows a [*Markdom line break content*][] should also be removed.
+
+##### Whitespace shift
+
+Because of manner the [delimiter run](http://spec.commonmark.org/0.26/#delimiter-run) works, it is not possible for the content of a [*Markdom emphasis content*][] or a [*Markdom link content*][] to begin or end with a whitespace character. It is therefore recommended to shift whitespace to the surrounding of the [*Markdom content*][].
+
+Assuming a [*Markdom emphasis content*][] contains a [*Markdom text content*][] with `⎵bar⎵` (`⎵` indicates a space character) as the value, surrounded by other [*Markdom text contents*][]. This should be represented as of `foo *bar* baz`, instead of `foo* bar *baz`.
+
+A more complex example, including whitespace compression: `foo *[**lorem** ipsum](#bar)* baz` instead of `foo* [ ** lorem **ipsum ](#bar) *baz`.
 
 #### Interpretation
 
@@ -2112,6 +2181,7 @@ The following XHTML 5 document represents the [example document](#example):
 [*Markdom block*]: #domain-block
 [*Markdom blocks*]: #domain-block
 [*Markdom code block*]: #domain-codeblock
+[*Markdom code blocks*]: #domain-codeblock
 [*Markdom division block*]: #domain-divisionblock
 [*Markdom heading block*]: #domain-headingblock
 [*ordered Markdom list block*]: #domain-orderedlistblock
