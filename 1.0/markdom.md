@@ -1745,7 +1745,7 @@ The JSON object may have an entry with name `blocks`. The value of this entry, i
 
 A [*Markdom code block*][] must be represented as a JSON object.
 
-The JSON object must have an entry with name `type` and value `CODE`.
+The JSON object must have an entry with name `type` and value `Code`.
 
 The JSON object must have an entry with name `code`. The value of this entry, must be a JSON string and contain the value of the `code` parameter of the represented [*Markdom code block*][].
 
@@ -1755,13 +1755,13 @@ The JSON object may have an entry with name `hint`. The value of this entry, if 
 
 A [*Markdom division block*][] must be represented as a JSON object.
 
-The JSON object must have an entry with name `type` and value `DIVISION`.
+The JSON object must have an entry with name `type` and value `Division`.
 
 ##### Heading Block {#markup-json-headingblock}
 
 A [*Markdom heading block*][] must be represented as a JSON object.
 
-The JSON object must have an entry with name `type` and value `HEADING`.
+The JSON object must have an entry with name `type` and value `Heading`.
 
 The JSON object must have an entry with name `level`. The value of this entry, must be a JSON number and contain the value of the `level` parameter of the represented [*Markdom heading block*][].
 
@@ -1771,7 +1771,7 @@ The JSON object may have an entry with name `contents`. The value of this entry,
 
 An [*ordered Markdom list block*][] must be represented as a JSON object.
 
-The object must have an entry with name `type` and value `ORDERED_LIST`.
+The object must have an entry with name `type` and value `OrderedList`.
 
 The object must have an entry with name `startIndex`. The value of this entry, must be a JSON number and contain the value of the `startIndex` parameter of the represented [*ordered Markdom list block*][].
 
@@ -1781,7 +1781,7 @@ The JSON object may have an entry with name `items`. The value of this entry, if
 
 A [*Markdom paragraph block*][] must be represented as a JSON object.
 
-The JSON object must have an entry with name `type` and value `PARAGRAPH`.
+The JSON object must have an entry with name `type` and value `Paragraph`.
 
 The JSON object may have an entry with name `contents`. The value of this entry, if present, must be a JSON array that contains the representations of the [*Markdom contents*][] the represented [*Markdom paragraph block*][] consists of.
 
@@ -1789,7 +1789,7 @@ The JSON object may have an entry with name `contents`. The value of this entry,
 
 A [*Markdom quote block*][] must be represented as a JSON object.
 
-The JSON object must have an entry with name `type` and value `QUOTE`.
+The JSON object must have an entry with name `type` and value `Quote`.
 
 The JSON object may have an entry with name `blocks`. The value of this entry, if present, must be a JSON array that contains the representations of the [*Markdom contents*][] the represented [*Markdom quote block*][] consists of.
 
@@ -1797,7 +1797,7 @@ The JSON object may have an entry with name `blocks`. The value of this entry, i
 
 An [*unordered Markdom list block*][] must be represented as a JSON object.
 
-The JSON object must have an entry with name `type` and value `UNORDERED_LIST`.
+The JSON object must have an entry with name `type` and value `UnorderedList`.
 
 The JSON object may have an entry with name `items`. The value of this entry, if present, must be a JSON array that contains the representations of the [*Markdom list items*][] the represented [*unordered Markdom list block*][] consists of.
 
@@ -1813,7 +1813,7 @@ The JSON object may have an entry with name `blocks`. The value of this entry, i
 
 A [*Markdom code content*][] must be represented as a JSON object.
 
-The JSON object must have an entry with name `type` and value `CODE`.
+The JSON object must have an entry with name `type` and value `Code`.
 
 The JSON object must have an entry with name `code`. The value of this entry, must be a JSON string and contain the value of the `code` parameter of the represented [*Markdom code content*][].
 
@@ -1821,7 +1821,7 @@ The JSON object must have an entry with name `code`. The value of this entry, mu
 
 A [*Markdom emphasis content*][] must be represented as a JSON object.
 
-The JSON object must have an entry with name `type` and value `EMPHASIS`.
+The JSON object must have an entry with name `type` and value `Emphasis`.
 
 The JSON object must have an entry with name `level`. The value of this entry, must be a JSON string and contain the value of the `level` parameter of the represented [*Markdom emphasis content*][].
 
@@ -1831,7 +1831,7 @@ The JSON object may have an entry with name `contents`. The value of this entry,
 
 A [*Markdom image content*][] must be represented as a JSON object.
 
-The JSON object must have an entry with name `type` and value `IMAGE`.
+The JSON object must have an entry with name `type` and value `Image`.
 
 The JSON object must have an entry with name `uri`. The value of this entry, must be a JSON string and contain the value of the `uri` parameter of the represented [*Markdom image content*][].
 
@@ -1843,7 +1843,7 @@ The JSON object may have an entry with name `alternative`. The value of this ent
 
 A [*Markdom line break content*][] must be represented as a JSON object.
 
-The JSON object must have an entry with name `type` and value `LINE_BREAK`.
+The JSON object must have an entry with name `type` and value `LineBreak`.
 
 The JSON object must have an entry with name `hard`. The value of this entry, must be a JSON boolean and contain the value of the `hard` parameter of the represented [*Markdom line break content*][].
 
@@ -1851,7 +1851,7 @@ The JSON object must have an entry with name `hard`. The value of this entry, mu
 
 A [*Markdom link content*][] must be represented as a JSON object.
 
-The JSON object must have an entry with name `type` and value `LINK`.
+The JSON object must have an entry with name `type` and value `Link`.
 
 The JSON object must have an entry with name `uri`. The value of this entry, must be a JSON string and contain the value of the `uri` parameter of the represented [*Markdom link content*][].
 
@@ -1861,7 +1861,7 @@ The JSON object may have an entry with name `contents`. The value of this entry,
 
 A [*Markdom text content*][] must be represented as a JSON object.
 
-The JSON object must have an entry with name `type` and value `TEXT`.
+The JSON object must have an entry with name `type` and value `Text`.
 
 The JSON object must have an entry with name `text`. The value of this entry, must be a JSON string and contain the value of the `text` parameter of the represented [*Markdom text content*][].
 
