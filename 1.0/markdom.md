@@ -1725,7 +1725,146 @@ onDocumentEnd()
 
 ## Data representations {#data}
 
+Formats that are eligible to be used as a data exchange format must have a well known and publicly documented syntax that leaves no leeway for in ambiguity. Representation and interpretation of such formats are always possible. This specification defines representations of [*Markdom documents*][] for some data exchange formats. 
+
 ### JSON {#data-json}
+
+#### Document {#markup-json-document}
+
+A [*Markdom document*][] must be represented as a JSON object.
+
+The JSON object may have an entry with name `$schema` and value [`http://schema.markdom.io/markdom-1.0.json#"`](http://schema.markdom.io/markdom-1.0.json#) that allows automated schema validation with [JSON Schema](http://json-schema.org/).
+
+The JSON object must have an entry with name `version` and value `1.0`.
+
+The JSON object may have an entry with name `blocks`. The value of this entry, if present, must be a JSON array that contains the representations of the [*Markdom blocks*][] the represented [*Markdom document*][] consists of.
+
+#### Block {#markup-json-block}
+
+##### Code Block {#markup-json-codeblock}
+
+A [*Markdom code block*][] must be represented as a JSON object.
+
+The JSON object must have an entry with name `type` and value `CODE`.
+
+The JSON object must have an entry with name `code`. The value of this entry, must be a JSON string and contain the value of the `code` parameter of the represented [*Markdom code block*][].
+
+The JSON object may have an entry with name `hint`. The value of this entry, if present, must be a JSON string that contains the value of `hint` parameter of the represented [*Markdom code block*][] or a JSON null, if the `hint` parameter is not present.
+
+##### Division Block {#markup-json-divisionblock}
+
+A [*Markdom division block*][] must be represented as a JSON object.
+
+The JSON object must have an entry with name `type` and value `DIVISION`.
+
+##### Heading Block {#markup-json-headingblock}
+
+A [*Markdom heading block*][] must be represented as a JSON object.
+
+The JSON object must have an entry with name `type` and value `HEADING`.
+
+The JSON object must have an entry with name `level`. The value of this entry, must be a JSON number and contain the value of the `level` parameter of the represented [*Markdom heading block*][].
+
+The JSON object may have an entry with name `contents`. The value of this entry, if present, must be a JSON array that contains the representations of the [*Markdom contents*][] the represented [*Markdom heading block*][] consists of.
+
+##### Ordered List Block {#markup-json-orderedlistblock}
+
+An [*ordered Markdom list block*][] must be represented as a JSON object.
+
+The object must have an entry with name `type` and value `ORDERED_LIST`.
+
+The object must have an entry with name `startIndex`. The value of this entry, must be a JSON number and contain the value of the `startIndex` parameter of the represented [*ordered Markdom list block*][].
+
+The JSON object may have an entry with name `items`. The value of this entry, if present, must be a JSON array that contains the representations of the [*Markdom list items*][] the represented [*ordered Markdom list block*][] consists of.
+
+##### Paragraph Block {#markup-json-paragraphblock}
+
+A [*Markdom paragraph block*][] must be represented as a JSON object.
+
+The JSON object must have an entry with name `type` and value `PARAGRAPH`.
+
+The JSON object may have an entry with name `contents`. The value of this entry, if present, must be a JSON array that contains the representations of the [*Markdom contents*][] the represented [*Markdom paragrapg block*][] consists of.
+
+##### Quote Block {#markup-json-quoteblock}
+
+A [*Markdom quote block*][] must be represented as a JSON object.
+
+The JSON object must have an entry with name `type` and value `QUOTE`.
+
+The JSON object may have an entry with name `blocks`. The value of this entry, if present, must be a JSON array that contains the representations of the [*Markdom contents*][] the represented [*Markdom quote block*][] consists of.
+
+##### Unordered List Block {#markup-json-unorderedlistblock}
+
+An [*unordered Markdom list block*][] must be represented as a JSON object.
+
+The JSON object must have an entry with name `type` and value `UNORDERED_LIST`.
+
+The JSON object may have an entry with name `items`. The value of this entry, if present, must be a JSON array that contains the representations of the [*Markdom list items*][] the represented [*unordered Markdom list block*][] consists of.
+
+#### List Item {#markup-json-listitem}
+
+* A [*Markdom list item*][] must be represented as a JSON object.
+
+The JSON object may have an entry with name `blocks`. The value of this entry, if present, must be a JSON array that contains the representations of the [*Markdom blocks*][] the represented [*Markdom list item*][] consists of.
+
+#### Content {#markup-json-content}
+
+##### Code Content {#markup-json-codecontent}
+
+A [*Markdom code content*][] must be represented as a JSON object.
+
+The JSON object must have an entry with name `type` and value `CODE`.
+
+The JSON object must have an entry with name `code`. The value of this entry, must be a JSON string and contain the value of the `code` parameter of the represented [*Markdom code content*][].
+
+##### Emphasis Content {#markup-json-emphasiscontent}
+
+A [*Markdom emphasis content*][] must be represented as a JSON object.
+
+The JSON object must have an entry with name `type` and value `EMPHASIS`.
+
+The JSON object must have an entry with name `level`. The value of this entry, must be a JSON string and contain the value of the `level` parameter of the represented [*Markdom emphasis content*][].
+
+The JSON object may have an entry with name `contents`. The value of this entry, if present, must be a JSON array that contains the representations of the [*Markdom contents*][] the represented [*Markdom emphasis content*][] consists of.
+
+##### Image Content {#markup-json-imagecontent}
+
+A [*Markdom image content*][] must be represented as a JSON object.
+
+The JSON object must have an entry with name `type` and value `IMAGE`.
+
+The JSON object must have an entry with name `uri`. The value of this entry, must be a JSON string and contain the value of the `uri` parameter of the represented [*Markdom image content*][].
+
+The JSON object may have an entry with name `title`. The value of this entry, if present, must be a JSON string that contains the value of `title` parameter of the represented [*Markdom image content*][] or a JSON null, if the `title` parameter is not present.
+
+The JSON object may have an entry with name `alternative`. The value of this entry, if present, must be a JSON string that contains the value of `alternative` parameter of the represented [*Markdom image content*][] or a JSON null, if the `alternative` parameter is not present.
+
+##### Line Break Content {#markup-json-linebreakcontent}
+
+A [*Markdom line break content*][] must be represented as a JSON object.
+
+The JSON object must have an entry with name `type` and value `LINE_BREAK`.
+
+The JSON object must have an entry with name `hard`. The value of this entry, must be a JSON boolean and contain the value of the `hard` parameter of the represented [*Markdom line break content*][].
+
+##### Link Content {#markup-json-linkcontent}
+
+A [*Markdom link content*][] must be represented as a JSON object.
+
+The JSON object must have an entry with name `type` and value `LINK`.
+
+The JSON object must have an entry with name `uri`. The value of this entry, must be a JSON string and contain the value of the `uri` parameter of the represented [*Markdom link content*][].
+
+The JSON object may have an entry with name `contents`. The value of this entry, if present, must be a JSON array that contains the representations of the [*Markdom contents*][] the represented [*Markdom link content*][] consists of.
+
+##### Text Content {#markup-json-textcontent}
+
+A [*Markdom text content*][] must be represented as a JSON object.
+
+The JSON object must have an entry with name `type` and value `TEXT`.
+
+The JSON object must have an entry with name `text`. The value of this entry, must be a JSON string and contain the value of the `text` parameter of the represented [*Markdom text content*][].
+
 
 #### Example Document {#data-json-example}
 
@@ -1873,6 +2012,70 @@ blocks:
 
 ### XML {#data-xml}
 
+#### Document {#markup-xml-document}
+
+A [*Markdom document*][] 
+
+#### Block {#markup-xml-block}
+
+##### Code Block {#markup-xml-codeblock}
+
+A [*Markdom code block*][] 
+
+##### Division Block {#markup-xml-divisionblock}
+
+A [*Markdom division block*][]
+
+##### Heading Block {#markup-xml-headingblock}
+
+A [*Markdom heading block*][]
+
+##### Ordered List Block {#markup-xml-orderedlistblock}
+
+An [*ordered Markdom list block*][]
+
+##### Paragraph Block {#markup-xml-paragraphblock}
+
+A [*Markdom paragraph block*][]
+
+##### Quote Block {#markup-xml-quoteblock}
+
+A [*Markdom quote block*][]
+
+##### Unordered List Block {#markup-xml-unorderedlistblock}
+
+An [*unordered Markdom list block*][]
+
+#### List Item {#markup-xml-listitem}
+
+* A [*Markdom list item*][]
+
+#### Content {#markup-xml-content}
+
+##### Code Content {#markup-xml-codecontent}
+
+A [*Markdom code content*][]
+
+##### Emphasis Content {#markup-xml-emphasiscontent}
+
+A [*Markdom emphasis content*][]
+
+##### Image Content {#markup-xml-imagecontent}
+
+A [*Markdom image content*][]
+
+##### Line Break Content {#markup-xml-linebreakcontent}
+
+A [*Markdom line break content*][]
+
+##### Link Content {#markup-xml-linkcontent}
+
+A [*Markdom link content*][]
+
+##### Text Content {#markup-xml-textcontent}
+
+A [*Markdom text content*][]
+
 #### Example Document {#data-xml-example}
 
 The following XML document represents the [example document](#example):
@@ -1914,7 +2117,7 @@ The following XML document represents the [example document](#example):
 
 ## Markup representations {#markup}
 
-Since Markdom has been designed with the intent, that the largest possible number of applications, which includes markup languages, can produce a reasonable output, is should generally be possible to represent a [*Markdom document*][] in a given rich text or markup language. 
+It should generally be possible to represent a [*Markdom document*][] in a given rich text or markup language because Markdom has been designed with the intent that the largest possible number of applications can produce a reasonable output.
 
 This includes lightweight markup languages that use formatting instructions that closely resemble their intended purpose (e.g. CommonMark, ...), structural formatting languages (e.g. HTML, ...) and procedural formatting languages (e.g. LaTeX).
 
