@@ -2171,7 +2171,7 @@ An [*unordered Markdom list block*][] should be represented as an `<ul>` element
 
 #### List Item {#markup-html-listitem}
 
-* A [*Markdom list item*][] should be represented as a `<li>` tag.
+A [*Markdom list item*][] should be represented as a `<li>` element.
 
 #### Content {#markup-html-content}
 
@@ -2272,8 +2272,6 @@ The following XHTML 5 document represents the [example document](#example):
     <pre><code>goto 11</code></pre>
   </body>
 </html>
-
-
 ```
 
 [*Markdom node*]: #domain-node
