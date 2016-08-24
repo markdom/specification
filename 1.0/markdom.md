@@ -1977,7 +1977,7 @@ Using a [setext heading](http://spec.commonmark.org/0.26/#setext-headings) gener
 
 An [*ordered Markdom list block*][] should be represented as a [ordered list](http://spec.commonmark.org/0.26/#ordered-list).
 
-Because CommonMark doesn't support adjacent lists, it is necessary to place another [block](http://spec.commonmark.org/0.26/#blocks) between two adjacent [*ordered Markdom list block*][] or [*unordered Markdom list block*][]. A [*Markdom division block*][] is recommended, because it introduced the least amount of clutter and is still used in its intended purpose (other than, for instance, a paragraph containing a  `ZERO WIDTH SPACE` (`​`)).
+Because CommonMark doesn't support adjacent lists, it is necessary to place another [block](http://spec.commonmark.org/0.26/#blocks) between two adjacent [*ordered Markdom list block*][] or [*unordered Markdom list block*][]. A [*Markdom division block*][] is recommended, because it introduced the least amount of clutter and is still used in its intended purpose (other than, for instance, a paragraph containing a zero width space character).
 
 ##### Quote Block
 
@@ -2005,7 +2005,7 @@ If the value of the `code` parameter begins or ends with a `BACKTICK` (` ` `) ch
 
     `` `foo` ``
        
-[Control](http://www.fileformat.info/info/unicode/category/Cc/list.htm) characters in the value of the `code` parameter should be removed or replaced. `LINE_FEED` (`\n`) or `CHARACTER_TABULATION` (`\t`) should be treated as a single `SPACE` (` `).
+[Control](http://www.fileformat.info/info/unicode/category/Cc/list.htm) characters in the value of the `code` parameter should be removed or replaced. `LINE_FEED` (`\n`) or `CHARACTER_TABULATION` (`\t`) should be treated as a single space character.
 
 ##### Emphasis Content
 
@@ -2019,7 +2019,7 @@ A [*Markdom emphasis content*][] can be ignored if it contains nothing or only t
 
 A [*Markdom image content*][] should be represented as an [image](http://spec.commonmark.org/0.26/#images).
 
-[Control](http://www.fileformat.info/info/unicode/category/Cc/list.htm) characters in the value of the `title` parameter, if present, should be removed or replaced. `LINE_FEED` (`\n`) or `CHARACTER_TABULATION` (`\t`) should be treated as a single `SPACE` (` `).
+[Control](http://www.fileformat.info/info/unicode/category/Cc/list.htm) characters in the value of the `title` parameter, if present, should be removed or replaced. `LINE_FEED` (`\n`) or `CHARACTER_TABULATION` (`\t`) should be treated as a single space character.
 
 The value of the `alternative` parameter, if present, should be used as if it was the `text` parameter of a [*Markdom text content*][] and serve as the [image description](http://spec.commonmark.org/0.26/#image-description).
 
@@ -2051,7 +2051,7 @@ Consecutive whitespace characters should be compressed to a single space charact
 
 ##### Whitespace removal
 
-The representation of the content of a [*Markdom paragraph content*][] should not begin with whitespace, because the additional indentation can lead to unintended side effects.
+The representation of the content of a [*Markdom paragraph block*][] should not begin with whitespace, because the additional indentation can lead to unintended side effects.
 
 Assume an [*unordered Markdom list block*][] hat is followed by a [*Markdom paragraph block*][] with content that starts with two space characters. [This](http://spec.commonmark.org/dingus/?text=*%20foo%0A%0Abar) representation yields the expected output:
 
@@ -2071,11 +2071,35 @@ For consistency, whitespace that follows a [*Markdom line break content*][] shou
 
 Because of manner the [delimiter run](http://spec.commonmark.org/0.26/#delimiter-run) works, it is not possible for the content of a [*Markdom emphasis content*][] or a [*Markdom link content*][] to begin or end with a whitespace character. It is therefore recommended to shift whitespace to the surrounding of the [*Markdom content*][].
 
-Assuming a [*Markdom emphasis content*][] contains a [*Markdom text content*][] with `⎵bar⎵` (`⎵` indicates a space character) as the value, surrounded by other [*Markdom text contents*][]. This should be represented as of `foo *bar* baz`, instead of `foo* bar *baz`.
+Assuming a [*Markdom emphasis content*][] contains a [*Markdom text content*][] with `⎵bar⎵` (`⎵` indicates a space character) as the value, surrounded by other [*Markdom text contents*][]. This shouldn't be represented as
 
-A more complex example, including whitespace compression: `foo *[**lorem** ipsum](#bar)* baz` instead of `foo* [ ** lorem **ipsum ](#bar) *baz`.
+    `foo* bar *baz`
+    
+but should be corrected to
+
+    `foo *bar* baz`
+
+
+A more complex example with nested [*Markdom contents*][] and whitespace characters that should be compressed is
+
+    `foo* [ ** lorem **ipsum ](#bar) *baz`
+
+which should be corrected to
+
+    `foo *[**lorem** ipsum](#bar)* baz`
 
 #### Interpretation
+
+It is generally simple to interpret a given CommonMark document as a [*Markdom document*][]. The mapping of CommonMark formatting instructions to [*Markdom nodes*][] is (almost) straight forward because the structure of a [*Markdom document*][] has no special edge cases that need to be considered.
+
+##### HTML 
+
+CommonMark allows [HTML blocks](http://spec.commonmark.org/0.26/#html-blocks) and [raw HTML](http://spec.commonmark.org/0.26/#raw-html) as part of a CommonMark document while Markdom explicitly doesn't. 
+
+How to handle a CommonMark document that contains HTML is application dependent. Possibilities include
+* rejecting the CommonMark document (e.g. display an error message to the editor), 
+* treat the raw HTML as a [*Markdom code content*][] or [*Markdom text content*][], or
+* removing the HTML altogether.
 
 #### Example Document {#markup-cm-example}
 
@@ -2097,9 +2121,10 @@ The following CommonMark document represents the [example document](#example):
 
 ### HTML {#markup-html}
 
-#### Representation
 
 #### Interpretation
+
+It is generally not simple or even possible to interpret a given HTML document as a [*Markdom document*][].
 
 #### Example Document {#markup-html-example}
 
@@ -2184,6 +2209,7 @@ The following XHTML 5 document represents the [example document](#example):
 [*Markdom code blocks*]: #domain-codeblock
 [*Markdom division block*]: #domain-divisionblock
 [*Markdom heading block*]: #domain-headingblock
+[*Markdom heading blocks*]: #domain-headingblock
 [*ordered Markdom list block*]: #domain-orderedlistblock
 [*Markdom paragraph block*]: #domain-paragraphblock
 [*Markdom quote block*]: #domain-quoteblock
@@ -2198,6 +2224,7 @@ The following XHTML 5 document represents the [example document](#example):
 [*Markdom line break content*]: #domain-linebreakcontent
 [*Markdom link content*]: #domain-linkcontent
 [*Markdom text content*]: #domain-textcontent
+[*Markdom text contents]: #domain-textcontent
 [*Markdom event*]: api-handler-event
 [*Markdom events*]: api-handler-event
 
