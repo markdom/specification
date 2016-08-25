@@ -347,7 +347,7 @@ It is recommended that implementations contain a section about such implementati
 
 Obviously, both Markdom APIs require some support from the programming language a particular implementation is written in. This specification is written with an object orientated programming language is mind, but it should be little effort to interpret this specification for programming languages that follow another programming paradigm.
 
-##### Mandatory and optional parameters {#api-common-optional}
+##### Mandatory and optional {#api-common-optional}
 
 The Markdom APIs use mandatory and optional parameters. Mandatory parameters must always have a value. Optional parameters may or may not have a value. Mandatory parameters are hereafter notes as `Type name` where `Type` is value type and `name` is the parameter name. Optional parameters are hereafter notes as `Type? name` where `Type` is value type and `name` is the parameter name.
 
@@ -356,9 +356,11 @@ There are common implementations for mandatory and optional parameters.
 1. For a Programming languages that has `null` values and can enforce non-`null` values for a method parameter, `null` may be used to indicate that an optional parameter has no value. No explicit `null`-checks must be implemented for mandatory parameters.
 1. For a Programming languages that doesn't have `null` values an explicit `Optional` type must be used to for an optional parameter. No explicit `null`-checks must be implemented for mandatory parameters.
 
-##### Primitive Values {#api-common-primitive}
+##### Values {#api-common-values}
 
-The Markdom APIs use parameters and return values that represent values of primitive type. Specifically for boolean values, numbers and Unicode character sequences. Such types are hereafter noted as `Boolean`, `Integer` and `String` respectively. 
+The Markdom APIs use parameters and return values that represent values of simple type. Specifically for boolean values, numbers, Unicode character sequences and URI references. Such types are hereafter noted as `Boolean`, `Integer` and `Uri` respectively. 
+
+This should usually be implemented with the corresponding primitive or value types.
 
 ##### Iterables {#api-common-iterable}
 
@@ -750,9 +752,9 @@ The initial value of the `uri` parameter should be the empty string. The initial
 
 An implementation of `LinkContent` should have a constructor with signature `LinkContent()`.
 
-For convenience, an implementation of `ImageContent` should have a constructor with signature `ImageContent(String uri)` that delegates to `setUri(String uri)`.
+For convenience, an implementation of `ImageContent` should have a constructor with signature `ImageContent(Uri uri)` that delegates to `setUri(Uri uri)`.
 
-For convenience, an implementation of `ImageContent` should have a constructor with signature `ImageContent(String uri, String? title, String? alternative)` that delegates to `setUri(String uri)` and `setTitle(String? title)` and `setAlternative(String? alternative)`.
+For convenience, an implementation of `ImageContent` should have a constructor with signature `ImageContent(Uri uri, String? title, String? alternative)` that delegates to `setUri(Uri uri)` and `setTitle(String? title)` and `setAlternative(String? alternative)`.
 
 ###### `getUri` {#api-dom-imagecontent-geturi}
 
@@ -762,7 +764,7 @@ This method must return the value of the `uri` parameter of the represented [*Ma
 
 ###### `setUri` {#api-dom-imagecontent-seturi}
 
-An `ImageContent` object must have a method with signature `setUri(String uri)`.
+An `ImageContent` object must have a method with signature `setUri(Uri uri)`.
 
 This method must set the value of the `uri` parameter of the represented [*Markdom image content*][].
   
@@ -830,11 +832,11 @@ The initial value of the `uri` parameter should be the empty string.
 
 An implementation of `LinkContent` should have a constructor with signature `LinkContent()`.
 
-For convenience, an implementation of `LinkContent` should have a constructor with signature `LinkContent(String uri)` that delegates to `setUri(String uri)`.
+For convenience, an implementation of `LinkContent` should have a constructor with signature `LinkContent(Uri uri)` that delegates to `setUri(Uri uri)`.
 
-For convenience, an implementation of `LinkContent` should have a constructor with signature `LinkContent(String uri, String? title)` that delegates to `setUri(String uri)` and `setTitle(String? title)`.
+For convenience, an implementation of `LinkContent` should have a constructor with signature `LinkContent(Uri uri, String? title)` that delegates to `setUri(Uri uri)` and `setTitle(String? title)`.
 
-For convenience, an implementation of `LinkContent` should have a constructor with signature `LinkContent(String uri, String? title, Content... contents)` that delegates to `setUri(String uri)` and `setTitle(String? title)` and `ContentParent#addContents(Content... contents)`.
+For convenience, an implementation of `LinkContent` should have a constructor with signature `LinkContent(Uri uri, String? title, Content... contents)` that delegates to `setUri(Uri uri)` and `setTitle(String? title)` and `ContentParent#addContents(Content... contents)`.
 
 ###### `getUri` {#api-dom-imagecontent-geturi}
 
@@ -844,7 +846,7 @@ This method must return the value of the `uri` parameter of the represented [*Ma
 
 ###### `setUri` {#api-dom-linkcontent-seturi}
 
-A `LinkContent` object must have a method with signature `setUri(String uri)`.
+A `LinkContent` object must have a method with signature `setUri(Uri uri)`.
 
 This method must set the value of the `uri` parameter of the represented [*Markdom link content*][].
   
@@ -1470,7 +1472,7 @@ The behavior of this method is undefined, if `level` is not present.
 
 ###### `onImageContent` {#api-handler-handler-onimagecontent}
 
-A `Handler` object must have a method with signature `onImageContent(String uri, String? title, String? alternative)`.
+A `Handler` object must have a method with signature `onImageContent(Uri uri, String? title, String? alternative)`.
 
 This event represents a [*Markdom image content*][] with the given values for the `uri`, `title` and `alternative` parameters.
 
@@ -1492,7 +1494,7 @@ The behavior of this method is undefined, if `hard` is not present.
 
 ###### `onLinkContentBegin` {#api-handler-handler-onlinkcontentbegin}
 
-A `Handler` object must have a method with signature `onLinkContentBegin(String uri, String? title)`.
+A `Handler` object must have a method with signature `onLinkContentBegin(Uri uri, String? title)`.
 
 This event represents the begin of a [*Markdom link content*][] with the given value for the `uri` and `title` parameters.
 
@@ -1504,7 +1506,7 @@ The behavior of this method is undefined, if `uri` is not a valid URI reference.
 
 ###### `onLinkContentEnd` {#api-handler-handler-onlincontentend}
 
-A `Handler` object must have a method with signature `onLinkContentEnd(String uri, String? title)`.
+A `Handler` object must have a method with signature `onLinkContentEnd(Uri uri, String? title)`.
 
 This event represents the begin of a [*Markdom link content*][] with the given value for the `uri` and `title` parameters.
 
