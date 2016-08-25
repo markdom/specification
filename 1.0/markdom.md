@@ -462,9 +462,9 @@ This method must return the [`BlockType`][] value that corresponds to the type o
 
 A `BlockParent` object is a [`Node`][] object that represents a [*Markdom node*][] that contains [*Markdom blocks*][].
 
-An implementation of `BlockParent` must have a final and initially empty companion `Sequence` of [`Block`][] objects that is associated with the `BlockParent` object.
+An implementation of `BlockParent` must have a final and initially empty companion [`Sequence`][] object for the [`Block`][] objects that are associated with the `BlockParent` object.
 
-Any structural modification (insert, remove, clear, replace) to the associated `Sequence` of [`Block`][] objects must reflect the fact, that a [`Block`][] object that is added to the associated `Sequence` object is attached to the `BlockParent` object until is is removed from the associated `Sequence` of [`Block`][] objects.
+Any structural modification (insert, remove, clear, replace) to the companion [`Sequence`][] object must reflect the fact, that a [`Block`][] object that is added to the companion [`Sequence`][] object is attached to the `BlockParent` object until is is removed from the companion [`Sequence`][] object.
 
 Attaching a [`Block`][] object to the `BlockParent` object  must fail
 * if the [`Block`][] object is not present, or  
@@ -487,27 +487,27 @@ This method must return the [`BlockParentType`][] value that corresponds to the 
 
 A `BlockParent` object must have a method with signature `[Block] getBlocks()`.
 
-This method must return the associated `Sequence` of [`Block`][] objects.
+This method must return the companion [`Sequence`] object.
 
 ###### `addBlock` {#api-dom-blockparent-addblock}
 
 For convenience, a `BlockParent` object should have a method with signature `addBlock(Block block)`.
 
-This method must add `block` at the end of the associated `Sequence` of [`Block`][] objects. This attaches `block` to the `BlockParent` object.
+This method must add `block` at the end of the companion [`Sequence`] object. This attaches `block` to the `BlockParent` object.
 
-This method must fail if adding `block` to the  associated `Sequence` of [`Block`][] objects failed.
+This method must fail if adding `block` to the companion [`Sequence`] object failed.
 
 ###### `addBlocks` {#api-dom-blockparent-addblocks}
 
 For convenience, a `BlockParent object should have a method with signature `addBlocks(Block... blocks)`.
 
-This method must add all [`Block`][] objects from `blocks` in the given order at the end of the `Sequence` of [`Block`][] objects of the `BlockParent` object, as if `addBlock(Block block)` has been called repeatedly for all [`Block`][] objects from `blocks`.  This attaches all [`Block`][] objects from `blocks` to the `BlockParent` object.
+This method must add all [`Block`][] objects from `blocks` in the given order at the end of the companion [`Sequence`] object, as if `addBlock(Block block)` has been called repeatedly for all [`Block`][] objects from `blocks`.  This attaches all [`Block`][] objects from `blocks` to the `BlockParent` object.
   
 This method must fail if `blocks` is not present.
 
-This method must fail if adding any [`Block`][] object from `blocks` to the  associated `Sequence` of [`Block`][] objects failed.
+This method must fail if adding any [`Block`][] object from `blocks` to the companion [`Sequence`] object failed.
   
-Because this method is a short hand for repeated calls to `addBlock(Block block)`, it must add all prior [`Block`][] objects from `blocks` to the  associated `Sequence` of [`Block`][] objects, if it fails because of a violating [`Block`][] object from `blocks`.
+Because this method is a short hand for repeated calls to `addBlock(Block block)`, it must add all prior [`Block`][] objects from `blocks` to the companion [`Sequence`] object, if it fails because of a violating [`Block`][] object from `blocks`.
 
 ##### `CodeBlock` {#api-dom-codeblock}
 
@@ -601,9 +601,9 @@ This method must fail if the `Content` object doesn't [have](#api-dom-node-haspa
 
 A `ContentParent` object is a [`Node`][] object that represents a [*Markdom node*][] that contains [*Markdom contents*][].
 
-An implementation of `ContentParent` must have a final and initially empty companion `Sequence` of [`Content`][] objects that is associated with the `ContentParent` object.
+An implementation of `ContentParent` must have a final and initially empty companion [`Sequence`][] object for the [`Content`][] objects that are associated with the `ContentParent` object.
 
-Any structural modification (insert, remove, clear, replace) to the associated `Sequence` of [`Content`][] objects must reflect the fact, that a [`Content`][] object that is added to the associated `Sequence` object is attached to the `ContentParent` object until is is removed from the associated `Sequence` of [`Content`][] objects.
+Any structural modification (insert, remove, clear, replace) to the companion [`Sequence`][] object must reflect the fact, that a [`Content`][] object that is added to the companion [`Sequence`][] object is attached to the `ContentParent` object until is is removed from the companion [`Sequence`][] object.
 
 Attaching a [`Content`][] object to the `ContentParent` object  must fail
 * if the [`Content`][] object is not present, or  
@@ -626,27 +626,27 @@ This method must return the [`ContentParentType`][] value that corresponds to th
 
 A `ContentParent` object must have a method with signature `[Content] getContents()`.
 
-This method must return the associated `Sequence` of [`Content`][] objects.
+This method must return the companion [`Sequence`][] object.
 
 ###### `addContent` {#api-dom-contentparent-addcontent}
 
 For convenience, a `ContentParent` object should have a method with signature `addContent(Content content)`.
 
-This method must add `content` at the end of the associated `Sequence` of [`Content`][] objects. This attaches `content` to the `ContentParent` object.
+This method must add `content` at the end of the companion [`Sequence`][] object. This attaches `content` to the `ContentParent` object.
 
-This method must fail if adding `content` to the  associated `Sequence` of [`Content`][] objects failed.
+This method must fail if adding `content` to the companion [`Sequence`][] object failed.
 
 ###### `addContents` {#api-dom-contentparent-addcontents}
 
 For convenience, a `ContentParent` object should have a method with signature `addContents(Content... contents)`.
 
-This method must add all [`Content`][] objects from `contents` in the given order at the end of the `Sequence` of [`Content`][] objects of the `ContentParent` object, as if `addContent(Content content)` has been called repeatedly for all [`Content`][] objects from `contents`. This attaches all [`Content`][] objects from `contents` to the `ContentParent` object.
+This method must add all [`Content`][] objects from `contents` in the given order at the end of the companion [`Sequence`][] object, as if `addContent(Content content)` has been called repeatedly for all [`Content`][] objects from `contents`. This attaches all [`Content`][] objects from `contents` to the companion [`Sequence`][] object.
   
 This method must fail if `contents` is not present.
 
-This method must fail if adding any [`Content`][] object from `contents` to the  associated `Sequence` of [`Content`][] objects failed.
+This method must fail if adding any [`Content`][] object from `contents` to the companion [`Sequence`][] object failed.
   
-Because this method is a short hand for repeated calls to `addContent(Content content)`, it must add all prior [`Content`][] objects from `contents` to the  associated `Sequence` of [`Content`][] objects, if it fails because of a violating [`Content`][] object from `contents`.
+Because this method is a short hand for repeated calls to `addContent(Content content)`, it must add all prior [`Content`][] objects from `contents` to the companion [`Sequence`][] object, if it fails because of a violating [`Content`][] object from `contents`.
    
 ##### `ContentParentBlock` {#api-dom-contentparentblock}
 
@@ -868,9 +868,9 @@ This method must set the value of the `title` parameter of the represented [*Mar
 
 A `ListBlock` object is a [`Block`][] object that represents a *Markdom list block*.  
 
-An implementation of `ListBlock` must have a final and initially empty companion `Sequence` of [`ListItem`][] objects that is associated with the `ListBlock` object.
+An implementation of `ListBlock` must have a final and initially empty companion [`Sequence`][] object for the [`ListItem`][] objects that are associated with the `ListBlock` object.
 
-Any structural modification (insert, remove, clear, replace) to the associated `Sequence` of [`ListItem`][] objects must reflect the fact, that a [`ListItem`][] object that is added to the associated `Sequence` object is attached to the `ListBlock` object until is is removed from the associated `Sequence` of [`ListItem`][] objects.
+Any structural modification (insert, remove, clear, replace) to the companion [`Sequence`][] object must reflect the fact, that a [`ListItem`][] object that is added to the companion [`Sequence`][] object is attached to the `ListBlock` object until is is removed from the companion [`Sequence`][] object.
 
 Attaching a [`ListItem`][] object to the `ListBlock` object  must fail
 * if the [`ListItem`][] object is not present, or  
@@ -893,27 +893,27 @@ This method must return the [`ListBlockType`][] value that corresponds to the ty
 
 A [`ListItem`][] object must have a method with signature `[ListItem] getListItems()`.
 
-This method must return the associated `Sequence` of [`ListItem`][] objects.
+This method must return the companion [`Sequence`][] object.
 
 ###### `addItem` {#api-dom-listblock-additem}
 
 For convenience, a `ListBlock` object should have a method with signature `addItem(ListItem item)`.
 
-This method must add `item` at the end of the associated `Sequence` of [`ListItem`][] objects. This attaches `item` to the `ListBlock` object.
+This method must add `item` at the end of the companion [`Sequence`][] object. This attaches `item` to the `ListBlock` object.
 
-This method must fail if adding `item` to the  associated `Sequence` of [`ListItem`][] objects failed.
+This method must fail if adding `item` to the companion [`Sequence`][] object failed.
 
 ###### `addItems` {#api-dom-listblock-additems}
 
 For convenience, a `ListBlock` object should have a method with signature `addItems(ListItem... items)`.
 
-This method must add all [`ListItem`][] objects from `items` in the given order at the end of the `Sequence` of [`ListItem`][] objects of the `ListBlock` object, as if `addItem(ListItem item)` has been called repeatedly for all [`ListItem`][] objects from `items`.  This attaches all [`ListItem`][] objects from `items` to the `ListBlock` object.
+This method must add all [`ListItem`][] objects from `items` in the given order at the end of the companion [`Sequence`][] object, as if `addItem(ListItem item)` has been called repeatedly for all [`ListItem`][] objects from `items`.  This attaches all [`ListItem`][] objects from `items` to the `ListBlock` object.
   
 This method must fail if `items` is not present.
 
-This method must fail if adding any [`ListItem`][] object from `items` to the  associated `Sequence` of [`ListItem`][] objects failed.
+This method must fail if adding any [`ListItem`][] object from `items` to the  companion [`Sequence`][] object failed.
   
-Because this method is a short hand for repeated calls to `addItem(ListItem item)`, it must add all prior [`ListItem`][] objects from `items` to the  associated `Sequence` of [`ListItem`][] objects, if it fails because of a violating [`ListItem`][] object from `items`.
+Because this method is a short hand for repeated calls to `addItem(ListItem item)`, it must add all prior [`ListItem`][] objects from `items` to the companion [`Sequence`][] object, if it fails because of a violating [`ListItem`][] object from `items`.
 
 ##### `ListItem` {#api-dom-listitem}
 
@@ -947,7 +947,7 @@ Specifically, this method must return `true`
 * if the `Node` object is a [`Content`][] object and currently attached to a [`ContentParent`][] object.
 
 Specifically, this method must return `false`
-* if the `Node` object is a `Document`, or
+* if the `Node` object is a [`Document`][] object, or
 * if the `Node` object is a [`Block`][] object and currently not attached to a [`BlockParent`][] object, or
 * if the `Node` object is a [`ListItem`][] object and currently not attached to a [`ListBlock`][] object, or
 * if the `Node` object is a [`Content`][] object and currently not attached to a [`ContentParent`][] object.
@@ -981,12 +981,12 @@ This method must fail if the `Node` object doesn't [have](#api-dom-node-hasparen
 
 A `Node` object must have a method with signature `Integer getIndex()`.
 
-This method must return the index of the `Node` object in the `Iterable` object of [child](#api-dom-node-getchildren) `Node` object of the parent `Node`.
+This method must return the index of the `Node` object in the [`Iterable`][] object of [child](#api-dom-node-getchildren) `Node` object of the parent `Node`.
 
 Specifically, this method must return 
-* the index in the attached `Sequence` of [`Block`][] objects of the [`BlockParent`][] object it is currently attached to, if the `Node` object is a [`Block`][] object, or
-* the index in the attached `Sequence` of [`ListItem`][] objects of the [`ListBlock`][] object it is currently attached to, if the `Node` object is a [`ListItem`][] object, or
-* the index in the attached `Sequence` of [`Content`][] objects of the [`ContentParent`][] object it is currently attached to, if the `Node` object is a [`Content`][] object, or
+* the index in the companion [`Sequence`][] object of the [`BlockParent`][] object it is currently attached to, if the `Node` object is a [`Block`][] object, or
+* the index in the companion [`Sequence`][] object of the [`ListBlock`][] object it is currently attached to, if the `Node` object is a [`ListItem`][] object, or
+* the index in the companion [`Sequence`][] object of the [`ContentParent`][] object it is currently attached to, if the `Node` object is a [`Content`][] object.
 
 This method must fail if the `Node` object doesn't [have](#api-dom-node-hasparent) a [parent](#api-dom-node-getparent) `Node` object.
 
@@ -1026,13 +1026,13 @@ Specifically, this method must return `0`
 
 A `Node` object must have a method with signature `Node... getChildren()`.
 
-This method must return an `Iterable` object that yields the child `Node` objects of the `Node` object.
+This method must return an [`Iterable`][] object that yields the child `Node` objects of the `Node` object.
 
 Specifically, this method must return
-* an `Iterable` object for the attached `Sequence` of [`Block`][] objects, if the `Node` object is a [`BlockParent`][] object, or
-* an `Iterable` object for the attached `Sequence` of [`ListItem`][] objects, if the `Node` object is a [`ListBlock`][] object, or
-* an `Iterable` object for the attached `Sequence` of [`Content`][] objects, if the `Node` object is a [`ContentParent`][] object, or
-* an empty `Iterable` object, if the `Node` object is a [`CodeBlock`][] object or a [`CodeContent`][] object or a [`DivisionBlock`][] object or an [`ImageContent`][] object or a [`LineBreakContent`][] object or a [`TextContent`][] object.
+* an [`Iterable`][] object for the companion [`Sequence`][] object, if the `Node` object is a [`BlockParent`][] object, or
+* an [`Iterable`][] object for the companion [`Sequence`][] object, if the `Node` object is a [`ListBlock`][] object, or
+* an [`Iterable`][] object for the companion [`Sequence`][] object, if the `Node` object is a [`ContentParent`][] object, or
+* an empty [`Iterable`][] object, if the `Node` object is a [`CodeBlock`][] object or a [`CodeContent`][] object or a [`DivisionBlock`][] object or an [`ImageContent`][] object or a [`LineBreakContent`][] object or a [`TextContent`][] object.
 
 ##### `OrderedListBlock` {#api-dom-orderedlistblock}
 
@@ -1163,7 +1163,7 @@ The following [Domain Model API](#api-dom) object graph represents the [example 
 
 ![](resource/markdom-objectgraph.png)
 
-Every [`BlockParent`][], [`ListBlock`][] or [`ContentParent`][] object has a reference to its companion `Sequence` object. A companion `Sequence` object holds references to the [children](#api-dom-node-getchildren) of the corresponding [`BlockParent`][], [`ListBlock`][] or [`ContentParent`][] object. Each child has a reference to its [parent](#api-dom-node-getparent).
+Every [`BlockParent`][], [`ListBlock`][] or [`ContentParent`][] object has a reference to its companion [`Sequence`][] object. A companion [`Sequence`][] object holds references to the [children](#api-dom-node-getchildren) of the corresponding [`BlockParent`][], [`ListBlock`][] or [`ContentParent`][] object. Each child has a reference to its [parent](#api-dom-node-getparent).
 
 #### Up navigation {#api-dom-downnavigation}
 
@@ -1189,9 +1189,9 @@ The following image shows the possible methods to navigate from an [`Node`][] ob
 
 ![](resource/markdom-navigation-down.png)
 
-Every [`Node`][] object in a [Domain Model API](#api-dom) object graph that is parent object has a reference to its companion `Sequence` object which has references to the [children](#api-dom-node-getchildren) of the [`Node`][] object.
+Every [`Node`][] object in a [Domain Model API](#api-dom) object graph that is parent object has a reference to its companion [`Sequence`][] object which has references to the [children](#api-dom-node-getchildren) of the [`Node`][] object.
 
-For example: Consider a method that gets the root `Node` as a parameter without any knowledge about it. Calling `getNodeType()` reveals that is it a [`Document`][] object. Calling `getBlocks` returns the companion `Sequence` object. Calling `size` reveals that the companion `Sequence` object contains three [`Block`][] objects. Calling `get(1)` returns the second child. Calling `getBlockType()` on the second child reveals that it is a [`OrderedListBlock`][] object.
+For example: Consider a method that gets the root `Node` as a parameter without any knowledge about it. Calling `getNodeType()` reveals that is it a [`Document`][] object. Calling `getBlocks` returns the companion [`Sequence`][] object. Calling `size` reveals that the companion `Sequence` object contains three [`Block`][] objects. Calling `get(1)` returns the second child. Calling `getBlockType()` on the second child reveals that it is a [`OrderedListBlock`][] object.
 
 #### Detecting cycles {#api-dom-detectingcycles}
 
@@ -2654,4 +2654,5 @@ The following XHTML 5 document represents the [example document](#example):
 [`UnorderedListBlock`]: #api-dom-unorderedlistblock
 [`Handler`]: #api-handler-handler
 [`Dispatcher`]: #api-handler-dispatcher
-
+[`Sequence`]: #api-common-sequence
+[`Iterable`]: #api-common-iterable
