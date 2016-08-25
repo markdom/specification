@@ -358,7 +358,7 @@ There are common implementations for mandatory and optional parameters.
 
 ##### Values {#api-common-values}
 
-The Markdom APIs use parameters and return values that represent values of simple type. Specifically for boolean values, numbers, Unicode character sequences and URI references. Such types are hereafter noted as `Boolean`, `Integer` and `Uri` respectively. 
+The Markdom APIs use parameters and return values that represent values of simple type. Specifically for boolean values, numbers, Unicode character sequences and URI references. Such types are hereafter noted as `Boolean`, `Integer`, `String` and `Uri` respectively. 
 
 This should usually be implemented with the corresponding primitive or value types.
 
