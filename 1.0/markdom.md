@@ -2,7 +2,7 @@
 
 ---
 
-# Markdom
+# Markdom {#markdom}
 
 Markdom is lightweight specification for simple rich text. Markdom is not a markup language, it is a set of definitions that allow to transport and process content in a standardized way.
 
@@ -10,7 +10,7 @@ The two main intents of Markdom are to define the lowest common denominator for 
 
 The name Markdom is a composition of [**mark**up](https://en.wikipedia.org/wiki/Markup_language) and [**do**main **m**odel](https://en.wikipedia.org/wiki/Domain_model).
 
-## Overview
+## Overview {#overview}
 
 This specification covers multiple aspects related to Markdom documents:
 
@@ -19,7 +19,7 @@ This specification covers multiple aspects related to Markdom documents:
 * The [data section](#data) covers the representation of Markdom documents in common data exchange formats. 
 * The [markup section](#markup) covers the representation of Markdom documents in common markup languages. 
 
-## Why Markdom?
+## Why Markdom? {#why}
 
 Markdom was created to be an answer to a simple, but as yet unanswered [question](https://stackoverflow.com/questions/34955835/cross-device-rich-text-formatting):
 
@@ -31,13 +31,13 @@ The latter includes at least Android apps (using [Spanned Strings](https://devel
 
 Markdom tries to fill a gap left open by existing technologies. As the name Markdom indicates, it is closely related to [Markdown](https://daringfireball.net/projects/markdown/).
 
-### Why not HTML?
+### Why not HTML? {#why-nothtml}
 
 HTML itself is hardly an editor friendly language, although usable [WYSISYG editors](https://www.tinymce.com/) exist.
 
 The crucial drawback of HTML is, that is is way too powerful for the intended purpose. There are [good reasons](https://leanpub.com/markua/read#leanpub-auto-why-is-inline-html-not-supported-in-markua) why HTML is not suitable, if the intended target platform aren't just websites.
 
-### Why not Markdown?
+### Why not Markdown? {#why-notmarkdown}
 
 Markdown is introduced with the following description:
 
@@ -56,17 +56,17 @@ Additionally, many Markdown implementations use custom flavors of the Markdown s
 
 As a result, it is [almost](https://uncodin.github.io/bypass/) impossible to find a set of markdown implementations that generate Spanned Strings for Android, Attributed Strings for iOS and HTML for websites, that interpret a given Markdown text identically and generate equal outputs.
 
-### Why not CommonMark?
+### Why not CommonMark? {#why-notcommonmark}
 
 [CommonMark](http://commonmark.org/) is a specification for Markdown and compatible CommonMark implementations exist for [different languages](https://github.com/jgm/CommonMark/wiki/List-of-CommonMark-Implementations).
 
 While this solves some of the issues of Markdown, CommonMark still allows the integration of arbitrary HTML and available implementations are still only text-to-HTML converters or tend to offer custom extensions.
 
-### Why not Zoidberg?
+### Why not Zoidberg? {#why-notzoidberg}
 
 Zoidberg is awesome, but not a rich text related technology.
 
-### So, why Markdom?
+### So, why Markdom? {#why-markdom}
 
 Markdom tries to overcome the mentioned shortcomings of HTML and lightweight markup languages like CommonMark by introducing an  standardized architecture for rich text that is unambiguous, easy to process and extensively usable.
 
@@ -246,7 +246,7 @@ The `contents` sequence shouldn't be empty.
 
 An [*Markdom image content*][] is a [*Markdom content*][] that represents an image, including a title text and an alternative text. Implementations that generate output that is displayed to humans should display the linked image with the title text or, if the linked image couldn't be resolved, the alternative text as if the [*Markdom image content*][] was a [*Markdom text content*][].
 
-A [*Markdom link content*][] has a mandatory integer parameter named `uri` and an optional string parameter named `title` and an optional string parameter named `alternative`.  
+A [*Markdom link content*][] has a mandatory string parameter named `uri` and an optional string parameter named `title` and an optional string parameter named `alternative`.  
 
 Valid values of the `uri` parameter are valid [URI references](https://tools.ietf.org/html/rfc3986#section-4.1). Values of the `uri` parameter should link to an image resource (e.g. a JPEG or PNG file). Actual applications that process [*Markdom documents*][] may impose further constraints.
 
@@ -262,11 +262,13 @@ A [*Markdom line break content*][] has a mandatory boolean parameter named `hard
 
 ##### Link Content {#domain-linkcontent}
 
-A [*Markdom link content*][] is a [*Markdom content*][] that represents text with a link. Implementations that generate output that is displayed to humans should display text appropriately emphasized (e.g. underlined or in a different color).
+A [*Markdom link content*][] is a [*Markdom content*][] that represents text with a link, including a title. Implementations that generate output that is displayed to humans should display text appropriately emphasized (e.g. underlined or in a different color).
 
-A [*Markdom link content*][] has a mandatory integer parameter named `uri` and a sequence of [*Markdom contents*][] named `contents`.
+A [*Markdom link content*][] has a mandatory string parameter named `uri` and an optional string parameter named `title` and a sequence of [*Markdom contents*][] named `contents`.
 
 Valid values of the `uri` parameter are valid [URI references](https://tools.ietf.org/html/rfc3986#section-4.1). Actual applications that process [*Markdom documents*][] may impose further constraints.
+
+Values of the `title` parameter should not contain any [control](http://www.fileformat.info/info/unicode/category/Cc/list.htm) characters.
 
 The `contents` sequence shouldn't be empty. A [*Markdom content*][] in the `contents` sequence must not contain another [*Markdom link content*][] or, recursively, contain a [*Markdom content*][] that contains a [*Markdom link content*][].
 
@@ -329,7 +331,7 @@ It is commonly recommended to implement an algorithms that processes a [*Markdom
    
 ### Common {#api-common}
 
-#### Considerations
+#### Considerations {#api-common-considerations}
 
 It is safe to assume that some of the requirements from specification don't go along well with established conventions or formal rules of a given programming language. This includes, but is not limited to naming conventions (e.g. prefixes and suffixes for interfaces, traits, abstract classes and methods).
 
@@ -345,7 +347,7 @@ It is recommended that implementations contain a section about such implementati
 
 Obviously, both Markdom APIs require some support from the programming language a particular implementation is written in. This specification is written with an object orientated programming language is mind, but it should be little effort to interpret this specification for programming languages that follow another programming paradigm.
 
-#### Mandatory and optional parameters
+#### Mandatory and optional parameters {#api-common-optional}
 
 The Markdom APIs use mandatory and optional parameters. Mandatory parameters must always have a value. Optional parameters may or may not have a value. Mandatory parameters are hereafter notes as `Type name` where `Type` is value type and `name` is the parameter name. Optional parameters are hereafter notes as `Type? name` where `Type` is value type and `name` is the parameter name.
 
@@ -354,11 +356,11 @@ There are common implementations for mandatory and optional parameters.
 1. For a Programming languages that has `null` values and can enforce non-`null` values for a method parameter, `null` may be used to indicate that an optional parameter has no value. No explicit `null`-checks must be implemented for mandatory parameters.
 1. For a Programming languages that doesn't have `null` values an explicit `Optional` type must be used to for an optional parameter. No explicit `null`-checks must be implemented for mandatory parameters.
 
-#### Primitive Values
+#### Primitive Values {#api-common-primitive}
 
 The Markdom APIs use parameters and return values that represent values of primitive type. Specifically for boolean values, numbers and Unicode character sequences. Such types are hereafter noted as `Boolean`, `Integer` and `String` respectively. 
 
-#### Iterables
+#### Iterables {#api-common-iterable}
 
 The Markdom APIs use parameters and return values that represent a linear ordered concatenation of values of a given type that can be iterated over in that order. Such types are hereafter noted as `Type...` where `Type` is the value type.
 
@@ -366,7 +368,7 @@ This should usually be implemented as a data structure that is eligible to be pr
 
 As a method parameter, this may also be implemented as a variable argument list.
 
-#### Sequences
+#### Sequences {#api-common-sequence}
 
 The Markdom APIs use parameters and return values that represent a modifiable linear ordered concatenation of values of values of a given type that allows random access. Such types are hereafter noted as `[Type]` where `Type` is the value type.
 
@@ -820,7 +822,7 @@ This method must fail if `hard` is not present.
    
 ##### `LinkContent` {#api-dom-linkcontent}
 
-A `LinkContent` object is a [`ContentParentContent`][] object that represents a [*Markdom link content*][].
+A `LinkContent` object is a [`ContentParentContent`][] object that represents a [*Markdom link content*][]. The initial value of the `title` parameter should be not present.
 
 The initial value of the `uri` parameter should be the empty string.
 
@@ -830,7 +832,9 @@ An implementation of `LinkContent` should have a constructor with signature `Lin
 
 For convenience, an implementation of `LinkContent` should have a constructor with signature `LinkContent(String uri)` that delegates to `setUri(String uri)`.
 
-For convenience, an implementation of `LinkContent` should have a constructor with signature `LinkContent(String uri, Content... contents)` that delegates to `setUri(String uri)` and `ContentParent#addContents(Content... contents)`.
+For convenience, an implementation of `LinkContent` should have a constructor with signature `LinkContent(String uri, String? title)` that delegates to `setUri(String uri)` and `setTitle(String? title)`.
+
+For convenience, an implementation of `LinkContent` should have a constructor with signature `LinkContent(String uri, String? title, Content... contents)` that delegates to `setUri(String uri)` and `setTitle(String? title)` and `ContentParent#addContents(Content... contents)`.
 
 ###### `getUri` {#api-dom-imagecontent-geturi}
 
@@ -847,6 +851,18 @@ This method must set the value of the `uri` parameter of the represented [*Markd
 This method must fail if `uri` is not present.
 
 This method must fail if value of the `uri` is not a valid URI reference.
+
+###### `getTitle` {#api-dom-linkcontent-gettitle}
+
+A `LinkContent` object must have a method with signature `String getTitle()`.
+
+This method must return the value of the `title` parameter of the represented [*Markdom link content*][].
+
+###### `setTitle`{#api-dom-linkcontent-settitle}
+  
+An `LinkContent` object must have a method with signature `setTitle(String? title)`.
+
+This method must set the value of the `title` parameter of the represented [*Markdom link content*][].
    
 ##### `ListBlock` {#api-dom-listblock}
 
@@ -976,7 +992,7 @@ This method must fail if the `Node` object doesn't [have](#api-dom-node-hasparen
 
 ###### `hasChildren` {#api-dom-node-haschildren}
 
-A `Node` object must have a method with signature `Integer getIndex()`.
+A `Node` object must have a method with signature `Boolean hasChildren()`.
 
 This method must return whether the `Node` object has child `Node` objects.
 
@@ -989,6 +1005,21 @@ Specifically, this method must return `false`
 * if the `Node` object is a [`BlockParent`][] object and currently has no [`Block`][] object attached to it, or
 * if the `Node` object is a [`ListBlock`][] object and currently has no [`ListItem`][] object attached to it, or
 * if the `Node` object is a [`ContentParent`][] object and currently has no [`Content`][] object attached to it, or
+* if the `Node` object is a [`CodeBlock`][] object or a [`CodeContent`][] object or a [`DivisionBlock`][] object or an [`ImageContent`][] object or a [`LineBreakContent`][] object or a [`TextContent`][] object.
+
+
+###### `countChildren` {#api-dom-node-countchildren}
+
+A `Node` object must have a method with signature `Integer countChildren()`.
+
+This method must return the number of child `Node` objects the `Node` object has.
+
+Specifically, this method must return
+* the number of attached  [`Block`][] objects, if the `Node` object is a [`BlockParent`][] object, or
+* the number of attached  [`ListItem`][] objects, if the `Node` object is a [`ListBlock`][] object, or
+* the number of attached  [`Content`][] objects, if the `Node` object is a [`ContentParent`][] object.
+
+Specifically, this method must return `0`
 * if the `Node` object is a [`CodeBlock`][] object or a [`CodeContent`][] object or a [`DivisionBlock`][] object or an [`ImageContent`][] object or a [`LineBreakContent`][] object or a [`TextContent`][] object.
 
 ###### `getChildren` {#api-dom-node-getchildren}
@@ -1134,9 +1165,7 @@ The following [Domain Model API](#api-dom) object graph represents the [example 
 
 Every [`BlockParent`][], [`ListBlock`][] or [`ContentParent`][] object has a reference to its companion `Sequence` object. A companion `Sequence` object holds references to the [children](#api-dom-node-getchildren) of the corresponding [`BlockParent`][], [`ListBlock`][] or [`ContentParent`][] object. Each child has a reference to its [parent](#api-dom-node-getparent).
 
-#### Additional information
-
-##### Up navigation
+#### Up navigation {#api-dom-downnavigation}
 
 The following image shows the possible methods to navigate from an [`Node`][] object upwards from the leaf [`TextContent`][] object with `text` value `Baz` of the [example document](#example).
 
@@ -1154,7 +1183,7 @@ For example: Consider a method that gets leaf [`Node`][] object as a parameter w
 
 Each [`Node`][] object in a Domain Model API object graph can, through its predecessors, retrieve the root [`Document`][] object. Each [`Content`][] object in a Domain Model API object graph can, through its predecessors, retrieve its [`Block`][] object.
 
-##### Down navigation
+#### Down navigation {#api-dom-upnavigation}
 
 The following image shows the possible methods to navigate from an [`Node`][] object downwards to the leaf [`TextContent`][] object with `text` value `Baz` of the [eample document](#example).
 
@@ -1164,7 +1193,7 @@ Every [`Node`][] object in a [Domain Model API](#api-dom) object graph that is p
 
 For example: Consider a method that gets the root `Node` as a parameter without any knowledge about it. Calling `getNodeType()` reveals that is it a [`Document`][] object. Calling `getBlocks` returns the companion `Sequence` object. Calling `size` reveals that the companion `Sequence` object contains three [`Block`][] objects. Calling `get(1)` returns the second child. Calling `getBlockType()` on the second child reveals that it is a [`OrderedListBlock`][] object.
 
-##### Detecting cycles {#api-dom-detecting-cycles}
+#### Detecting cycles {#api-dom-detectingcycles}
 
 If a [`Block`][], [`ListItem`][] or [`Content`][] object is about to be attached to a [`BlockParent`][], [`ListBlock`][] or [`ContentParent`][] object respectively, it is necessary to check, whether this would create a cycle.
 
@@ -1182,7 +1211,7 @@ For example: Assuming a [`QuoteBlock`][] object is about to be attached to a [`B
 
 The Handler API represents a [*Markdom document*][] as a succession of events.
 
-#### Events {#api-handler-event}
+#### Events {#api-handler-events}
 
 The Handler API defines several events and the order in which the must occur to successfully describe a [*Markdom document*][].
 
@@ -1190,19 +1219,19 @@ To help different handler implementations to process the described [*Markdom doc
  * Every event concerning a [*Markdom node*][] of a polymorph kind (i.e. [*Markdom blocks*][] and [*Markdom contents*][]) is reported twice. Once in a general form and once in a specific form with the specific parameters. This allows to execute general or specific behavior when necessary.
  * Every event that is part of a pair (i.e. opening and closing events) and has parameters, carries the same values for the parameters as its counterpart. This usually eliminates the need to remember previously reported values.
 
-##### Document {#api-handler-event-document}
+##### Document {#api-handler-document}
 
 A [*Markdom document*][] is represented by an `onDocumentBegin` event and an `onDocumentEnd` event that frame the events that describe the sequence of [*Markdom blocks*][] the described [*Markdom document*][] consists of. 
 
 ![](resource/markdom-events-document.png)
 
-##### Blocks {#api-handler-event-blocks}
+##### Blocks {#api-handler-blocks}
 
 A sequence of [*Markdom blocks*][] is represented by an `onBlocksBegin` event and an `onBlocksEnd` event that frame the events that describe the [*Markdom blocks*][]. Consecutive [*Markdom blocks*][] are separated by an `onNextBlock` event.
 
 ![](resource/markdom-events-blocks.png)
 
-##### Block {#api-handler-event-block}
+##### Block {#api-handler-block}
 
 A [*Markdom block*][] is represented by an `onBlockBegin` event and an `onBlockEnd` event that frame the events that describe the [*Markdom block*][]. Both events carry the [`BlockType`][] value that corresponds to the type of the described [*Markdom block*][] as a parameter.
 
@@ -1216,25 +1245,25 @@ A [*Markdom block*][] is represented by an `onBlockBegin` event and an `onBlockE
 
 ![](resource/markdom-events-block.png)
 
-##### List Items {#api-handler-event-listitems}
+##### List Items {#api-handler-listitems}
 
 A sequence of [*Markdom list items*][] is represented by an `onListItemsBegin` event and an `onListItemEnd` event that frame the events that describe the [*Markdom list items*][]. Consecutive [*Markdom list items*][] are separated by an `onNextListItem` event.
 
 ![](resource/markdom-events-listitems.png)
 
-##### List Item {#api-handler-event-listitem}
+##### List Item {#api-handler-listitem}
 
 A [*Markdom list item*][] is represented by an `onListItemBegin` event and an `onListItemEnd` event that frame the events that describe the sequence of [*Markdom blocks*][] the described [*Markdom list item*][] consists of. 
 
 ![](resource/markdom-events-listitem.png)
 
-##### Contents {#api-handler-event-contents}
+##### Contents {#api-handler-contents}
 
 A sequence of [*Markdom contents*][] is represented by an `onContentsBegin` event and an `onContentsEnd` event that frame the events that describe the [*Markdom contents*][]. Consecutive [*Markdom contents*][] are separated by an `onNextContent` event.
 
 ![](resource/markdom-events-contents.png)
 
-##### Content {#api-handler-event-content}
+##### Content {#api-handler-content}
 
 A [*Markdom content*][] is represented by an `onContentBegin` event and an `onContentEnd` event that frame the events that describe the [*Markdom content*][]. Both events carry the [`ContentType`][] value that corresponds to the type of the of the described [*Markdom content*][] as a parameter.
 
@@ -1242,7 +1271,7 @@ A [*Markdom content*][] is represented by an `onContentBegin` event and an `onCo
 * If the [*Markdom content*][] is a [*Markdom emphasis content*][], it is represented as an `onEmphasisContentBegin` event and an `onEmphasisContentEnd` event that frame the events that describe the sequence of [*Markdom contents*][] the described [*Markdom emphasis content*][] consists of. Both events carry the `level` parameter of the described [*Markdom emphasis content*][].
 * If the [*Markdom content*][] is a [*Markdom image content*][], it is represented as an `onImageContent` event. The event carries the `uri`, `title` and `alternative` parameters of the described [*Markdom image content*][].
 If the [*Markdom content*][] is a [*Markdom line break content*][], it is represented as an `onLineBreakContent` event. The event carries the `hard` parameter of the described [*Markdom line break content*][].
-* If the [*Markdom content*][] is a [*Markdom link content*][], it is represented as an `onLinkContentBegin` event and an `onLinkContentEnd` event that frame the events that describe the sequence of [*Markdom contents*][] the described [*Markdom link content*][] consists of. Both events carry the `uri` parameter of the described [*Markdom link content*][].
+* If the [*Markdom content*][] is a [*Markdom link content*][], it is represented as an `onLinkContentBegin` event and an `onLinkContentEnd` event that frame the events that describe the sequence of [*Markdom contents*][] the described [*Markdom link content*][] consists of. Both events carry the `uri` and `title` parameters of the described [*Markdom link content*][].
 
 ![](resource/markdom-events-content.png)
 
@@ -1263,7 +1292,7 @@ Calling this method multiple times on a `Dispatcher` object that is not [repeata
   
 This method must fail if `handler` is not present.
 
-###### `isRepeatable` {#api-handler-isrepeatable}
+###### `isRepeatable` {#api-handler-dispatcher-isrepeatable}
 
 A `Dispatcher` object must have a method with signature `Boolean isRepeatable()`.
   
@@ -1463,9 +1492,9 @@ The behavior of this method is undefined, if `hard` is not present.
 
 ###### `onLinkContentBegin` {#api-handler-handler-onlinkcontentbegin}
 
-A `Handler` object must have a method with signature `onLinkContentBegin(String uri)`.
+A `Handler` object must have a method with signature `onLinkContentBegin(String uri, String? title)`.
 
-This event represents the begin of a [*Markdom link content*][] with the given value for the `uri` parameter.
+This event represents the begin of a [*Markdom link content*][] with the given value for the `uri` and `title` parameters.
 
 Calling this method must be must be followed by a call to `onContentsBegin`. A corresponding call to `onLinkContentEnd` with the same `uri` value must eventually occur.
 
@@ -1475,11 +1504,11 @@ The behavior of this method is undefined, if `uri` is not a valid URI reference.
 
 ###### `onLinkContentEnd` {#api-handler-handler-onlincontentend}
 
-A `Handler` object must have a method with signature `onLinkContentEnd(String uri)`.
+A `Handler` object must have a method with signature `onLinkContentEnd(String uri, String? title)`.
 
-This event represents the begin of a [*Markdom link content*][] with the given value for the `uri` parameter.
+This event represents the begin of a [*Markdom link content*][] with the given value for the `uri` and `title` parameters.
 
-A corresponding call to `onLinkContentBegin` with the same `uri` value must have occurred. Calling this method must be followed by a call to `onContentEnd`.
+A corresponding call to `onLinkContentBegin` with the same `uri` value and the same `title` value must have occurred. Calling this method must be followed by a call to `onContentEnd`.
 
 The behavior of this method is undefined, if `uri` is not present.
 
@@ -1622,8 +1651,6 @@ A `Handler` object must have a method with signature `onUnorderedListBlockEnd()`
 This event represents the end of an *unordered Markdom list block*.
 
 A corresponding call to `onUnorderedListBlockBegin` must have occurred. Calling this method must be followed by a call to `onBlockEnd`.
-
-#### Additional information
 
 #### Example Document {#api-handler-example}
 
@@ -1861,6 +1888,8 @@ The JSON object must have an entry with name `type` and value `Link`.
 
 The JSON object must have an entry with name `uri`. The value of this entry, must be a JSON string and contain the value of the `uri` parameter.
 
+The JSON object may have an entry with name `title`. The value of this entry, if present, must be a JSON string that contains the value of `title` parameter or a JSON null, if the `title` parameter is not present.
+
 The JSON object may have an entry with name `contents`. The value of this entry, if present, must be a JSON array that contains the representations of the [*Markdom contents*][] the represented [*Markdom link content*][] consists of.
 
 ##### Text Content {#markup-json-textcontent}
@@ -1974,11 +2003,11 @@ The following JSON document represents the [example document](#example):
 
 Any JSON document that represents a [*Markdom document*][] is also a YAML document that represents the [*Markdom document*][]. Interpreting a YAML document as a a [*Markdom document*][] is always possible, if the YAML document is well-formed and a valid representation of a [*Markdom document*][]. 
 
-#### Tags
+#### Tags {#data-tag}
 
 It would be possible to use a YAML specific parts of the YAML specification that are not compatible with JSON. [Tags](http://www.yaml.org/spec/1.2/spec.html#id2784064) could be used to distinguish between the polymorphic [*Markdom blocks*][] and [*Markdom contents*][] instead of the `type` entries, but this would defeat compatibility between JSON and YAML representations.
 
-#### Anchors and Aliases
+#### Anchors {#data-anchor}
 
 It is possible, but not very useful and not recommended, to use [anchors and aliases](http://www.yaml.org/spec/1.2/spec.html#id2785586) in a YAML representation of a [*Markdom document*][].
 
@@ -2037,7 +2066,7 @@ blocks:
 
 A [XML Schema](https://www.w3.org/TR/xmlschema-1/) for XML documents that represent a [*Markdom document*][] exists and is located at [`http://schema.markdom.io/markdom-1.0.xsd`](http://schema.markdom.io/markdom-1.0.xsd).
 
-#### Namespace
+#### Namespace {#data-json-namespace}
 
 The XML namespace used for a XML representation of a [*Markdom document*][] is `http://schema.markdom.io/markdom-1.0.xsd`.
 
@@ -2146,6 +2175,8 @@ The child node list of the XML element may contain text nodes that contain only 
 A [*Markdom link content*][] is represented as a XML element with local name `Link`.
 
 The XML element must have an attribute with name `uri`. The value of this attribute must be the value of `uri` parameter.
+
+The XML element may have an attribute with name `title`. The value of this attribute, if present, must  be the value of `title` parameter.
 
 The child node list of the XML element must contain the representations of the [*Markdom contents*][] the represented [*Markdom link content*][] consists of and may contain text nodes that contain only whitespace.
 
@@ -2321,7 +2352,9 @@ A [*Markdom line break content*][] should be represented as a [hard line break](
 
 A [*Markdom link content*][] should be represented as a [link](http://spec.commonmark.org/0.26/#links).
 
-A [*Markdom link content*][] that contains nothing or only the empty string should use the value of the `uri` parameter as if it was the `text` parameter of a [*Markdom text content*][] and serve as the [link description](http://spec.commonmark.org/0.26/#link-destination). The [*Markdom link content*][] can be ignored if the value of the `uri` parameter is the empty string.
+[Control](http://www.fileformat.info/info/unicode/category/Cc/list.htm) characters in the value of the `title` parameter, if present, should be removed or replaced. `LINE_FEED` (`\n`) or `CHARACTER_TABULATION` (`\t`) should be treated as a single space character.
+
+A [*Markdom link content*][] that contains nothing or only the empty string should use the value of the `uri` parameter as if it was the `text` parameter of a [*Markdom text content*][] and serve as the [link description](http://spec.commonmark.org/0.26/#link-destination). The [*Markdom link content*][] can be ignored if the value of the `uri` parameter is the empty string and the `title` parameter is not present or the empty string.
 
 ##### Text Content {#markup-cm-textcontent}
 
@@ -2477,7 +2510,7 @@ A [*Markdom line break content*][] should be represented as a `<br>` element if 
 
 ##### Link Content {#markup-html-linkcontent}
 
-A [*Markdom link content*][] should be represented as an `<a>` element with the value of the `uri` parameter as its `href` attribute.
+A [*Markdom link content*][] should be represented as an `<a>` element with the value of the `uri` parameter as its `href` attribute and the value of the `title` parameter, if present, as its `title` attribute.
 
 ##### Text Content {#markup-html-textcontent}
 
