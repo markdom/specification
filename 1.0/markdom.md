@@ -1733,7 +1733,7 @@ Formats that are eligible to be used as a data exchange format must have a well 
 
 #### Schema {#data-json-schema}
 
-A [JSON Schema](http://json-schema.org/) schema for JSON documents that represent a [*Markdom document*][] exists and is located at [`http://schema.markdom.io/markdom-1.0.json#"`](http://schema.markdom.io/markdom-1.0.json#).
+A [JSON](http://json-schema.org/documentation.html) schema for JSON documents that represent a [*Markdom document*][] exists and is located at [`http://schema.markdom.io/markdom-1.0.json#`](http://schema.markdom.io/markdom-1.0.json#).
 
 #### Document {#markup-json-document}
 
@@ -1753,9 +1753,9 @@ A [*Markdom code block*][] must be represented as a JSON object.
 
 The JSON object must have an entry with name `type` and value `Code`.
 
-The JSON object must have an entry with name `code`. The value of this entry, must be a JSON string and contain the value of the `code` parameter of the represented [*Markdom code block*][].
+The JSON object must have an entry with name `code`. The value of this entry, must be a JSON string and contain the value of the `code` parameter.
 
-The JSON object may have an entry with name `hint`. The value of this entry, if present, must be a JSON string that contains the value of `hint` parameter of the represented [*Markdom code block*][] or a JSON null, if the `hint` parameter is not present.
+The JSON object may have an entry with name `hint`. The value of this entry, if present, must be a JSON string that contains the value of `hint` parameter or a JSON null, if the `hint` parameter is not present.
 
 ##### Division Block {#markup-json-divisionblock}
 
@@ -1769,7 +1769,7 @@ A [*Markdom heading block*][] must be represented as a JSON object.
 
 The JSON object must have an entry with name `type` and value `Heading`.
 
-The JSON object must have an entry with name `level`. The value of this entry, must be a JSON number and contain the value of the `level` parameter of the represented [*Markdom heading block*][].
+The JSON object must have an entry with name `level`. The value of this entry, must be a JSON number and contain the integer value of the `level` parameter.
 
 The JSON object may have an entry with name `contents`. The value of this entry, if present, must be a JSON array that contains the representations of the [*Markdom contents*][] the represented [*Markdom heading block*][] consists of.
 
@@ -1779,7 +1779,7 @@ An [*ordered Markdom list block*][] must be represented as a JSON object.
 
 The object must have an entry with name `type` and value `OrderedList`.
 
-The object must have an entry with name `startIndex`. The value of this entry, must be a JSON number and contain the value of the `startIndex` parameter of the represented [*ordered Markdom list block*][].
+The object must have an entry with name `startIndex`. The value of this entry, must be a JSON number and contain the value of the `startIndex` parameter.
 
 The JSON object may have an entry with name `items`. The value of this entry, if present, must be a JSON array that contains the representations of the [*Markdom list items*][] the represented [*ordered Markdom list block*][] consists of.
 
@@ -1821,7 +1821,7 @@ A [*Markdom code content*][] must be represented as a JSON object.
 
 The JSON object must have an entry with name `type` and value `Code`.
 
-The JSON object must have an entry with name `code`. The value of this entry, must be a JSON string and contain the value of the `code` parameter of the represented [*Markdom code content*][].
+The JSON object must have an entry with name `code`. The value of this entry, must be a JSON string and contain the value of the `code` parameter.
 
 ##### Emphasis Content {#markup-json-emphasiscontent}
 
@@ -1829,7 +1829,7 @@ A [*Markdom emphasis content*][] must be represented as a JSON object.
 
 The JSON object must have an entry with name `type` and value `Emphasis`.
 
-The JSON object must have an entry with name `level`. The value of this entry, must be a JSON string and contain the value of the `level` parameter of the represented [*Markdom emphasis content*][].
+The JSON object must have an entry with name `level`. The value of this entry, must be a JSON string and contain the integer value of the `level` parameter.
 
 The JSON object may have an entry with name `contents`. The value of this entry, if present, must be a JSON array that contains the representations of the [*Markdom contents*][] the represented [*Markdom emphasis content*][] consists of.
 
@@ -1839,11 +1839,11 @@ A [*Markdom image content*][] must be represented as a JSON object.
 
 The JSON object must have an entry with name `type` and value `Image`.
 
-The JSON object must have an entry with name `uri`. The value of this entry, must be a JSON string and contain the value of the `uri` parameter of the represented [*Markdom image content*][].
+The JSON object must have an entry with name `uri`. The value of this entry, must be a JSON string and contain the value of the `uri` parameter.
 
-The JSON object may have an entry with name `title`. The value of this entry, if present, must be a JSON string that contains the value of `title` parameter of the represented [*Markdom image content*][] or a JSON null, if the `title` parameter is not present.
+The JSON object may have an entry with name `title`. The value of this entry, if present, must be a JSON string that contains the value of `title` parameter or a JSON null, if the `title` parameter is not present.
 
-The JSON object may have an entry with name `alternative`. The value of this entry, if present, must be a JSON string that contains the value of `alternative` parameter of the represented [*Markdom image content*][] or a JSON null, if the `alternative` parameter is not present.
+The JSON object may have an entry with name `alternative`. The value of this entry, if present, must be a JSON string that contains the value of `alternative` parameter or a JSON null, if the `alternative` parameter is not present.
 
 ##### Line Break Content {#markup-json-linebreakcontent}
 
@@ -1851,7 +1851,7 @@ A [*Markdom line break content*][] must be represented as a JSON object.
 
 The JSON object must have an entry with name `type` and value `LineBreak`.
 
-The JSON object must have an entry with name `hard`. The value of this entry, must be a JSON boolean and contain the value of the `hard` parameter of the represented [*Markdom line break content*][].
+The JSON object must have an entry with name `hard`. The value of this entry, must be a JSON boolean and contain the value of the `hard` parameter.
 
 ##### Link Content {#markup-json-linkcontent}
 
@@ -1859,7 +1859,7 @@ A [*Markdom link content*][] must be represented as a JSON object.
 
 The JSON object must have an entry with name `type` and value `Link`.
 
-The JSON object must have an entry with name `uri`. The value of this entry, must be a JSON string and contain the value of the `uri` parameter of the represented [*Markdom link content*][].
+The JSON object must have an entry with name `uri`. The value of this entry, must be a JSON string and contain the value of the `uri` parameter.
 
 The JSON object may have an entry with name `contents`. The value of this entry, if present, must be a JSON array that contains the representations of the [*Markdom contents*][] the represented [*Markdom link content*][] consists of.
 
@@ -1869,8 +1869,7 @@ A [*Markdom text content*][] must be represented as a JSON object.
 
 The JSON object must have an entry with name `type` and value `Text`.
 
-The JSON object must have an entry with name `text`. The value of this entry, must be a JSON string and contain the value of the `text` parameter of the represented [*Markdom text content*][].
-
+The JSON object must have an entry with name `text`. The value of this entry, must be a JSON string and contain the value of the `text` parameter.
 
 #### Example Document {#data-json-example}
 
@@ -1878,7 +1877,7 @@ The following JSON document represents the [example document](#example):
 
 ```json
 {
-  "$schema": "http://schema.markdom.io/markdom-1.0.json#",
+  "$schema": "http://schema.markdom.io/markdom-1.0.json",
   "version": "1.0",
   "blocks": [
     {
@@ -1983,7 +1982,7 @@ It would be possible to use a YAML specific parts of the YAML specification that
 
 It is possible, but not very useful and not recommended, to use [anchors and aliases](http://www.yaml.org/spec/1.2/spec.html#id2785586) in a YAML representation of a [*Markdom document*][].
 
-As long as the data structure is still a tree, is must be possible to interpret it as a [*Markdom document*][]. If the data structure is an acyclic graph, is may be possible to interpret it as a [*Markdom document*][].
+As long as the data structure is still a tree, is should be possible to interpret it as a [*Markdom document*][]. If the data structure is an acyclic graph, is may be possible to interpret it as a [*Markdom document*][].
 
 #### Example Document {#data-yaml-example}
 
@@ -2032,69 +2031,129 @@ blocks:
 
 ### XML {#data-xml}
 
+[XML](https://www.w3.org/XML/) is a markup language that is commonly used as a data exchange format. The following sections describe how to represent a [*Markdom document*][] as a XML document. Interpreting a XML document as a a [*Markdom document*][] is always possible, if the XML document is well-formed and a valid representation of a [*Markdom document*][]. 
+
+#### Schema {#data-json-schema}
+
+A [XML Schema](https://www.w3.org/TR/xmlschema-1/) for XML documents that represent a [*Markdom document*][] exists and is located at [`http://schema.markdom.io/markdom-1.0.xsd`](http://schema.markdom.io/markdom-1.0.xsd).
+
+#### Namespace
+
+The XML namespace used for a XML representation of a [*Markdom document*][] is `http://schema.markdom.io/markdom-1.0.xsd`.
+
 #### Document {#markup-xml-document}
 
-A [*Markdom document*][] 
+A [*Markdom document*][] is represented as a XML element with local name `Document`.
+
+The XMl element must have an attribute with name `version` and value `1.0`.
+
+The child node list of the XML element must contain the representations of the [*Markdom blocks*][] the represented [*Markdom document*][] consists of and may contain text nodes that contain only whitespace.
 
 #### Block {#markup-xml-block}
 
 ##### Code Block {#markup-xml-codeblock}
 
-A [*Markdom code block*][] 
+A [*Markdom code block*][] is represented as a XML element with local name `Code`.
+
+The XML element may have an attribute with name `hint`. The value of this attribute, if present, must  be the value of `hint` parameter.
+
+The child node list of the XML element may be empty if the value of the `code` parameter is the empty string, otherwise it must contain a text node that contains the value of the `code` parameter.
 
 ##### Division Block {#markup-xml-divisionblock}
 
-A [*Markdom division block*][]
+A [*Markdom division block*][] is represented as a XML element with local name `Division`.
+
+The child node list of the XML element may contain text nodes that contain only whitespace.
 
 ##### Heading Block {#markup-xml-headingblock}
 
-A [*Markdom heading block*][]
+A [*Markdom heading block*][] is represented as a XML element with local name `Heading`.
+
+The XML element must have an attribute with name `level`. The value of this attribute must be the integer  value of `level` parameter.
+
+The child node list of the XML element must contain the representations of the [*Markdom content*][] the represented [*Markdom heading block*][] consists of and may contain text nodes that contain only whitespace.
 
 ##### Ordered List Block {#markup-xml-orderedlistblock}
 
-An [*ordered Markdom list block*][]
+An [*ordered Markdom list block*][] is represented as a XML element with local name `OrderedList`.
+
+The XML element must have an attribute with name `startIndex`. The value of this attribute must be the value of `startIndex` parameter.
+
+The child node list of the XML element must contain the representations of the [*Markdom list items*][] the represented [**ordered Markdom list block*][] consists of and may contain text nodes that contain only whitespace.
 
 ##### Paragraph Block {#markup-xml-paragraphblock}
 
-A [*Markdom paragraph block*][]
+A [*Markdom paragraph block*][] is represented as a XML element with local name `Paragraph`.
+
+The child node list of the XML element must contain the representations of the [*Markdom content*][] the represented [*Markdom paragraph block*][] consists of and may contain text nodes that contain only whitespace.
 
 ##### Quote Block {#markup-xml-quoteblock}
 
-A [*Markdom quote block*][]
+A [*Markdom quote block*][] is represented as a XML element with local name `Quote`.
+
+The child node list of the XML element must contain the representations of the [*Markdom blocks*][] the represented [*Markdom quote block*][] consists of and may contain text nodes that contain only whitespace.
 
 ##### Unordered List Block {#markup-xml-unorderedlistblock}
 
-An [*unordered Markdom list block*][]
+An [*unordered Markdom list block*][] is represented as a XML element with local name `UnorderedList`.
+
+The child node list of the XML element must contain the representations of the [*Markdom list items*][] the represented [**unordered Markdom list block*][] consists of and may contain text nodes that contain only whitespace.
 
 #### List Item {#markup-xml-listitem}
 
-* A [*Markdom list item*][]
+* A [*Markdom list item*][] is represented as a XML element with local name `ListItem`.
+
+The child node list of the XML element must contain the representations of the [*Markdom blocks*][] the represented [*Markdom list item*][] consists of and may contain text nodes that contain only whitespace.
 
 #### Content {#markup-xml-content}
 
 ##### Code Content {#markup-xml-codecontent}
 
-A [*Markdom code content*][]
+A [*Markdom code content*][] is represented as a XML element with local name `Code`.
+
+The child node list of the XML element may be empty if the value of the `code` parameter is the empty string, otherwise it must contain a text node that contains the value of the `code` parameter.
 
 ##### Emphasis Content {#markup-xml-emphasiscontent}
 
-A [*Markdom emphasis content*][]
+A [*Markdom emphasis content*][] is represented as a XML element with local name `Emphasis`.
+
+The XML element must have an attribute with name `level`. The value of this attribute must be the integer value of `level` parameter.
+
+The child node list of the XML element must contain the representations of the [*Markdom contents*][] the represented [*Markdom emphasis content*][] consists of and may contain text nodes that contain only whitespace.
 
 ##### Image Content {#markup-xml-imagecontent}
 
-A [*Markdom image content*][]
+A [*Markdom image content*][] is represented as a XML element with local name `Image`.
+
+The XML element must have an attribute with name `uri`. The value of this attribute must be the value of `uri` parameter.
+
+The XML element may have an attribute with name `title`. The value of this attribute, if present, must  be the value of `title` parameter.
+
+The XML element may have an attribute with name `alternative`. The value of this attribute, if present, must  be the value of `alternative` parameter.
+
+The child node list of the XML element may contain text nodes that contain only whitespace.
 
 ##### Line Break Content {#markup-xml-linebreakcontent}
 
-A [*Markdom line break content*][]
+A [*Markdom line break content*][] is represented as a XML element with local name `LineBreak`.
+
+The XML element must have an attribute with name `hard`. The value of this attribute must be `true` or `false`, depending on the value of `hard` parameter.
+
+The child node list of the XML element may contain text nodes that contain only whitespace.
 
 ##### Link Content {#markup-xml-linkcontent}
 
-A [*Markdom link content*][]
+A [*Markdom link content*][] is represented as a XML element with local name `Link`.
+
+The XML element must have an attribute with name `uri`. The value of this attribute must be the value of `uri` parameter.
+
+The child node list of the XML element must contain the representations of the [*Markdom contents*][] the represented [*Markdom link content*][] consists of and may contain text nodes that contain only whitespace.
 
 ##### Text Content {#markup-xml-textcontent}
 
-A [*Markdom text content*][]
+A [*Markdom text content*][] is represented as a XML element with local name `Text`.
+
+The child node list of the XML element may be empty if the value of the `text` parameter is the empty string, otherwise it must contain a text node that contains the value of the `text` parameter.
 
 #### Example Document {#data-xml-example}
 
@@ -2159,7 +2218,7 @@ No special considerations are necessary to represent a [*Markdom document*][].
 
 It is recommended to represent [*Markdom code blocks*][] as [fenced code blocks](http://spec.commonmark.org/0.26/#code-fence), because these work properly in any context.
 
-Using an [indented code block](http://spec.commonmark.org/0.26/#indented-code-block) might yield a problem if a [*Markdom code block*][] follows a complex block and  the `code` parameter starts with whitespace.
+Using an [indented code block](http://spec.commonmark.org/0.26/#indented-code-block) might yield a problem if a [*Markdom code block*][] follows a complex block and the `code` parameter starts with whitespace. Fenced code block also allow the value of the `hint` parameter, if present, to be used.
 
 Assume an [*unordered Markdom list block*][] that is followed by a [*Markdom code block*][]. [This](http://spec.commonmark.org/dingus/?text=*%20foo%0A%0A%60%60%60%0A%09bar%0Abaz%0A%60%60%60) representation yields the expected output:
 
