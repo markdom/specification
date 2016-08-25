@@ -1156,8 +1156,8 @@ The `NodeType` enum represents the type of a [`Node`][] object and has the follo
 
 The `ListBlockType` enum represents the type of a `ListBlock` and has the following constants:
 
-* `ORDERED_LIST_BLOCK`,
-* `UNORDERED_LIST_BLOCK`.
+* `ORDERED`,
+* `UNORDERED`.
 
 #### Example Document {#api-dom-example}  
 
