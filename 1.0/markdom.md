@@ -2614,6 +2614,7 @@ The following XHTML 5 document represents the [example document](#example):
 [*Markdom emphasis content*]: #domain-emphasiscontent
 [*Markdom image content*]: #domain-imagecontent
 [*Markdom line break content*]: #domain-linebreakcontent
+[*Markdom line break contents*]: #domain-linebreakcontent
 [*Markdom link content*]: #domain-linkcontent
 [*Markdom text content*]: #domain-textcontent
 [*Markdom text contents*]: #domain-textcontent
