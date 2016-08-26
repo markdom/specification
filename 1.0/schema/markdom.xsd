@@ -12,6 +12,7 @@
 	<xs:group name="block">
 		<xs:choice>
 			<xs:group ref="md:codeBlock" />
+			<xs:element ref="md:Comment" />
 			<xs:element ref="md:Division" />
 			<xs:element ref="md:Heading" />
 			<xs:element ref="md:OrderedList" />
@@ -26,7 +27,7 @@
 			<xs:element name="Code">
 				<xs:complexType>
 					<xs:simpleContent>
-						<xs:extension base="md:text">
+						<xs:extension base="xs:string">
 							<xs:attribute name="hint" type="xs:string" use="optional" />
 						</xs:extension>
 					</xs:simpleContent>
@@ -34,6 +35,14 @@
 			</xs:element>
 		</xs:sequence>
 	</xs:group>
+
+	<xs:element name="Comment">
+		<xs:complexType>
+			<xs:simpleContent>
+				<xs:extension base="xs:string" />
+			</xs:simpleContent>
+		</xs:complexType>
+	</xs:element>
 
 	<xs:element name="Division" />
 
@@ -103,7 +112,7 @@
 		<xs:sequence>
 			<xs:element name="Code">
 				<xs:simpleType>
-					<xs:restriction base="md:text" />
+					<xs:restriction base="xs:string" />
 				</xs:simpleType>
 			</xs:element>
 		</xs:sequence>
@@ -145,15 +154,11 @@
 	</xs:element>
 
 	<xs:element name="Text">
-		<xs:simpleType>
-			<xs:restriction base="md:text" />
-		</xs:simpleType>
+		<xs:complexType>
+			<xs:simpleContent>
+				<xs:extension base="xs:string" />
+			</xs:simpleContent>
+		</xs:complexType>
 	</xs:element>
-
-	<xs:simpleType name="text">
-		<xs:restriction base="xs:string">
-			<xs:whiteSpace value="preserve" />
-		</xs:restriction>
-	</xs:simpleType>
 
 </xs:schema>

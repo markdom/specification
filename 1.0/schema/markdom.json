@@ -88,6 +88,25 @@
         "code"
       ]
     },
+    "commentBlock": {
+      "title": "Comment",
+      "type": "object",
+      "properties": {
+        "type": {
+          "enum": [
+            "Comment"
+          ]
+        },
+        "comment": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "comment"
+      ]
+    },
     "divisionBlock": {
       "title": "Division",
       "type": "object",

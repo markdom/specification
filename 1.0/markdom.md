@@ -138,6 +138,7 @@ A [*Markdom block*][] is a [*Markdom node*][] that represents a portion of a ric
 A [*Markdom block*][] is either a
 
 * [*Markdom code block*][], or a
+* [*Markdom comment block*][], or a
 * [*Markdom division block*][], or a
 * [*Markdom heading block*][], or an
 * [*ordered Markdom list block*][], or a
@@ -154,6 +155,14 @@ A [*Markdom code block*][] has a mandatory string parameter named `code` and an 
 Values of the `code` parameter should not contain any [control](http://www.fileformat.info/info/unicode/category/Cc/list.htm) characters other then `LINE_FEED` (`\n`) or `CHARACTER_TABULATION` (`\t`). Values of the `code` parameter shouldn't be empty.
 
 Values of the `hint` parameter, if present, should be the common name of a programming or markup language in lowercase (i.e `java`, `php`, `json`, `html`, ...) and are intended to be used by implementations to augment the preformatted text with meaningful syntax highlighting. Values of the `code` parameter, if present, shouldn't be empty.
+
+##### Comment Block {#domain-commentblock}
+
+A [*Markdom comment block*][] is a [*Markdom block*][] that represents a portion of plain text that is not meant to be displayed. Implementations that generate output that is displayed to humans should ignore the text.
+
+A [*Markdom comment block*][] has a mandatory string parameter named `comment`. 
+
+Values of the `comment` parameter should not contain any [control](http://www.fileformat.info/info/unicode/category/Cc/list.htm) characters other then `LINE_FEED` (`\n`) or `CHARACTER_TABULATION` (`\t`). Values of the `comment` parameter shouldn't be empty.
 
 ##### Division Block {#domain-divisionblock}
 
@@ -398,6 +407,7 @@ Markdom APIs have the following enumerations:
 The `BlockType` enum represents the node type of a [*Markdom block*][] and has the following constants:
 
 * `CODE`,
+* `COMMENT`
 * `DIVISION`,
 * `HEADING`,
 * `ORDERED_LIST`,
@@ -550,7 +560,7 @@ The method must return the optional `hint` parameter of the represented [*Markdo
 A `CodeBlock` object must have a method with signature `setHint(String? hint)`.
 
 This method must set the value of the `hint` parameter of the represented [*Markdom code block*][]. 
- 	
+  	
 ##### `CodeContent` {#api-dom-codecontent}
 
 A `CodeContent` object is a [`Content`][] object that represents a [*Markdom code content*][].
@@ -576,6 +586,32 @@ A `CodeContent` object must have a method with signature `setCode(String code)`.
 This method must set the value of the `code` parameter of the represented [*Markdom code content*][]. 
   
 This method must fail if `code` is not present.
+
+##### `CommentBlock` {#api-dom-commentblock}
+
+A `CommentBlock` objects is a [`Block`][] object that represents a [*Markdom comment block*][].
+
+The initial value of the `comment` parameter should be the empty string.
+
+###### Constructors {#api-dom-commentblock-constructor}
+
+An implementation of `CommentBlock` should have a constructor with signature `CommentBlock()`.
+
+For convenience, an implementation of `CommentBlock` should have a constructor with signature `CommentBlock(String comment)` that delegates to `setCode(String comment)`.
+
+###### `getComment` {#api-dom-commentblock-getcode}
+
+A `CommentBlock` object must have a method with signature `String getComment()`.
+
+The method must return the value of the `comment` parameter of the represented [*Markdom comment block*][].
+
+###### `setComment` {#api-dom-commentblock-setcode}
+
+A `CommentBlock` object must have a method with signature `setComment(String code)`.
+
+This method must set the value of the `comment` parameter of the represented [*Markdom comment block*][]. 
+  
+This method must fail if `code` is not present. 
 
 ##### `Content` {#api-dom-content}
 
@@ -1238,6 +1274,7 @@ A sequence of [*Markdom blocks*][] is represented by an `onBlocksBegin` event an
 A [*Markdom block*][] is represented by an `onBlockBegin` event and an `onBlockEnd` event that frame the events that describe the [*Markdom block*][]. Both events carry the [`BlockType`][] value that corresponds to the type of the described [*Markdom block*][] as a parameter.
 
 * If the [*Markdom block*][] is a [*Markdom code block*][], it is represented as an `onCodeBlock` event. The event carries the `code` parameter of the [*Markdom code block*][].
+* If the [*Markdom block*][] is a [*Markdom comment block*][], it is represented as an `onCommentBlock` event. The event carries the `comment` parameter of the [*Markdom comment block*][].
 * If the [*Markdom block*][] is a [*Markdom heading block*][], it is represented as an `onHeadingBlockBegin` event and an `onHeadingBlockEnd` event that frame the events that describe the sequence of [*Markdom contents*][] the described [*Markdom heading block*][] consists of. Both events carry the `level` parameter of the described [*Markdom heading block*][].
 * If the [*Markdom block*][] is a [*Markdom division block*][], it is represented as an `onDivisionBlock` event.
 * If the [*Markdom block*][] is an [*ordered Markdom list block*][], it is represented as an `onOrderedListBlockBegin` event and an `onOrderedListBlockEnd` event that frame the events that describe the sequence of [*Markdom list items*][] the described [*ordered Markdom list block*][] consists of. Both events carry the `startIndex` parameter of the described [*ordered Markdom list block*][].
@@ -1320,7 +1357,7 @@ A `Handler` object must have a method with signature `onBlockBegin(BlockType typ
 
 This event represents the general form of the begin of a [*Markdom block*][]. The `type` parameter determines the type of the represented [*Markdom block*][].
 
-Calling this method must be must be, depending on the value of the `type` parameter, followed by a call to `onCodeBlock` or `onHeadinBlockBegin` or `onDivisionBlock` or `onOrderedListBlockBegin` or `onParagraphBlockBegin` or `onQuoteBlockBegin` or `onUnorderedListBlockBegin`. A corresponding call to `onBlockEnd` withe the same `type` value must eventually occur.
+Calling this method must be must be, depending on the value of the `type` parameter, followed by a call to `onCodeBlock` or `onCommentBlock` or `onHeadinBlockBegin` or `onDivisionBlock` or `onOrderedListBlockBegin` or `onParagraphBlockBegin` or `onQuoteBlockBegin` or `onUnorderedListBlockBegin`. A corresponding call to `onBlockEnd` withe the same `type` value must eventually occur.
 
 The behavior of this method is undefined, if `type` is not present.
 
@@ -1365,6 +1402,16 @@ The behavior of this method is undefined, if `code` is not present.
 A `Handler` object must have a method with signature `onCodeContent(String code)`.
 
 This event represents a [*Markdom code content*][] with the given value for the `code` parameter.
+
+Calling this method must be must be followed by a call to `onContentEnd`.
+
+The behavior of this method is undefined, if `code` is not present.
+
+###### `onCommentBlock` {#api-handler-handler-oncommentblock}
+
+A `Handler` object must have a method with signature `onCommentBlock(String comment)`.
+
+This event represents a [*Markdom comment block*][] with the given value for the `comment` parameter.
 
 Calling this method must be must be followed by a call to `onContentEnd`.
 
@@ -1786,6 +1833,14 @@ The JSON object must have an entry with name `code`. The value of this entry, mu
 
 The JSON object may have an entry with name `hint`. The value of this entry, if present, must be a JSON string that contains the value of `hint` parameter or a JSON null, if the `hint` parameter is not present.
 
+##### Comment Block {#markup-json-commentblock}
+
+A [*Markdom comment block*][] must be represented as a JSON object.
+
+The JSON object must have an entry with name `type` and value `Comment`.
+
+The JSON object must have an entry with name `comment`. The value of this entry, must be a JSON string and contain the value of the `comment` parameter.
+
 ##### Division Block {#markup-json-divisionblock}
 
 A [*Markdom division block*][] must be represented as a JSON object.
@@ -2090,6 +2145,12 @@ The XML element may have an attribute with name `hint`. The value of this attrib
 
 The child node list of the XML element may be empty if the value of the `code` parameter is the empty string, otherwise it must contain a text node that contains the value of the `code` parameter.
 
+##### Comment Block {#markup-xml-commentblock}
+
+A [*Markdom comment block*][] is represented as a XML element with local name `Comment`.
+
+The child node list of the XML element may be empty if the value of the `comment` parameter is the empty string, otherwise it must contain a text node that contains the value of the `comment` parameter.
+
 ##### Division Block {#markup-xml-divisionblock}
 
 A [*Markdom division block*][] is represented as a XML element with local name `Division`.
@@ -2280,6 +2341,12 @@ Representing a [*Markdom code block*][] as a fenced code block is always possibl
        
 [Control](http://www.fileformat.info/info/unicode/category/Cc/list.htm) characters other then `LINE_FEED` (`\n`) or `CHARACTER_TABULATION` (`\t`) should be removed or replaced.
 
+##### Comment Block {#markup-cm-codeblock}
+
+A [*comment division block*][] should be represented as a [HTML blocks](http://spec.commonmark.org/0.26/#html-blocks) containing a HTML comment.
+
+[Control](http://www.fileformat.info/info/unicode/category/Cc/list.htm) characters other then `LINE_FEED` (`\n`) or `CHARACTER_TABULATION` (`\t`) should be removed or replaced. Any appearance of the closing HTML comment delimiter (`-->`) must be modified, replaced or ignored. 
+
 ##### Division Block {#markup-cm-divisionblock}
 
 A [*Markdom division block*][] should be represented as a [thematic break](http://spec.commonmark.org/0.26/#thematic-break).
@@ -2421,7 +2488,9 @@ It is generally possible to interpret CommonMark text as a [*Markdom document*][
 
 CommonMark allows [HTML blocks](http://spec.commonmark.org/0.26/#html-blocks) and [raw HTML](http://spec.commonmark.org/0.26/#raw-html) as part of a CommonMark document while Markdom explicitly doesn't. 
 
-How to handle a CommonMark document that contains HTML is application dependent. Possibilities include
+A HTML block containing only a HTML comment should be interpreted as a [*Markdom comment block*][].
+
+How to handle a CommonMark document that contains any other HTML is application dependent. Possibilities include
 * rejecting the CommonMark document (e.g. display an error message to the editor), 
 * treat the raw HTML as a [*Markdom code content*][] or [*Markdom text content*][], or
 * removing the HTML altogether.
@@ -2463,6 +2532,10 @@ Depending on the application, a [*Markdom document*][] should be represented as 
 ##### Code Block {#markup-html-codeblock}
 
 A [*Markdom code block*][] should be represented as a `<code>` element nested into a `<pre>` element.
+
+##### Comment Block {#markup-html-commentblock}
+
+A [*Markdom comment block*][] should be represented as a HTML comment or ignored, depending of the actual application.
 
 ##### Division Block {#markup-html-divisionblock}
 
@@ -2601,6 +2674,8 @@ The following XHTML 5 document represents the [example document](#example):
 [*Markdom blocks*]: #domain-block
 [*Markdom code block*]: #domain-codeblock
 [*Markdom code blocks*]: #domain-codeblock
+[*Markdom comment block*]: #domain-commentblock
+[*Markdom comment blocks*]: #domain-commentblock
 [*Markdom division block*]: #domain-divisionblock
 [*Markdom heading block*]: #domain-headingblock
 [*Markdom heading blocks*]: #domain-headingblock
