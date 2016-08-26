@@ -1,4 +1,4 @@
-!(resource/markdom-mark-positive.png)
+![](resource/markdom-mark-positive.png)
 
 ---
 
@@ -70,7 +70,7 @@ Zoidberg is awesome, but not a rich text related technology.
 
 Markdom tries to overcome the mentioned shortcomings of HTML and lightweight markup languages like CommonMark by introducing an  standardized architecture for rich text that is unambiguous, easy to process and extensively usable.
 
-!(resource/markdom-overview.png)
+![](resource/markdom-overview.png)
 
 A typical application of Markdom may involve the following use cases.
 
@@ -308,7 +308,7 @@ The rich text document consists of a heading, an ordered list with three list it
 
 The following image shows a tree of [*Markdom nodes*], i.e. a [*Markdom document*], that describes the same rich text document:
 
-!(resource/markdom-example.png)
+![](resource/markdom-example.png)
 
 The same [*Markdom document*] can be, for instance, represented as an [object graph](#api-dom-example) or a [succession of events](#api-handler-example), using a data exchange format like [JSON](#data-json-example) or [XML](#data-xml-example) or using a markup language like [HTML document](#markup-html-example).
 
@@ -334,7 +334,7 @@ Depending on the programming language, it might be sensible to divide the interf
 * A *Model* reference implementation package that contains a concrete implementation of the Domain Model API.
 * Several *Handler* implementation packages for different tasks some of which may depend on the *Model* package. 
 
-!(resource/markdom-packages.png)
+![](resource/markdom-packages.png)
 
 It is commonly recommended to implement an algorithms that processes a [*Markdom document*] as a [`Handler`] object rather than a method that directly processes a Domain Model API object graph. This allows to use the algorithm implementation in a multitude of scenarios (e.g. converting the [XML representation](#data-xml) of a [*Markdom document*] into a corresponding [HTML representation](#text-html) as a stream without creating an object graph for XML, Markdom or HTML). The Domain Model API should generally only be used if it is necessary to temporarily store a [*Markdom document*] in the memory or to programmatically modify a [*Markdom document*] before it is further processed with a `Handler`.
    
@@ -452,7 +452,7 @@ The Domain Model API represents a Markdom document as an object graph.
 
 The following image shows the interfaces that are part of the Domain Model API:
 
-!(resource/markdom-nodes.png)
+![](resource/markdom-nodes.png)
 
 *Interfaces with bold names are eminently suitable to be implemented as final classes, interfaces with italic names are eminently suitable to be implemented as abstract classes and interfaces with normal names are eminently suitable to be implemented as traits or mixins.*
 
@@ -1199,7 +1199,7 @@ The `ListBlockType` enum represents the type of a `ListBlock` and has the follow
 
 The following [Domain Model API](#api-dom) object graph represents the [example document](#example):
 
-!(resource/markdom-objectgraph.png)
+![](resource/markdom-objectgraph.png)
 
 Every [`BlockParent`], [`ListBlock`] or [`ContentParent`] object has a reference to its companion [`Sequence`] object. A companion [`Sequence`] object holds references to the [children](#api-dom-node-getchildren) of the corresponding [`BlockParent`], [`ListBlock`] or [`ContentParent`] object. Each child has a reference to its [parent](#api-dom-node-getparent).
 
@@ -1207,7 +1207,7 @@ Every [`BlockParent`], [`ListBlock`] or [`ContentParent`] object has a reference
 
 The following image shows the possible methods to navigate from an [`Node`] object upwards from the leaf [`TextContent`] object with `text` value `Baz` of the [example document](#example).
 
-!(resource/markdom-navigation-up.png)
+![](resource/markdom-navigation-up.png)
 
 Every [`Node`] object in a [Domain Model API](#api-dom) object graph that is not a [`Document`] object has a reference to its [parent](#api-dom-node-getparent), which is
 
@@ -1225,7 +1225,7 @@ Each [`Node`] object in a Domain Model API object graph can, through its predece
 
 The following image shows the possible methods to navigate from an [`Node`] object downwards to the leaf [`TextContent`] object with `text` value `Baz` of the [eample document](#example).
 
-!(resource/markdom-navigation-down.png)
+![](resource/markdom-navigation-down.png)
 
 Every [`Node`] object in a [Domain Model API](#api-dom) object graph that is parent object has a reference to its companion [`Sequence`] object which has references to the [children](#api-dom-node-getchildren) of the [`Node`] object.
 
@@ -1243,7 +1243,7 @@ This can be accomplished by repeatedly retrieving the parent of the designated p
 
 For example: Assuming a [`QuoteBlock`] object is about to be attached to a [`BlockParent`] object. That [`BlockParent`] object might be another [`QuoteBlock`] object which is attached to a [`ListItem`] object which is attached to an [`UnorderedListBlock`] object which is attached to a [`QuoteBlock`] object which isn't attached to a [`BlockParent`] object.  The last [`QuoteBlock`] object in the chain of parents might be the same [`QuoteBlock`] object that is about to be attached. Attaching the [`QuoteBlock`] object to its designated parent would therefore create a cycle. The following image illustrates this example.
 
-!(resource/markdom-cycles.png)
+![](resource/markdom-cycles.png)
 
 ### Handler API {#api-handler}
 
@@ -1261,13 +1261,13 @@ To help different handler implementations to process the described [*Markdom doc
 
 A [*Markdom document*] is represented by an `onDocumentBegin` event and an `onDocumentEnd` event that frame the events that describe the sequence of [*Markdom blocks*] the described [*Markdom document*] consists of. 
 
-!(resource/markdom-events-document.png)
+![](resource/markdom-events-document.png)
 
 ##### Blocks {#api-handler-blocks}
 
 A sequence of [*Markdom blocks*] is represented by an `onBlocksBegin` event and an `onBlocksEnd` event that frame the events that describe the [*Markdom blocks*]. Consecutive [*Markdom blocks*] are separated by an `onNextBlock` event.
 
-!(resource/markdom-events-blocks.png)
+![](resource/markdom-events-blocks.png)
 
 ##### Block {#api-handler-block}
 
@@ -1282,25 +1282,25 @@ A [*Markdom block*] is represented by an `onBlockBegin` event and an `onBlockEnd
 * If the [*Markdom block*] is a [*Markdom quote block*], it is represented as an `onQuoteBlockBegin` event and an `onQuoteBlockEnd` event that frame the events that describe the sequence of [*Markdom blocks*] the described [*Markdom quote block*] consists of.
 * If the [*Markdom block*] is an *unordered Markdom list block*, it is represented as an `onUNorderedListBlockBegin` event and an `onUnorderedListBlockEnd` event that frame the events that describe the sequence of [*Markdom list items*] the described *unordered Markdom list block* consists of.
 
-!(resource/markdom-events-block.png)
+![](resource/markdom-events-block.png)
 
 ##### List Items {#api-handler-listitems}
 
 A sequence of [*Markdom list items*] is represented by an `onListItemsBegin` event and an `onListItemEnd` event that frame the events that describe the [*Markdom list items*]. Consecutive [*Markdom list items*] are separated by an `onNextListItem` event.
 
-!(resource/markdom-events-listitems.png)
+![](resource/markdom-events-listitems.png)
 
 ##### List Item {#api-handler-listitem}
 
 A [*Markdom list item*] is represented by an `onListItemBegin` event and an `onListItemEnd` event that frame the events that describe the sequence of [*Markdom blocks*] the described [*Markdom list item*] consists of. 
 
-!(resource/markdom-events-listitem.png)
+![](resource/markdom-events-listitem.png)
 
 ##### Contents {#api-handler-contents}
 
 A sequence of [*Markdom contents*] is represented by an `onContentsBegin` event and an `onContentsEnd` event that frame the events that describe the [*Markdom contents*]. Consecutive [*Markdom contents*] are separated by an `onNextContent` event.
 
-!(resource/markdom-events-contents.png)
+![](resource/markdom-events-contents.png)
 
 ##### Content {#api-handler-content}
 
@@ -1312,7 +1312,7 @@ A [*Markdom content*] is represented by an `onContentBegin` event and an `onCont
 If the [*Markdom content*] is a [*Markdom line break content*], it is represented as an `onLineBreakContent` event. The event carries the `hard` parameter of the described [*Markdom line break content*].
 * If the [*Markdom content*] is a [*Markdom link content*], it is represented as an `onLinkContentBegin` event and an `onLinkContentEnd` event that frame the events that describe the sequence of [*Markdom contents*] the described [*Markdom link content*] consists of. Both events carry the `uri` and `title` parameters of the described [*Markdom link content*].
 
-!(resource/markdom-events-content.png)
+![](resource/markdom-events-content.png)
 
 #### Interfaces {#api-handler-interface}
 
