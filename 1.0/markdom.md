@@ -1908,7 +1908,7 @@ The following JSON document represents the [example document](#example):
 
 ```json
 {
-  "$schema": "http://schema.markdom.io/markdom-1.0.json",
+  "$schema": "http://schema.markdom.io/markdom-1.0.json#",
   "version": "1.0",
   "blocks": [
     {

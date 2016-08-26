@@ -1,9 +1,16 @@
 {
   "$schema": "http://json-schema.org/draft-04/schema#",
-  "id": "http://schema.markenwerk.net/markdom-1.0.xsd",
+  "id": "http://schema.markdom.io/markdom-1.0.json#",
   "allOf": [
     {
       "$ref": "#/definitions/document"
+    },
+    {
+      "properties": {
+        "$schema": {
+          "type": "string"
+        }
+      }
     }
   ],
   "definitions": {
@@ -11,6 +18,10 @@
       "title": "Document",
       "type": "object",
       "properties": {
+        "$schema": {
+          "type": "string",
+          "pattern": "http://schema.markdom.io/markdom-1.0.json#"
+        },
         "version": {
           "type": "string",
           "pattern": "1\\.0"
@@ -290,8 +301,7 @@
           ]
         },
         "uri": {
-          "type": "string",
-          "format": "uri"
+          "type": "string"
         },
         "title": {
           "type": "string"
@@ -335,8 +345,7 @@
           ]
         },
         "uri": {
-          "type": "string",
-          "format": "uri"
+          "type": "string"
         },
         "contents": {
           "$ref": "#/definitions/contents"
