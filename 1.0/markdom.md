@@ -2290,11 +2290,9 @@ The following XML document represents the [example document](#example):
 
 ## Markup representations {#markup}
 
-It should generally be possible to represent a [*Markdom document*] in a given rich text or markup language because Markdom has been designed with the intent that the largest possible number of applications can produce a reasonable output.
+Because Markdom has been designed with the intent that the largest possible number of applications can produce a reasonable output, it should generally be possible to represent a [*Markdom document*] in a given rich text or markup language. This includes lightweight markup languages that use formatting instructions that closely resemble their intended purpose (e.g. CommonMark, ...), structural formatting languages (e.g. HTML, ...) and procedural formatting languages (e.g. LaTeX).
 
-This includes lightweight markup languages that use formatting instructions that closely resemble their intended purpose (e.g. CommonMark, ...), structural formatting languages (e.g. HTML, ...) and procedural formatting languages (e.g. LaTeX).
-
-Interpreting a markup language as a [*Markdom document*] is generally not easily possible, unless the markup language has a set of formatting instructions that is similar to that of Markdom (e.g. CommonMark, ...).
+Interpreting a markup language as a [*Markdom document*] is generally not possible, unless the markup language has a set of formatting instructions that is similar to that of Markdom (e.g. CommonMark, ...).
 
 ### CommonMark {#markup-cm}
 
@@ -2323,9 +2321,9 @@ Assume an [*unordered Markdom list block*] that is followed by a [*Markdom code 
     	bar
     baz
     ```
-    
+
 [This](http://spec.commonmark.org/dingus/?text=*%20foo%0A%0A%09%09bar%0A%09baz) representation doesn't yield the expected output:
-    
+
 ```
 * foo
 
@@ -2338,7 +2336,7 @@ Representing a [*Markdom code block*] as a fenced code block is always possible.
     ````
     ```
     ````
-       
+
 [Control](http://www.fileformat.info/info/unicode/category/Cc/list.htm) characters other then `LINE_FEED` (`\n`) or `CHARACTER_TABULATION` (`\t`) should be removed or replaced.
 
 ##### Comment Block {#markup-cm-codeblock}
@@ -2390,11 +2388,11 @@ A [*Markdom code content*] should be represented as a [code span](http://spec.co
 Representing a [*Markdom code content*] as a code span is always possible. If the value of the `code` parameter contains succession of `BACKTICK` (` ` `) characters, the fence must be elongated accordingly:
 
     ``foo`bar``
-    
+
 If the value of the `code` parameter begins or ends with a `BACKTICK` (` ` `) character, leading or trailing whitespace can be added:
 
     `` `foo` ``
-       
+
 [Control](http://www.fileformat.info/info/unicode/category/Cc/list.htm) characters in the value of the `code` parameter should be removed or replaced. `LINE_FEED` (`\n`) or `CHARACTER_TABULATION` (`\t`) should be treated as a single space character.
 
 ##### Emphasis Content {#markup-cm-emphasiscontent}
@@ -2433,7 +2431,7 @@ A [*Markdom text content*] should be represented as [textual content](http://spe
 
 #### Adjacent lists {#markup-cm-interpretation-whitespace-adjacentlists}
 
-Because CommonMark doesn't support adjacent lists, it is necessary to place another [block](http://spec.commonmark.org/0.26/#blocks) between two adjacent [*ordered Markdom list block*] or [*unordered Markdom list block*]. A [*Markdom division block*] is recommended, because it introduced the least amount of clutter and is still used in its intended purpose (other than, for instance, a paragraph containing a zero width space character).
+Because CommonMark doesn't support adjacent lists, it is necessary to place another [block](http://spec.commonmark.org/0.26/#blocks) between two adjacent [*ordered Markdom list block*] or [*unordered Markdom list block*]. A [*Markdom comment block*] or a [*Markdom division block*] is recommended, because it introduced the least amount of clutter and is still used in its intended purpose (other than, for instance, a paragraph containing a zero width space character).
 
 #### Whitespace handling {#markup-cm-interpretation-whitespace}
 
@@ -2497,9 +2495,9 @@ How to handle a CommonMark document that contains any other HTML is application 
 
 ##### Image description {#markup-cm-interpretation-imagedescription}
 
-CommonMark allows arbitrary [inline](http://spec.commonmark.org/0.26/#inline) elements as an [image description](http://spec.commonmark.org/0.26/#image-description) wgile Markdom only allows plain text as the value of the `alternative` attribute of a [*Markdom text content*]. 
+CommonMark allows arbitrary [inline](http://spec.commonmark.org/0.26/#inline) elements as an [image description](http://spec.commonmark.org/0.26/#image-description) while Markdom only allows plain text as the value of the `alternative` attribute of a [*Markdom image content*]. 
 
-The image description should be reduced to plain text as if it would be used as the `alt` attribute when converting the CommonMark document to HTML.
+The image description should be reduced to plain text as if it would be used as the `alt` attribute of an `img` element when converting the CommonMark document to HTML.
 
 #### Example Document {#markup-cm-example}
 
