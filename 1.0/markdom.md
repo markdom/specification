@@ -404,7 +404,7 @@ Markdom APIs have the following enumerations:
 
 ##### `BlockType` {#api-common-blocktype}
 
-The `BlockType` enum represents the node type of a [*Markdom block*] and has the following constants:
+The `BlockType` enum indicates the node type of a [*Markdom block*] and has the following constants:
 
 * `CODE`,
 * `COMMENT`
@@ -417,7 +417,7 @@ The `BlockType` enum represents the node type of a [*Markdom block*] and has the
   
 ##### `ContentType` {#api-common-contenttype}  
 
-The `ContentType` enum represents the node type of a [*Markdom content*] and has the following constants:
+The `ContentType` enum indicates the node type of a [*Markdom content*] and has the following constants:
 
 * `CODE`,
 * `EMPHASIS`,
@@ -428,14 +428,14 @@ The `ContentType` enum represents the node type of a [*Markdom content*] and has
 
 ##### `EmphasisLevel` {#api-common-emphasislevel}
 
-The `EmphasisLevel` enum represents the level of a [*Markdom emphasis content*] object and has the following constants:
+The `EmphasisLevel` enum indicates the level of a [*Markdom emphasis content*] object and has the following constants:
 
 * `LEVEL_1`,
 * `LEVEL_2`.
 
 ##### `HeadingLevel` {#api-common-headinglevel}
 
-The `HeadingLevel` enum represents the level of a [*Markdom heading block*] object and has the following constants:
+The `HeadingLevel` enum indicates the level of a [*Markdom heading block*] object and has the following constants:
 
 * `LEVEL_1`,
 * `LEVEL_2`,
@@ -1164,7 +1164,7 @@ The [Domain Model API](#api-dom) has the following enumerations:
 
 ##### `BlockParentType` {#api-dom-blockparenttype}  
 
-The `BlockParentType` enum represents the type of a `BlockParent` and has the following constants:
+The `BlockParentType` enum indicates the type of a `BlockParent` and has the following constants:
 
 * `DOCUMENT`,
 * `QUOTE_BLOCK`, 
@@ -1172,7 +1172,7 @@ The `BlockParentType` enum represents the type of a `BlockParent` and has the fo
 
 ##### `ContentParentType` {#api-dom-contentparenttype}  
 
-The `ContentParentType` enum represents the type of a `ContentParent` and has the following constants:
+The `ContentParentType` enum indicates the type of a `ContentParent` and has the following constants:
 
 * `HEADING_BLOCK`,
 * `PARAGRAPH_BLOCK`, 
@@ -1181,7 +1181,7 @@ The `ContentParentType` enum represents the type of a `ContentParent` and has th
 
 ##### `NodeType` {#api-dom-nodetype}
 
-The `NodeType` enum represents the type of a [`Node`] object and has the following constants:
+The `NodeType` enum indicates the type of a [`Node`] object and has the following constants:
 
 * `DOCUMENT`,
 * `BLOCK`,
@@ -1190,7 +1190,7 @@ The `NodeType` enum represents the type of a [`Node`] object and has the followi
 
 ##### `ListBlockType` {#api-dom-listblocktype}  
 
-The `ListBlockType` enum represents the type of a `ListBlock` and has the following constants:
+The `ListBlockType` enum indicates the type of a `ListBlock` and has the following constants:
 
 * `ORDERED`,
 * `UNORDERED`.
