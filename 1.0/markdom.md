@@ -627,13 +627,17 @@ A `Content` object must have a method with signature `ContentType getContentType
 
 This method must return the [`ContentType`] value that corresponds to the type of the represented [*Markdom content*].
 
+###### `hasBlock` {#api-dom-node-hasblock}
+
+A `Content` object must have a method with signature `Boolean hasContent()`.
+
+This method must return whether the path to the root of the tree of [Markdom nodes](#domain-node) the `Content` object is part of contains a [`Block`] object.
+
 ###### `getBlock` {#api-dom-content-getblock}
 
-A `Content` object must have a method with signature `Block getBlock()`.
+A `Content` object must have a method with signature `Block? getBlock()`.
 
-This method must return the nearest [`Block`] object object the `Content` in the tree of Markdom nodes  the `Content` object is part of, which is the [`Block`] object of the `ContentParent` this [`Content`] object is currently attached to.
-
-This method must fail if the `Content` object doesn't [have](#api-dom-node-hasparent) a [parent](#api-dom-node-getparent) [`ContentParent`] object.
+This method must return the nearest [`Block`] object in a path to the root of the tree of [Markdom nodes](#domain-node) the `Content` object is part of or no value, if no such [`Block`] object exists, or no value, otherwise.
 
 ##### `ContentParent` {#api-dom-contentparent}
 
@@ -977,43 +981,37 @@ This method must return the [`NodeType`] value that corresponds to the type of t
 
 A `Node` object must have a method with signature `Boolean hasParent()`.
 
-This method must return whether the `Node` has a parent `Nodee` object.  
+This method must return whether the `Node` object has a parent `Node` object.  
 
 Specifically, this method must return `true`
-* if the `Node` object is a [`Block`] object and currently attached to a [`BlockParent`] object, or
-* if the `Node` object is a [`ListItem`] object and currently attached to a [`ListBlock`] object, or
-* if the `Node` object is a [`Content`] object and currently attached to a [`ContentParent`] object.
-
-Specifically, this method must return `false`
-* if the `Node` object is a [`Document`] object, or
-* if the `Node` object is a [`Block`] object and currently not attached to a [`BlockParent`] object, or
-* if the `Node` object is a [`ListItem`] object and currently not attached to a [`ListBlock`] object, or
-* if the `Node` object is a [`Content`] object and currently not attached to a [`ContentParent`] object.
+* if the `Node` object is a [`Block`] object that is currently attached to a [`BlockParent`] object, or
+* if the `Node` object is a [`ListItem`] object that is currently attached to a [`ListBlock`] object, or
+* if the `Node` object is a [`Content`] object that is currently attached to a [`ContentParent`] object, or
+`false`, otherwise.
 
 ###### `getParent` {#api-dom-node-getparent}
 
-A `Node` object must have a method with signature `Node getParent()`.
+A `Node` object must have a method with signature `Node? getParent()`.
 
 This method must return the parent `Node` object of the `Node` object. 
 
 Specifically, this method must return 
 * the [`BlockParent`] object it is currently attached to, if the `Node` object is a [`Block`] object, or
 * the [`ListBlock`] object it is currently attached to, if the `Node` object is a [`ListItem`] object, or
-* the [`ContentParent`] object it is currently attached, if the `Node` object is a [`Content`] object.
+* the [`ContentParent`] object it is currently attached, if the `Node` object is a [`Content`] object, or
+no value, otherwise.
 
-This method must fail if the `Node` object doesn't [have](#api-dom-node-hasparent) a [parent](#api-dom-node-getparent) `Node` object.
+###### `hasDocument` {#api-dom-node-hasdocument}
+
+A `Node` object must have a method with signature `Boolean hasDocument()`.
+
+This method must return whether the root of the tree of [Markdom nodes](#domain-node) the `Node` object is part of is a [`Document`] object.
 
 ###### `getDocument` {#api-dom-node-getdocument}
 
-A `Node` object must have a method with signature `Document getDocument()`.
+A `Node` object must have a method with signature `Document? getDocument()`.
 
-This method must return the [`Document`] object that is the root of the tree of [Markdom nodes](#domain-node) the `Node` object is part of.
-
-Specifically, this method must return 
-* the `Node` object, if the `Node` object is a [`Document`] object, or
-* the [`Document`] object of the parent `Node` object, if the `Node` object has a parent `Node` object.
-  
-This method must fail if the `Node` object doesn't [have](#api-dom-node-hasparent) a [parent](#api-dom-node-getparent) `Node` object.
+This method must return the root of the tree of [Markdom nodes](#domain-node) the `Node` object is part of, if it is a [`Document`] object, or no value, otherwise.
 
 ###### `getIndex` {#api-dom-node-getindex}
 
@@ -1037,14 +1035,8 @@ This method must return whether the `Node` object has child `Node` objects.
 Specifically, this method must return `true`
 * if the `Node` object is a [`BlockParent`] object and currently has a [`Block`] object attached to it, or
 * if the `Node` object is a [`ListBlock`] object and currently has a [`ListItem`] object attached to it, or
-* if the `Node` object is a [`ContentParent`] object and currently has a [`Content`] object attached to it.
-
-Specifically, this method must return `false`
-* if the `Node` object is a [`BlockParent`] object and currently has no [`Block`] object attached to it, or
-* if the `Node` object is a [`ListBlock`] object and currently has no [`ListItem`] object attached to it, or
-* if the `Node` object is a [`ContentParent`] object and currently has no [`Content`] object attached to it, or
-* if the `Node` object is a [`CodeBlock`] object or a [`CodeContent`] object or a [`DivisionBlock`] object or an [`ImageContent`] object or a [`LineBreakContent`] object or a [`TextContent`] object.
-
+* if the `Node` object is a [`ContentParent`] object and currently has a [`Content`] object attached to it, or
+`false`, otherwise.
 
 ###### `countChildren` {#api-dom-node-countchildren}
 
@@ -1055,10 +1047,8 @@ This method must return the number of child `Node` objects the `Node` object has
 Specifically, this method must return
 * the number of attached  [`Block`] objects, if the `Node` object is a [`BlockParent`] object, or
 * the number of attached  [`ListItem`] objects, if the `Node` object is a [`ListBlock`] object, or
-* the number of attached  [`Content`] objects, if the `Node` object is a [`ContentParent`] object.
-
-Specifically, this method must return `0`
-* if the `Node` object is a [`CodeBlock`] object or a [`CodeContent`] object or a [`DivisionBlock`] object or an [`ImageContent`] object or a [`LineBreakContent`] object or a [`TextContent`] object.
+* the number of attached  [`Content`] objects, if the `Node` object is a [`ContentParent`] object, or
+`0`, otherwise.
 
 ###### `getChildren` {#api-dom-node-getchildren}
 
@@ -1070,7 +1060,7 @@ Specifically, this method must return
 * an [`Iterable`] object for the companion [`Sequence`] object, if the `Node` object is a [`BlockParent`] object, or
 * an [`Iterable`] object for the companion [`Sequence`] object, if the `Node` object is a [`ListBlock`] object, or
 * an [`Iterable`] object for the companion [`Sequence`] object, if the `Node` object is a [`ContentParent`] object, or
-* an empty [`Iterable`] object, if the `Node` object is a [`CodeBlock`] object or a [`CodeContent`] object or a [`DivisionBlock`] object or an [`ImageContent`] object or a [`LineBreakContent`] object or a [`TextContent`] object.
+* an empty [`Iterable`] object, otherwise.
 
 ##### `OrderedListBlock` {#api-dom-orderedlistblock}
 
