@@ -404,7 +404,7 @@ Markdom APIs have the following enumerations:
 
 ##### `BlockType` {#api-common-blocktype}
 
-The `BlockType` enum indicates the node type of a [*Markdom block*] and has the following constants:
+The `BlockType` enum indicates the type of a [*Markdom block*] and has the following constants:
 
 * `CODE`,
 * `COMMENT`
@@ -417,7 +417,7 @@ The `BlockType` enum indicates the node type of a [*Markdom block*] and has the 
   
 ##### `ContentType` {#api-common-contenttype}  
 
-The `ContentType` enum indicates the node type of a [*Markdom content*] and has the following constants:
+The `ContentType` enum indicates the type of a [*Markdom content*] and has the following constants:
 
 * `CODE`,
 * `EMPHASIS`,
@@ -1154,7 +1154,7 @@ The [Domain Model API](#api-dom) has the following enumerations:
 
 ##### `BlockParentType` {#api-dom-blockparenttype}  
 
-The `BlockParentType` enum indicates the type of a `BlockParent` and has the following constants:
+The `BlockParentType` enum indicates the type of a [`BlockParent`] object and has the following constants:
 
 * `DOCUMENT`,
 * `QUOTE_BLOCK`, 
@@ -1162,7 +1162,7 @@ The `BlockParentType` enum indicates the type of a `BlockParent` and has the fol
 
 ##### `ContentParentType` {#api-dom-contentparenttype}  
 
-The `ContentParentType` enum indicates the type of a `ContentParent` and has the following constants:
+The `ContentParentType` enum indicates the type of a [`ContentParent`] object and has the following constants:
 
 * `HEADING_BLOCK`,
 * `PARAGRAPH_BLOCK`, 
@@ -1180,7 +1180,7 @@ The `NodeType` enum indicates the type of a [`Node`] object and has the followin
 
 ##### `ListBlockType` {#api-dom-listblocktype}  
 
-The `ListBlockType` enum indicates the type of a `ListBlock` and has the following constants:
+The `ListBlockType` enum indicates the type of a [`ListBlock`] object and has the following constants:
 
 * `ORDERED`,
 * `UNORDERED`.
@@ -1321,15 +1321,19 @@ Calling this method multiple times on a `Dispatcher` object that is not [repeata
   
 This method must fail if `handler` is not present.
 
-###### `isRepeatable` {#api-handler-dispatcher-isrepeatable}
+This method must fail if the `Dispatcher` object is not [reussable](#api-handler-dispatcher-isreusable) and has already been used.
 
-A `Dispatcher` object must have a method with signature `Boolean isRepeatable()`.
+###### `isReusable` {#api-handler-dispatcher-isreusable}
+
+A `Dispatcher` object must have a method with signature `Boolean isReusable()`.
   
-This method must return whether the `Dispatcher` object is able to describe a [*Markdom document*] multiple times (e.g. a [`Document`] object can describe itself multiple times, but a CommonMark parsing [`Handler`] object that consumes its input can't).
+This method must return whether the `Dispatcher` object is able to [describe](#api-handler-dispatcher-handle) [*Markdom documents*] to multiple [`Handler`] objects (e.g. a [`Document`] object can describe itself multiple times, but a CommonMark parsing [`Handler`] object that consumes its input can't).
+
+If the `Dispatcher` object is able to [describe](#api-handler-dispatcher-handle) [*Markdom documents*] to multiple [`Handler`] objects, it is not guaranteed that the described [*Markdom documents*] are equal because the underlying data source (e.g. a [`Document`] object) may have been modified. 
   
 ##### `Handler` {#api-handler-handler}
 
-A `Handler` object is a component that is able to receive a a sequence of [*Markdom events*] that describe a [*Markdom document*] from a [`Dispatcher`] object and calculate a result or causes side effects that corresponds to the described [*Markdom document*] (e.g. a `Handler` object can generate a [`Document`] object or write CommonMark text into a file).
+A `Handler` object is a component that is able to receive a a sequence of [*Markdom events*] that describe a [*Markdom document*] (e.g. from a [`Dispatcher`] object) and calculate a result or causes side effects that corresponds to the described [*Markdom document*] (e.g. a `Handler` object can generate a [`Document`] object or write CommonMark text into a file).
 
 Calling methods on a `Handler` object in an order that doesn't properly describe a [*Markdom document*] has an undefined behavior.
 
@@ -1347,7 +1351,7 @@ A `Handler` object must have a method with signature `onBlockBegin(BlockType typ
 
 This event represents the general form of the begin of a [*Markdom block*]. The `type` parameter determines the type of the represented [*Markdom block*].
 
-Calling this method must be must be, depending on the value of the `type` parameter, followed by a call to `onCodeBlock` or `onCommentBlock` or `onHeadinBlockBegin` or `onDivisionBlock` or `onOrderedListBlockBegin` or `onParagraphBlockBegin` or `onQuoteBlockBegin` or `onUnorderedListBlockBegin`. A corresponding call to `onBlockEnd` withe the same `type` value must eventually occur.
+Calling this method must be must be, depending on the value of the `type` parameter, followed by a call to `onCodeBlock` or `onCommentBlock` or `onHeadingBlockBegin` or `onDivisionBlock` or `onOrderedListBlockBegin` or `onParagraphBlockBegin` or `onQuoteBlockBegin` or `onUnorderedListBlockBegin`. A corresponding call to `onBlockEnd` with the same `type` value must eventually occur.
 
 The behavior of this method is undefined, if `type` is not present.
 
@@ -1357,7 +1361,7 @@ A `Handler` object must have a method with signature `onBlockEnd(BlockType type)
 
 This event represents the general form of the end of a [*Markdom block*]. The `type` parameter determines the type of the represented [*Markdom block*].
 
-A corresponding call to `onBlockBegin` with the same `type` value must have occurred. Calling this method must be followed by a call to `onNextBlock` or `onBlocksEnd.
+A corresponding call to `onBlockBegin` with the same `type` value must have occurred. Calling this method must be followed by a call to `onNextBlock` or `onBlocksEnd`.
 
 The behavior of this method is undefined, if `type` is not present.
 
@@ -1403,7 +1407,7 @@ A `Handler` object must have a method with signature `onCommentBlock(String comm
 
 This event represents a [*Markdom comment block*] with the given value for the `comment` parameter.
 
-Calling this method must be must be followed by a call to `onContentEnd`.
+Calling this method must be must be followed by a call to `onBlockEnd`.
 
 The behavior of this method is undefined, if `code` is not present.
 
