@@ -1571,7 +1571,7 @@ A `Handler` object must have a method with signature `onListItemEnd()`.
 
 This event represents the end of a [*Markdom list item*].
 
-A corresponding call to `onListItemBegin` must have occurred. Calling this method must be followed by a call to `onNextListItem` or `onListItemsEnd.
+A corresponding call to `onListItemBegin` must have occurred. Calling this method must be followed by a call to `onNextListItem` or `onListItemsEnd`.
 
 ###### `onListItemsBegin` {#api-handler-handler-onlistitemsbegin}
 
