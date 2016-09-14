@@ -931,9 +931,9 @@ A `ListBlock] object must have a method with signature `ListBlockType getListBlo
 
 This method must return the [`ListBlockType`] value that corresponds to the type of the `ListBlock` object.
 
-###### `getListItems` {#api-dom-listblock-getitems}
+###### `getItems` {#api-dom-listblock-getitems}
 
-A [`ListItem`] object must have a method with signature `[ListItem] getListItems()`.
+A [`ListItem`] object must have a method with signature `[ListItem] getItems()`.
 
 This method must return the companion [`Sequence`] object.
 
