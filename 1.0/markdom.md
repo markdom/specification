@@ -511,7 +511,7 @@ This method must fail if adding `block` to the companion [`Sequence`] object fai
 
 ###### `addBlocks` {#api-dom-blockparent-addblocks}
 
-For convenience, a `BlockParent object should have a method with signature `addBlocks(Block... blocks)`.
+For convenience, a `BlockParent` object should have a method with signature `addBlocks(Block... blocks)`.
 
 This method must add all [`Block`] objects from `blocks` in the given order at the end of the companion [`Sequence`] object, as if `addBlock(Block block)` has been called repeatedly for all [`Block`] objects from `blocks`.  This attaches all [`Block`] objects from `blocks` to the `BlockParent` object.
   
