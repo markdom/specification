@@ -2183,11 +2183,11 @@ The child node list of the XML element must contain the representations of the [
 
 An [*unordered Markdom list block*] is represented as a XML element with local name `UnorderedList`.
 
-The child node list of the XML element must contain the representations of the [*Markdom list items*] the represented [**unordered Markdom list block*] consists of and may contain text nodes that contain only whitespace.
+The child node list of the XML element must contain the representations of the [*Markdom list items*] the represented [*unordered Markdom list block*] consists of and may contain text nodes that contain only whitespace.
 
 #### List Item {#markup-xml-listitem}
 
-* A [*Markdom list item*] is represented as a XML element with local name `ListItem`.
+A [*Markdom list item*] is represented as a XML element with local name `ListItem`.
 
 The child node list of the XML element must contain the representations of the [*Markdom blocks*] the represented [*Markdom list item*] consists of and may contain text nodes that contain only whitespace.
 
