@@ -4,46 +4,52 @@
 
 # Markdom {#markdom}
 
-Markdom is lightweight specification for simple rich text. Markdom is not a markup language, it is a set of definitions that allow to transport and process content in a standardized way.
+Markdom is lightweight specification for simple rich text. Markdom is not a markup language like Markdown or it's many dialects itself. Markdom is a set of definitions that aims to standardize the handling, processing and serialization of simple rich text across software and language boundaries. Markdom tries to fill a gap left open by existing technologies.
 
-The two main intents of Markdom are to define the lowest common denominator for rich text and to be platform and representation independent. These properties enable Markdom to be used in a wide variety of applications, such as websites, electronic publishing or native rendering on mobile platforms.
+The three main intents of Markdom are
+
+1. to define the lowest common denominator for simple rich text,
+1. to allow easy translation of algorithms working working with simple rich text from one programming language to another (by providing a standardized API) and
+1. to simplify the transfer of simple rich text between different software components (by specifying the serialization in common data transfer formats like JSON and XML).
 
 The name Markdom is a composition of [**mark**up](https://en.wikipedia.org/wiki/Markup_language) and [**do**main **m**odel](https://en.wikipedia.org/wiki/Domain_model).
 
 ## Overview {#overview}
 
-This specification covers multiple aspects related to Markdom documents:
+A piece of simple rich text is called a Markdom document. This specification covers multiple aspects related to Markdom documents:
 
-* The [domain section](#domain) covers the general structure and the supported formatting instructions for Markdom documents.
+* The [domain section](#domain) covers the general structure and the supported formatting instructions of Markdom documents.
 * The [API section](#api) covers programming interfaces to programmatically create, modify and process Markdom documents.
-* The [data section](#data) covers the representation of Markdom documents in common data exchange formats. 
-* The [markup section](#markup) covers the representation of Markdom documents in common markup languages. 
+* The [data section](#data) covers the representation of Markdom documents in common data transfer formats.
+* The [markup section](#markup) covers the representation of Markdom documents in common markup languages.
 
 ## Why Markdom? {#why}
 
 Markdom was created to be an answer to a simple, but as yet unanswered [question](https://stackoverflow.com/questions/34955835/cross-device-rich-text-formatting):
 
-1. Allow an editor to enter rich text in a human friendly way.
-2. Transmit the rich text to different platforms, using existing technologies.
-3. Display the rich text on different platforms in a native way.
+1. Allow a human to create simple rich text in a human friendly manner (e.g. by writing Markdown text in a website).
+1. Transmit the simple rich text to different platforms (e.g. from the website to a web server and from the web server to a native smartphone app).
+1. Display the simple rich text on different platforms in a native way (e.g. by rendering it in a native smartphone app).
 
 The latter includes at least Android apps (using [Spanned Strings](https://developer.android.com/reference/android/text/Spanned.html)), iOS apps (using [Attributed Strings](https://developer.apple.com/library/mac/documentation/Cocoa/Reference/Foundation/Classes/NSAttributedString_Class/)) and websites (using HTML).
 
-Markdom tries to fill a gap left open by existing technologies. As the name Markdom indicates, it is closely related to [Markdown](https://daringfireball.net/projects/markdown/).
+![](resource/markdom-overview.png)
 
 ### Why not HTML? {#why-nothtml}
 
-HTML itself is hardly an editor friendly language, although usable [WYSISYG editors](https://www.tinymce.com/) exist.
+Allowing humans to enter some HTML with a suitable [WYSISYG editor](https://www.tinymce.com/) or as raw HTML (for *experts*) is a commonly used approach in content management systems, blogs and other websites. This allows the user the enter everything from simple unformatted text to arbitrarily complex formatted text. This is all well and good, but if all that's asked for is to allow a user to enter text with some links, enumerations and and the occasional emphasis, HTML is way to powerful.
 
-The crucial drawback of HTML is, that is is way too powerful for the intended purpose. There are [good reasons](https://leanpub.com/markua/read#leanpub-auto-why-is-inline-html-not-supported-in-markua) why HTML is not suitable, if the intended target platform aren't just websites.
+Allowing HTML as user input restricts the usability of the content to places that can handle HTML (e.g. websites or web views). Using the content in a text view of a native smartphone app or to generate a PDF file might be [impossible](https://leanpub.com/markua/read#no-inline-html).
+
+Allowing HTML as user input might also cause security issues (e.g. embedded JavaScript or rogue `form`-elements), mess up the design of a website (embedded CSS, rogue `<marquee>`-elements), reduce the usability of a website (`style="color:#ff00ff;"`) or mess with the SEO of a website (rogue `table`-elements, misplaced semantic elements).
 
 ### Why not Markdown? {#why-notmarkdown}
 
-Markdown is introduced with the following description:
+Markdown is introduced with the following [description](https://daringfireball.net/projects/markdown/):
 
 > Markdown is a text-to-HTML conversion tool for web writers. Markdown allows you to write using an easy-to-read, easy-to-write plain text format, then convert it to structurally valid XHTML (or HTML).
 
-The intended limitation to be nothing more than a text-to-HTML conversion tool is recognizable in a multitude of Markdown implementation. Only few implementations offer conversion targets that are not HTML or a domain model that is open to programmatic manipulation.
+The intended limitation to be nothing more than a text-to-HTML conversion tool is recognizable in almost all Markdown implementations. Only very few Markdown implementations offer conversion to something that is not HTML. Almost no Markdown implementation allows conversion to a domain model that is open to programmatic introspection or manipulation.
 
 Since Markdown was only released as an implementation and without a formal specification, different implementations [disagree](http://johnmacfarlane.net/babelmark2/?text=%3E+*+A+quote%0A%3E+Another+quote) over the meaning of edge cases like the following snippet:
 
@@ -58,61 +64,60 @@ As a result, it is [almost](https://uncodin.github.io/bypass/) impossible to fin
 
 ### Why not CommonMark? {#why-notcommonmark}
 
-[CommonMark](http://commonmark.org/) is a specification for Markdown and compatible CommonMark implementations exist for [different languages](https://github.com/jgm/CommonMark/wiki/List-of-CommonMark-Implementations).
+[CommonMark](http://commonmark.org/) is a specification for Markdown text and compatible CommonMark implementations exist for [different languages](https://github.com/jgm/CommonMark/wiki/List-of-CommonMark-Implementations).
 
-While this solves some of the issues of Markdown, CommonMark still allows the integration of arbitrary HTML and available implementations are still only text-to-HTML converters or tend to offer custom extensions.
+This solved one major problem with Markdown, but not the others:
 
-### Why not Zoidberg? {#why-notzoidberg}
-
-Zoidberg is awesome, but not a rich text related technology.
+* CommonMark allows the integration of arbitrary HTML with all the above mentioned problems.
+* CommonMark implementations are often nothing more than text-to-HTML converters.
+* CommonMark implementations tend to offer custom extensions which defeats the purpose of standardization.
 
 ### So, why Markdom? {#why-markdom}
 
-Markdom tries to overcome the mentioned shortcomings of HTML and lightweight markup languages like CommonMark by introducing an  standardized architecture for rich text that is unambiguous, easy to process and extensively usable.
-
-![](resource/markdom-overview.png)
-
-A typical application of Markdom may involve the following use cases.
-
-When an editor uses a backend to create content:
-
-* The server allows an editor to enter CommonMark text.
-* The server parses the markup with any suitable interpreter (i.e. with an actual interpreter, not just a regex-based converter) that is available for the language the server is written in, and creates a Markdom document.
-* The server generates a HTML representation of the Markdom document and delivers it to the editor.
-* The server generates a XML representation of the Markdom document and stores is for later use.
-
-When the editor returns to review the content:
-
-* The server loads the previously stored XML representation and creates a Markdom document.
-* The server creates a CommonMark representation of the Markdom document and delivers it to the editor.
-
-When a visitor uses the frontend to view the content:
-
-* The server loads the previously stored XML representation and creates a Markdom document.
-* The server creates a HTML representation of the Markdom document and delivers it to the visitor.
-
-When a visitor uses a smartphone app to view the content:
-
-* The server loads the previously stored XML representation and creates a Markdom document.
-* The server creates a JSON representation of the Markdom document and delivers it to the app.
-* The app receives the JSON representation and creates a Markdom document.
-* The app creates a native representation of the Markdom document and displays it.
-  
-Other use cases might include to interpret other sources of rich text (e.g. an uploaded HTML or DOC file) to create a Markdom document or generate other representations (e.g. a PDF file) of a Markdom document.
-  
-The important benefit of Markdom is, that the responsibility to interpret the somewhat cumbersome markup language lies solely by a authoritative component (e.g. a server). Once such a component has interpreted the original input, it is reduced to instances of a small and finalized set of formatting instructions. These formatting instructions can be stored and transmitted using unambiguous and well established data exchange formats. 
+Markdom tries to overcome the mentioned shortcomings of HTML and markup languages like Markdown and CommonMark by introducing a  standard for simple rich text that is unambiguous and easy to process.
 
 The set of possible formatting instructions has been chosen with the intent, that the largest possible number of applications can produce a reasonable output. This includes the lack of arbitrarily configurable content like HTML. If the original input includes such content, it is the responsibility of the authoritative component to reject the input or to process the input and reduce it to appropriate formatting instructions.
 
+### Markdom Use Cases {#why-usecases}
+
+A typical system  using Markdom may encompass the following use cases:
+
+1. A user creates content:
+
+    * The server allows a user to enter CommonMark text.
+    * The server parses and interprets the CommonMark text with a suitable libraryand generates a Markdom document.
+    * The server generates a XML representation of the Markdom document and stores is for later use.
+
+1. The user returns to edit the content:
+
+    * The server loads the previously stored XML representation and creates a Markdom document.
+    * The server creates CommonMark text of the Markdom document and presents it to the user.
+
+1. Another user visits the website to view the content:
+
+    * The server loads the previously stored XML representation and creates a Markdom document.
+    * The server creates a HTML representation of the Markdom document and delivers it to the visitor.
+
+1. Another user uses a smartphone app to view the content:
+
+    * The server loads the previously stored XML representation and creates a Markdom document.
+    * The server creates a JSON representation of the Markdom document and delivers it to the app.
+    * The app receives the JSON representation and creates a Markdom document.
+    * The app creates a native representation of the Markdom document and displays it.
+
+Only the server has to handle the content as CommonMark text. The app receives an unambiguous and easy to parse JSON representation. Allowing additional types of input (e.g. Textile) only requires changing the server.
+
+Other use cases might require the server to interpret uploaded HTML or DOC files to create initial versions of a stored Markdom document, to generate a PDF representation of a stored Markdom document or to generate Markdom documents on the fly with information fetched from a database and a suitable templating mechanism.
+
 ## Domain {#domain}
 
-A Markdom document represents the entirety of a rich text document, including the actual rich text and the formatting instructions. A Markdom document contains of a sequence of Markdom blocks.
+A *Markdom document* represents the entirety of a rich text document, including the actual text content and formatting instructions. A *Markdom document* contains of a sequence of *Markdom blocks*.
 
-A Markdom block represents a portion of a rich text document that serves a specific purpose. Each type of Markdom block has the necessary properties that describe it's content. Some Markdom blocks, e.g. a Markdom block representing a block quote, contain further Markdom blocks. Other Markdom blocks, e.g. a Markdom block representing a paragraph, contain Markdom content.
+A *Markdom block* represents a portion of a rich text document that serves a specific purpose. Each type of *Markdom block* has the necessary properties that describe it's content. Some *Markdom blocks*, e.g. a *Markdom block* representing a block quote, contain further *Markdom blocks*. Other *Markdom blocks*, e.g. a *Markdom block* representing a paragraph, contain *Markdom content*.
 
-A Markdom content represents a portion of rich text that serves a specific purpose. Each type of Markdom block has the necessary properties that describe it's content. Some Markdom contents, e.g. a Markdom block representing a link, contain further Markdom content. A Markdom content never contains a Markdom block.
+A *Markdom content* represents a portion of rich text that serves a specific purpose. Each type of *Markdom content* has the necessary properties that describe it's content. Some *Markdom contents*, e.g. a *Markdom content* representing a link, contain further *Markdom content*. A *Markdom content* never contains a *Markdom block*.
 
-Put another way, a Markdom document is represented as a tree of Markdom nodes. Starting with a root node that represents an entire rich text document, each Markdom node represents a portion of the corresponding Markdom document.
+Put another way, a *Markdom document* is represented as a tree of *Markdom nodes*. Starting with a root node that represents an entire rich text document, each *Markdom node* represents a portion of the corresponding *Markdom document*.
 
 ### Nodes {#domain-node}
 
@@ -150,7 +155,7 @@ A [*Markdom block*] is either a
 
 A [*Markdom code block*] is a [*Markdom block*] that represents a portion of plain text (e.g. source code) that may be augmented with meaningful syntax highlighting. Implementations that generate output that is displayed to humans should display the text as preformatted text in a monospaced font.
 
-A [*Markdom code block*] has a mandatory string parameter named `code` and an optional string parameter named `hint`. 
+A [*Markdom code block*] has a mandatory string parameter named `code` and an optional string parameter named `hint`.
 
 Values of the `code` parameter should not contain any [control](http://www.fileformat.info/info/unicode/category/Cc/list.htm) characters other then `LINE_FEED` (`\n`) or `CHARACTER_TABULATION` (`\t`). Values of the `code` parameter shouldn't be empty.
 
@@ -160,7 +165,7 @@ Values of the `hint` parameter, if present, should be the common name of a progr
 
 A [*Markdom comment block*] is a [*Markdom block*] that represents a portion of plain text that is not meant to be displayed. Implementations that generate output that is displayed to humans should ignore the text.
 
-A [*Markdom comment block*] has a mandatory string parameter named `comment`. 
+A [*Markdom comment block*] has a mandatory string parameter named `comment`.
 
 Values of the `comment` parameter should not contain any [control](http://www.fileformat.info/info/unicode/category/Cc/list.htm) characters other then `LINE_FEED` (`\n`) or `CHARACTER_TABULATION` (`\t`). Values of the `comment` parameter shouldn't be empty.
 
@@ -184,7 +189,7 @@ An [*ordered Markdom list block*] is a [*Markdom block*] that represents an orde
 
 An [*ordered Markdom list block*] has a mandatory integer parameter `startIndex` and a sequence of [*Markdom list items*] named `items`.
 
-Valid values of the `startIndex` parameter are non-negative integers. The value of the `startIndex` parameter is the index of the first item in the `items` sequence. Following items in the `items` sequence have successive indices.
+Valid values of the `startIndex` parameter are positive integers. The value of the `startIndex` parameter is the index of the first item in the `items` sequence. Following items in the `items` sequence have successive indices.
 
 The `items` sequence shouldn't be empty.
 
@@ -198,9 +203,9 @@ The `contents` sequence shouldn't be empty.
 
 ##### Quote Block {#domain-quoteblock}
 
-A [*Markdom quote block*] is a [*Markdom block*] that represents a quote. The quote contains further portions of the [*Markdom document*]. Implementations that generate output that is displayed to humans should emphasize (e.g. a vertical line, indentation, slanted font) the quote appropriately.
+A [*Markdom quote block*] is a [*Markdom block*] that represents a block quote. The quote contains further portions of the [*Markdom document*]. Implementations that generate output that is displayed to humans should emphasize (e.g. a vertical line, indentation, slanted font) the quote appropriately.
 
-An `QuoteBlock` has a sequence of [*Markdom blocks*] named `blocks`.
+A [*Markdom quote block*] has a sequence of [*Markdom blocks*] named `blocks`.
 
 The `blocks` sequence shouldn't be empty.
 
@@ -208,15 +213,15 @@ The `blocks` sequence shouldn't be empty.
 
 An *unordered Markdom list block* is a [*Markdom block*] that represents an unordered list (bullet list) of list items. Each list item contains further portions of the [*Markdom document*]. Implementations that generate output that is displayed to humans should indent all list items and display an appropriate symbol (e.g. a bullet) in front of each item.
 
-An `UnorderedListBlock` has a sequence of [*Markdom list items*] named `items`.
+An [*unordered Markdom list block*] has a sequence of [*Markdom list items*] named `items`.
 
 The `items` sequence shouldn't be empty.
 
 #### List Item {#domain-listitem}
 
-A [*Markdom list item*] represents a list item. The list item contains further portions of the [*Markdom document*]. Implementations that generate output that is displayed to humans should display the list item according to the corresponding `OrderedListBlock` or `UnorderedListBlock`.
+A [*Markdom list item*] represents a list item. The list item contains further portions of the [*Markdom document*]. Implementations that generate output that is displayed to humans should display the list item according to the corresponding An [*ordered Markdom list block*]  or An [*unordered Markdom list block*] .
 
-A `ListItem` has a sequence of [*Markdom blocks*] named `blocks`.
+A [*Markdom list item*] has a sequence of [*Markdom blocks*] named `blocks`.
 
 The `blocks` sequence shouldn't be empty.
 
@@ -237,17 +242,17 @@ A [*Markdom content*] is either a
 
 A [*Markdom code content*] is a [*Markdom content*] that represents a portion of plain text (e.g. source code). Implementations that generate output that is displayed to humans should display the text as preformatted text in a monospaced font.
 
-A [*Markdom code content*] has a mandatory string parameter named `code`. 
+A [*Markdom code content*] has a mandatory string parameter named `code`.
 
 Values of the `code` parameter should not contain any [control](http://www.fileformat.info/info/unicode/category/Cc/list.htm) characters. Values of the `code` parameter shouldn't be empty.
 
 ##### Emphasis Content {#domain-emphasiscontent}
 
-An [*Markdom emphasis content*] is a [*Markdom content*] that represents emphasized text. Implementations that generate output that is displayed to humans should display text appropriately emphasized (e.g. italic or bold).
+An [*Markdom emphasis content*] is a [*Markdom content*] that represents emphasized text. Implementations that generate output that is displayed to humans should display the text appropriately emphasized (e.g. italic or bold).
 
 A [*Markdom emphasis content*] has a mandatory integer parameter named `level` and a sequence of [*Markdom contents*] named `contents`.
 
-Valid values of the `level` parameter are 1 to 2, where a higher value indicates a higher importance of the emphasized text.
+Valid values of the `level` parameter are 1 and 2, where a higher value indicates a higher importance of the emphasized text.
 
 The `contents` sequence shouldn't be empty.
 
@@ -255,23 +260,23 @@ The `contents` sequence shouldn't be empty.
 
 An [*Markdom image content*] is a [*Markdom content*] that represents an image, including a title text and an alternative text. Implementations that generate output that is displayed to humans should display the linked image with the title text or, if the linked image couldn't be resolved, the alternative text as if the [*Markdom image content*] was a [*Markdom text content*].
 
-A [*Markdom link content*] has a mandatory string parameter named `uri` and an optional string parameter named `title` and an optional string parameter named `alternative`.  
+A [*Markdom link content*] has a mandatory string parameter named `uri` and an optional string parameter named `title` and an optional string parameter named `alternative`.
 
 Valid values of the `uri` parameter are valid [URI references](https://tools.ietf.org/html/rfc3986#section-4.1). Values of the `uri` parameter should link to an image resource (e.g. a JPEG or PNG file). Actual applications that process [*Markdom documents*] may impose further constraints.
 
-Values of the `title` parameter should not contain any [control](http://www.fileformat.info/info/unicode/category/Cc/list.htm) characters.
+Values of the `title` parameter should not contain any [control](http://www.fileformat.info/info/unicode/category/Cc/list.htm) characters.  Values of the `title` parameter, if present, shouldn't be empty.
 
-Values of the `alternative` parameter should not contain any [control](http://www.fileformat.info/info/unicode/category/Cc/list.htm) characters. Values of the `alternative` parameter shouldn't be empty.
+Values of the `alternative` parameter should not contain any [control](http://www.fileformat.info/info/unicode/category/Cc/list.htm) characters. Values of the `alternative` parameter, if present, shouldn't be empty.
 
 ##### Line Break Content {#domain-linebreakcontent}
 
-A [*Markdom line break content*] is a [*Markdom content*] that represents a link. A line break is either a *hard line break* or a *soft line break*. Implementations that generate output that is displayed to humans should display only hard line breaks. Implementations that generate output that is processed as source code, e.g. as Markdown text, should also display soft line breaks in a way that doesn't introduce line breaks during further processing of the generated source code.
+A [*Markdom line break content*] is a [*Markdom content*] that represents a line break. A line break is either a *hard line break* or a *soft line break*. Implementations that generate output that is displayed to humans should display only hard line breaks. Implementations that generate output that is processed as source code, e.g. as Markdown text, should also display soft line breaks in a way that doesn't introduce line breaks during further processing of the generated source code.
 
 A [*Markdom line break content*] has a mandatory boolean parameter named `hard`.
 
 ##### Link Content {#domain-linkcontent}
 
-A [*Markdom link content*] is a [*Markdom content*] that represents text with a link, including a title. Implementations that generate output that is displayed to humans should display text appropriately emphasized (e.g. underlined or in a different color).
+A [*Markdom link content*] is a [*Markdom content*] that represents text with a link, including a title. Implementations that generate output that is displayed to humans should display the text appropriately emphasized (e.g. underlined or in a different color) and provide an appropriate form of interaction that allows the human to open the link.
 
 A [*Markdom link content*] has a mandatory string parameter named `uri` and an optional string parameter named `title` and a sequence of [*Markdom contents*] named `contents`.
 
@@ -279,13 +284,13 @@ Valid values of the `uri` parameter are valid [URI references](https://tools.iet
 
 Values of the `title` parameter should not contain any [control](http://www.fileformat.info/info/unicode/category/Cc/list.htm) characters.
 
-The `contents` sequence shouldn't be empty. A [*Markdom content*] in the `contents` sequence must not contain another [*Markdom link content*] or, recursively, contain a [*Markdom content*] that contains a [*Markdom link content*].
+The `contents` sequence shouldn't be empty. A [*Markdom content*] in the `contents` sequence must not be another [*Markdom link content*] or, recursively, contain another [*Markdom link content*].
 
 ##### Text Content {#domain-textcontent}
 
 A [*Markdom text content*] is a [*Markdom content*] that represents a portion of text. Implementations that generate output that is displayed to humans should display the text as text in an appropriate font.
 
-A [*Markdom text content*] has a mandatory string parameter named `text`. 
+A [*Markdom text content*] has a mandatory string parameter named `text`.
 
 Values of the `text` parameter should not contain any [control](http://www.fileformat.info/info/unicode/category/Cc/list.htm) characters. Values of the `text` parameter shouldn't be empty.
 
@@ -304,9 +309,9 @@ This CommonMark text describes a rich text document that serves as an example do
     goto 11
     ```
 
-The rich text document consists of a heading, an ordered list with three list items and some plain text. The first list item of the ordered list contains a link. the second list item of the unordered list contains emphasized text, a hard line break and some plain text. The third list item of the ordered list contains a quoted text.
+The rich text document consists of a heading, an ordered list with three list items and some plain text. The first list item of the ordered list contains a link. The second list item of the unordered list contains text, a hard line break and some plain text. The third list item of the ordered list contains a quoted emphasized text.
 
-The following image shows a tree of [*Markdom nodes*], i.e. a [*Markdom document*], that describes the same rich text document:
+The following image shows a tree of [*Markdom nodes*], i.e. a [*Markdom document*], that represents the same rich text document:
 
 ![](resource/markdom-example.png)
 
@@ -318,58 +323,61 @@ This specification describes two distinct APIs:
 
 * The [Domain Model API](#api-dom) contains a set of interfaces that describe how a [*Markdom document*] is represented as an object graph and methods to compose and consume such an object graph.
 
-   The Domain Model API allows to create a representation of a [*Markdom document*] in the memory, which can then be examined, modified and further processed.
-   
-* The [Handler API](#api-dom) contains a `Handler` interface that describes how a [*Markdom document*] is represented as a succession of events.
+   The Domain Model API allows to create a representation of a [*Markdom document*] in memory, which can then be examined, modified and further processed.
+
+* The [Handler API](#api-dom) contains an interface that describes how a [*Markdom document*] is represented as a succession of events.
 
   The Handler API allows to process a [*Markdom document*] on the fly without the necessity to create an object graph. Events that describe a [*Markdom document*] might be dispatched by an object graph from the Domain Model API or by a specific event dispatcher implementation that process a [data representation](#data) or a [markup representation](#markup) of a [*Markdom document*].
-   
-This specifications primarily covers the interfaces and enumerations for both APIs. A concrete implementation of this specification for a given programming language should consist of corresponding interface definitions as well as an concrete implementation of the Domain Model API interfaces and some commonly useful concrete implementations of the Handler API. 
 
-Depending on the programming language, it might be sensible to divide the interfaces, enumerations and concrete implementations into multiple packages. 
+This specifications primarily covers the interfaces and enumerations for both APIs. A concrete implementation of this specification for a given programming language should consist of corresponding interface definitions as well as an concrete implementation of the Domain Model API interfaces and some commonly useful concrete implementations of the Handler API.
+
+Depending on the programming language, it might be sensible to divide the interfaces, enumerations and concrete implementations into multiple packages.
 
 * A *Common* package that contains the common enumerations and a base exception for all Markdom related operations.
 * A *Handler* package that contains the interfaces and commonly useful concrete implementations of the Handler API.
 * A *Model* package that depends contains the interfaces and enumerations of the Domain Model API. This allows for different concrete implementations of the Domain Model API.
 * A *Model* reference implementation package that contains a concrete implementation of the Domain Model API.
-* Several *Handler* implementation packages for different tasks some of which may depend on the *Model* package. 
+* Several *Handler* implementation packages for different tasks some of which may depend on the *Model* package.
 
 ![](resource/markdom-packages.png)
 
-It is commonly recommended to implement an algorithms that processes a [*Markdom document*] as a [`Handler`] object rather than a method that directly processes a Domain Model API object graph. This allows to use the algorithm implementation in a multitude of scenarios (e.g. converting the [XML representation](#data-xml) of a [*Markdom document*] into a corresponding [HTML representation](#text-html) as a stream without creating an object graph for XML, Markdom or HTML). The Domain Model API should generally only be used if it is necessary to temporarily store a [*Markdom document*] in the memory or to programmatically modify a [*Markdom document*] before it is further processed with a `Handler`.
-   
+It is commonly recommended to implement an algorithms that processes a [*Markdom document*] as a [`Handler`] object rather than a method that directly processes a [`Document`]. This allows to the algorithm to be used in different scenarios and, potentially, without the need do construct a [*Markdom document*] in memory. The Domain Model API should generally only be used if it is necessary to temporarily store a [*Markdom document*] in memory or to programmatically modify a [*Markdom document*] before it is processed with a [`Handler`].
+
 ### Common {#api-common}
 
 #### Considerations {#api-common-considerations}
 
-It is safe to assume that some of the requirements from specification don't go along well with established conventions or formal rules of a given programming language. This includes, but is not limited to naming conventions (e.g. prefixes and suffixes for interfaces, traits, abstract classes and methods).
+It is safe to assume that some of the requirements from this specification don't go along well with established conventions or formal rules of a given programming language. This includes, but is not limited to naming conventions (e.g. prefixes and suffixes for interfaces, traits, abstract classes and methods).
 
-Implementers should find a reasonable compromise between the two. In doubt, programming language idiosyncrasies should be preferred over requirements from this specification, as long as the general spirit of this specification is preserved (e.g. adding or removing prefixes or suffixes is okay, but no unnecessary renaming of the actual thing in question is not).
+Implementers should find a reasonable compromise between the two. In doubt, programming language idiosyncrasies should be preferred over requirements from this specification, as long as the general spirit of this specification is preserved (e.g. adding or removing prefixes or suffixes is okay, but unnecessary changes to names are not).
 
 The return type of methods is therefor omitted where possible. Implementers should select a return type that best fits the spirit of the programming language.
 
 This should ensure that the implementation is acceptable to programmers familiar with that programming language and that implementations (e.g. a particular [`Handler`] object) are easily translatable into other programming languages.
 
-It is recommended that implementations contain a section about such implementation considerations in their readme file.
+It is recommended that implementations contain a section about such implementation considerations in their `README` file.
 
 #### Dependencies {#api-common-dependencies}
 
-Obviously, both Markdom APIs require some support from the programming language a particular implementation is written in. This specification is written with an object orientated programming language is mind, but it should be little effort to interpret this specification for programming languages that follow another programming paradigm.
+Both Markdom APIs require support from the particular programming language a concrete implementation is written in. This specification is written with an object orientated programming language in mind, but it should be little effort to interpret this specification for a programming languages that follows another programming paradigm.
 
 ##### Mandatory and optional {#api-common-optional}
 
-The Markdom APIs use mandatory and optional parameters. Mandatory parameters must always have a value. Optional parameters may or may not have a value. Mandatory parameters are hereafter notes as `Type name` where `Type` is value type and `name` is the parameter name. Optional parameters are hereafter notes as `Type? name` where `Type` is value type and `name` is the parameter name.
+The Markdom APIs use mandatory and optional parameters. Mandatory parameters must always have a value. Optional parameters may or may not have a value. Mandatory parameters are hereafter notes as `Type name` where `Type` is a value type and `name` is the parameter name. Optional parameters are hereafter notes as `Type? name` where `Type` is a value type and `name` is the parameter name.
 
 There are common implementations for mandatory and optional parameters.
-1. For a programming languages that has `null` values and can't enforce non-`null` values for a method parameter, `null` may be used to indicate that an optional parameter has no value. Explicit `null`-checks must be implemented for mandatory parameters.
+
+1. For a programming languages that has `null` values and can't enforce non-`null` values for a method parameter, `null` may be used to indicate that an optional parameter has no value. Explicit `null`-checks should be implemented for mandatory parameters.
 1. For a Programming languages that has `null` values and can enforce non-`null` values for a method parameter, `null` may be used to indicate that an optional parameter has no value. No explicit `null`-checks must be implemented for mandatory parameters.
+1. For a Programming languages that has `null` values an explicit `Optional` type may be used to for an optional parameter. Explicit `null`-checks should be implemented for all parameters.
 1. For a Programming languages that doesn't have `null` values an explicit `Optional` type must be used to for an optional parameter. No explicit `null`-checks must be implemented for mandatory parameters.
+
 
 ##### Values {#api-common-values}
 
-The Markdom APIs use parameters and return values that represent values of simple type. Specifically for boolean values, numbers, Unicode character sequences and URI references. Such types are hereafter noted as `Boolean`, `Integer`, `String` and `Uri` respectively. 
+The Markdom APIs use parameters and return values that represent values of simple types. Specifically for boolean values, numbers, Unicode character sequences and [URI references](https://tools.ietf.org/html/rfc3986#section-4.1). Such types are hereafter noted as `Boolean`, `Integer`, `String` and `Uri` respectively.
 
-This should usually be implemented with the corresponding primitive or value types.
+This should usually be implemented with appropriate primitive or value types.
 
 ##### Iterables {#api-common-iterable}
 
@@ -377,7 +385,7 @@ The Markdom APIs use parameters and return values that represent a linear ordere
 
 This should usually be implemented as a data structure that is eligible to be processed in a `foreach`-loop.
 
-As a method parameter, this may also be implemented as a variable argument list.
+As a method parameter, this may also be implemented as a variable length argument list.
 
 ##### Sequences {#api-common-sequence}
 
@@ -386,7 +394,7 @@ The Markdom APIs use parameters and return values that represent a modifiable li
 This should usually be implemented as a data structure that has at least the following (or comparable) methods:
 
 * `Boolean isEmpty()`
-* `Integer getLength()`
+* `Integer getSize()`
 * `Boolean contains(Object object)`
 * `Integer indexOf(Object object)`
 * `Object get(int index)`
@@ -397,6 +405,7 @@ This should usually be implemented as a data structure that has at least the fol
 * `addAll(int index, Object.. objects)`
 * `remove(Object object)`
 * `removeAll(Object... objects)`
+* `clear()`has
 
 #### Enumerations {#api-common-enumerations}
 
@@ -414,8 +423,8 @@ The `BlockType` enum indicates the type of a [*Markdom block*] and has the follo
 * `PARAGRAPH`,
 * `QUOTE`,
 * `UNORDERED_LIST`.
-  
-##### `ContentType` {#api-common-contenttype}  
+
+##### `ContentType` {#api-common-contenttype}
 
 The `ContentType` enum indicates the type of a [*Markdom content*] and has the following constants:
 
@@ -443,7 +452,7 @@ The `HeadingLevel` enum indicates the level of a [*Markdom heading block*] objec
 * `LEVEL_4`,
 * `LEVEL_5`,
 * `LEVEL_6`.
-  
+
 ### Domain Model API {#api-dom}
 
 The Domain Model API represents a Markdom document as an object graph.
@@ -466,7 +475,7 @@ An implementation of `Block` should have a constructor with signature `Block()`.
 
 ###### `getBlockType` {#api-dom-block-getblocktype}
 
-A `Block` object must have a method with signature `BlockType getBlockType()`.  
+A `Block` object must have a method with signature `BlockType getBlockType()`.
 
 This method must return the [`BlockType`] value that corresponds to the type of the represented [*Markdom block*].
 
@@ -479,8 +488,8 @@ An implementation of `BlockParent` must have a final and initially empty compani
 Any structural modification (insert, remove, clear, replace) to the companion [`Sequence`] object must reflect the fact, that a [`Block`] object that is added to the companion [`Sequence`] object is attached to the `BlockParent` object until is is removed from the companion [`Sequence`] object.
 
 Attaching a [`Block`] object to the `BlockParent` object  must fail
-* if the [`Block`] object is not present, or  
-* if the [`Block`] object is already attached to a `BlockParent` object, or 
+* if the [`Block`] object is not present, or
+* if the [`Block`] object is already attached to a `BlockParent` object, or
 * if attaching the [`Block`] object to the `BlockParent` object would create a [cycle](#api-dom-detecting-cycles) in the tree of Markdom nodes that the `BlockParent` object is part of.
 
 ###### Constructors {#api-dom-blockparent-constructor}
@@ -491,7 +500,7 @@ For convenience, an implementation of `BlockParent` should have a constructor wi
 
 ###### `getBlockParentType` {#api-dom-listblock-getblockparenttype}
 
-A `BlockParent` object must have a method with signature `BlockParentType getBlockParentType()`.  
+A `BlockParent` object must have a method with signature `BlockParentType getBlockParentType()`.
 
 This method must return the [`BlockParentType`] value that corresponds to the type of the `BlockParent` object.
 
@@ -514,11 +523,11 @@ This method must fail if adding `block` to the companion [`Sequence`] object fai
 For convenience, a `BlockParent` object should have a method with signature `addBlocks(Block... blocks)`.
 
 This method must add all [`Block`] objects from `blocks` in the given order at the end of the companion [`Sequence`] object, as if `addBlock(Block block)` has been called repeatedly for all [`Block`] objects from `blocks`.  This attaches all [`Block`] objects from `blocks` to the `BlockParent` object.
-  
+
 This method must fail if `blocks` is not present.
 
 This method must fail if adding any [`Block`] object from `blocks` to the companion [`Sequence`] object failed.
-  
+
 Because this method is a short hand for repeated calls to `addBlock(Block block)`, it must add all prior [`Block`] objects from `blocks` to the companion [`Sequence`] object, if it fails because of a violating [`Block`] object from `blocks`.
 
 ##### `CodeBlock` {#api-dom-codeblock}
@@ -545,8 +554,8 @@ The method must return the value of the `code` parameter of the represented [*Ma
 
 A `CodeBlock` object must have a method with signature `setCode(String code)`.
 
-This method must set the value of the `code` parameter of the represented [*Markdom code block*]. 
-  
+This method must set the value of the `code` parameter of the represented [*Markdom code block*].
+
 This method must fail if `code` is not present.
 
 ###### `getHint` {#api-dom-codeblock-gethint}
@@ -556,10 +565,10 @@ A `CodeBlock` object must have a method with signature `String? getHint()`.
 The method must return the optional `hint` parameter of the represented [*Markdom code block*].
 
 ###### `setHint` {#api-dom-codeblock-sethint}
-  
+
 A `CodeBlock` object must have a method with signature `setHint(String? hint)`.
 
-This method must set the value of the `hint` parameter of the represented [*Markdom code block*]. 
+This method must set the value of the `hint` parameter of the represented [*Markdom code block*].
   	
 ##### `CodeContent` {#api-dom-codecontent}
 
@@ -583,8 +592,8 @@ The method must return the value of the `code` parameter of the represented [*Ma
 
 A `CodeContent` object must have a method with signature `setCode(String code)`.
 
-This method must set the value of the `code` parameter of the represented [*Markdom code content*]. 
-  
+This method must set the value of the `code` parameter of the represented [*Markdom code content*].
+
 This method must fail if `code` is not present.
 
 ##### `CommentBlock` {#api-dom-commentblock}
@@ -609,27 +618,27 @@ The method must return the value of the `comment` parameter of the represented [
 
 A `CommentBlock` object must have a method with signature `setComment(String code)`.
 
-This method must set the value of the `comment` parameter of the represented [*Markdom comment block*]. 
-  
-This method must fail if `code` is not present. 
+This method must set the value of the `comment` parameter of the represented [*Markdom comment block*].
+
+This method must fail if `code` is not present.
 
 ##### `Content` {#api-dom-content}
 
 A `Content` object is a [`Node`] object that represents a [*Markdom content*].
 
-###### Constructors {#api-dom-content-constructor} 
+###### Constructors {#api-dom-content-constructor}
 
 An implementation of `Content` should have a constructor with signature `Content()`.
 
 ###### `getContentType` {#api-dom-content-getcontenttype}
 
-A `Content` object must have a method with signature `ContentType getContentType()`.  
+A `Content` object must have a method with signature `ContentType getContentType()`.
 
 This method must return the [`ContentType`] value that corresponds to the type of the represented [*Markdom content*].
 
 ###### `hasBlock` {#api-dom-node-hasblock}
 
-A `Content` object must have a method with signature `Boolean hasContent()`.
+A `Content` object must have a method with signature `Boolean hasBlock()`.
 
 This method must return whether the path to the root of the tree of [Markdom nodes](#domain-node) the `Content` object is part of contains a [`Block`] object.
 
@@ -648,8 +657,8 @@ An implementation of `ContentParent` must have a final and initially empty compa
 Any structural modification (insert, remove, clear, replace) to the companion [`Sequence`] object must reflect the fact, that a [`Content`] object that is added to the companion [`Sequence`] object is attached to the `ContentParent` object until is is removed from the companion [`Sequence`] object.
 
 Attaching a [`Content`] object to the `ContentParent` object  must fail
-* if the [`Content`] object is not present, or  
-* if the [`Content`] object is already attached to a `ContentParent` object, or 
+* if the [`Content`] object is not present, or
+* if the [`Content`] object is already attached to a `ContentParent` object, or
 * if attaching the [`Content`] object to the `ContentParent` object would create a [cycle](#api-dom-detecting-cycles) in the tree of Markdom nodes that the `ContentParent` object is part of.
 
 ###### Constructors {#api-dom-contentparent-constructor}
@@ -660,7 +669,7 @@ For convenience, an implementation of `ContentParent` should have a constructor 
 
 ###### `getContentParentType` {#api-dom-listblock-getcontentparenttype}
 
-A `ContentParent` object must have a method with signature `ContentParentType getContentParentType()`.  
+A `ContentParent` object must have a method with signature `ContentParentType getContentParentType()`.
 
 This method must return the [`ContentParentType`] value that corresponds to the type of the [`ContentParent`] object.
 
@@ -683,13 +692,13 @@ This method must fail if adding `content` to the companion [`Sequence`] object f
 For convenience, a `ContentParent` object should have a method with signature `addContents(Content... contents)`.
 
 This method must add all [`Content`] objects from `contents` in the given order at the end of the companion [`Sequence`] object, as if `addContent(Content content)` has been called repeatedly for all [`Content`] objects from `contents`. This attaches all [`Content`] objects from `contents` to the companion [`Sequence`] object.
-  
+
 This method must fail if `contents` is not present.
 
 This method must fail if adding any [`Content`] object from `contents` to the companion [`Sequence`] object failed.
-  
+
 Because this method is a short hand for repeated calls to `addContent(Content content)`, it must add all prior [`Content`] objects from `contents` to the companion [`Sequence`] object, if it fails because of a violating [`Content`] object from `contents`.
-   
+
 ##### `ContentParentBlock` {#api-dom-contentparentblock}
 
 A `ContentParentBlock` object is a [`Block`] object and a [`ContentParent`] object that represents a [*Markdom block*] that contains [*Markdom content*].
@@ -709,15 +718,15 @@ A `ContentParentContent` object is a [`Content`] object and a [`ContentParent`] 
 An implementation of `ContentParent` should have a constructor with signature `ContentParentContent()`.
 
 For convenience, an implementation of `ContentParentContent` should have a constructor with signature `ContentParentContent(Content... contents)` that delegates to `ContentParent#addContents(Content... content)`.
-  
+
 ##### `DivisionBlock` {#api-dom-divisionblock}
 
 A `DivisionBlock` object is a [`Block`] object that represents a [*Markdom division block*].
 
 ###### Constructors {#api-dom-divisionblock-constructors}
 
-An implementation of `DivisionBlock` should have a constructor with signature `DivisionBlock()` 
-  
+An implementation of `DivisionBlock` should have a constructor with signature `DivisionBlock()`
+
 ##### `Document` {#api-dom-document}
 
 A `Document` object is a [`BlockParent`] object and a [`Dispatcher`] object that represents a [*Markdom document*].
@@ -728,7 +737,7 @@ For convenience, an implementation of `Document` should have a constructor with 
 
 ##### `EmphasisContent` {#api-dom-emphasiscontent}
 
-An `EmphasisContent` object is a [`ContentParentContent`] object that represents a [*Markdom emphasis content*].  
+An `EmphasisContent` object is a [`ContentParentContent`] object that represents a [*Markdom emphasis content*].
 
 The initial value of the `level` parameter should be `LEVEL_1`.
 
@@ -750,13 +759,13 @@ This method must return the value of the `level` parameter of the represented [*
 
 An `EmphasisContent` object must have a method with signature `setLevel(EmphasisLevel level)`.
 
-This method must set the value of the `level` parameter of the represented [*Markdom emphasis content*]. 
-  
+This method must set the value of the `level` parameter of the represented [*Markdom emphasis content*].
+
 This method must fail if `level` is not present.
-   
+
 ##### `HeadingBlock` {#api-dom-headingblock}
 
-A `HeadingBlock` object is a [`ContentParentBlock`] object that represents a [*Markdom heading block*].  
+A `HeadingBlock` object is a [`ContentParentBlock`] object that represents a [*Markdom heading block*].
 
 The initial value of the `level` parameter should be `LEVEL_1`.
 
@@ -778,13 +787,13 @@ This method must return the value of the `level` parameter of the represented [*
 
 A `HeadingBlock` object must have a method with signature `setLevel(HeadingLevel level)`.
 
-This method must set the value of the `level` parameter of the represented [*Markdom heading block*]. 
-  
+This method must set the value of the `level` parameter of the represented [*Markdom heading block*].
+
 This method must fail if `level` is not present.
-   
+
 ##### `ImageContent` {#api-dom-imagecontent}
 
-An `ImageContent` object is a [`Content`] object that represents a [*Markdom image content*].  
+An `ImageContent` object is a [`Content`] object that represents a [*Markdom image content*].
 
 The initial value of the `uri` parameter should be the empty string. The initial value of the `title` parameter should be not present. The initial value of the `alternative` parameter should be not present.
 
@@ -807,10 +816,10 @@ This method must return the value of the `uri` parameter of the represented [*Ma
 An `ImageContent` object must have a method with signature `setUri(Uri uri)`.
 
 This method must set the value of the `uri` parameter of the represented [*Markdom image content*].
-  
+
 This method must fail if `uri` is not present.
 
-This method must fail if value of the `uri` is not a valid URI reference.
+This method must fail if value of the `uri` is not a valid [URI reference](https://tools.ietf.org/html/rfc3986#section-4.1).
 
 ###### `getTitle` {#api-dom-imagecontent-gettitle}
 
@@ -819,7 +828,7 @@ A `ImageContent` object must have a method with signature `String getTitle()`.
 This method must return the value of the `title` parameter of the represented [*Markdom image content*].
 
 ###### `setTitle`{#api-dom-imagecontent-settitle}
-  
+
 An `ImageContent` object must have a method with signature `setTitle(String? title)`.
 
 This method must set the value of the `title` parameter of the represented [*Markdom image content*].
@@ -859,9 +868,9 @@ This method must return the value of the `hard` parameter of the represented [*M
 A `LineBreakContent` object must have a method with signature `setHard(Boolean hard)`.
 
 This method must set the value of the `hard` parameter of the represented [*Markdom line break content*].
-  
+
 This method must fail if `hard` is not present.
-   
+
 ##### `LinkContent` {#api-dom-linkcontent}
 
 A `LinkContent` object is a [`ContentParentContent`] object that represents a [*Markdom link content*]. The initial value of the `title` parameter should be not present.
@@ -889,10 +898,10 @@ This method must return the value of the `uri` parameter of the represented [*Ma
 A `LinkContent` object must have a method with signature `setUri(Uri uri)`.
 
 This method must set the value of the `uri` parameter of the represented [*Markdom link content*].
-  
+
 This method must fail if `uri` is not present.
 
-This method must fail if value of the `uri` is not a valid URI reference.
+This method must fail if value of the `uri` is not a valid [URI reference](https://tools.ietf.org/html/rfc3986#section-4.1).
 
 ###### `getTitle` {#api-dom-linkcontent-gettitle}
 
@@ -901,22 +910,22 @@ A `LinkContent` object must have a method with signature `String getTitle()`.
 This method must return the value of the `title` parameter of the represented [*Markdom link content*].
 
 ###### `setTitle`{#api-dom-linkcontent-settitle}
-  
+
 An `LinkContent` object must have a method with signature `setTitle(String? title)`.
 
 This method must set the value of the `title` parameter of the represented [*Markdom link content*].
-   
+
 ##### `ListBlock` {#api-dom-listblock}
 
-A `ListBlock` object is a [`Block`] object that represents a *Markdom list block*.  
+A `ListBlock` object is a [`Block`] object that represents a *Markdom list block*.
 
 An implementation of `ListBlock` must have a final and initially empty companion [`Sequence`] object for the [`ListItem`] objects that are associated with the `ListBlock` object.
 
 Any structural modification (insert, remove, clear, replace) to the companion [`Sequence`] object must reflect the fact, that a [`ListItem`] object that is added to the companion [`Sequence`] object is attached to the `ListBlock` object until is is removed from the companion [`Sequence`] object.
 
 Attaching a [`ListItem`] object to the `ListBlock` object  must fail
-* if the [`ListItem`] object is not present, or  
-* if the [`ListItem`] object is already attached to a `ListBlock` object, or 
+* if the [`ListItem`] object is not present, or
+* if the [`ListItem`] object is already attached to a `ListBlock` object, or
 * if attaching the [`ListItem`] object to the `ListBlock` object would create a [cycle](#api-dom-detecting-cycles) in the tree of Markdom nodes that the `ListBlock` object is part of.
 
 ###### Constructors {#api-dom-listblock-constructor}
@@ -927,7 +936,7 @@ For convenience, an implementation of `ListBlock` should have a constructor with
 
 ###### `getListBlockType` {#api-dom-listblock-getlistblocktype}
 
-A `ListBlock] object must have a method with signature `ListBlockType getListBlockType()`.  
+A [`ListBlock`] object must have a method with signature `ListBlockType getListBlockType()`.
 
 This method must return the [`ListBlockType`] value that corresponds to the type of the `ListBlock` object.
 
@@ -950,11 +959,11 @@ This method must fail if adding `item` to the companion [`Sequence`] object fail
 For convenience, a `ListBlock` object should have a method with signature `addItems(ListItem... items)`.
 
 This method must add all [`ListItem`] objects from `items` in the given order at the end of the companion [`Sequence`] object, as if `addItem(ListItem item)` has been called repeatedly for all [`ListItem`] objects from `items`.  This attaches all [`ListItem`] objects from `items` to the `ListBlock` object.
-  
+
 This method must fail if `items` is not present.
 
 This method must fail if adding any [`ListItem`] object from `items` to the  companion [`Sequence`] object failed.
-  
+
 Because this method is a short hand for repeated calls to `addItem(ListItem item)`, it must add all prior [`ListItem`] objects from `items` to the companion [`Sequence`] object, if it fails because of a violating [`ListItem`] object from `items`.
 
 ##### `ListItem` {#api-dom-listitem}
@@ -973,7 +982,7 @@ A `Node` object represents a [*Markdom node*].
 
 ###### `getNodeType` {#api-dom-node-getnodetype}
 
-A `Node` object must have a method with signature `NodeType getNodeType()`.  
+A `Node` object must have a method with signature `NodeType getNodeType()`.
 
 This method must return the [`NodeType`] value that corresponds to the type of the `Node` object.
 
@@ -981,7 +990,7 @@ This method must return the [`NodeType`] value that corresponds to the type of t
 
 A `Node` object must have a method with signature `Boolean hasParent()`.
 
-This method must return whether the `Node` object has a parent `Node` object.  
+This method must return whether the `Node` object has a parent `Node` object.
 
 Specifically, this method must return `true`
 * if the `Node` object is a [`Block`] object that is currently attached to a [`BlockParent`] object, or
@@ -993,9 +1002,9 @@ Specifically, this method must return `true`
 
 A `Node` object must have a method with signature `Node? getParent()`.
 
-This method must return the parent `Node` object of the `Node` object. 
+This method must return the parent `Node` object of the `Node` object.
 
-Specifically, this method must return 
+Specifically, this method must return
 * the [`BlockParent`] object it is currently attached to, if the `Node` object is a [`Block`] object, or
 * the [`ListBlock`] object it is currently attached to, if the `Node` object is a [`ListItem`] object, or
 * the [`ContentParent`] object it is currently attached, if the `Node` object is a [`Content`] object, or
@@ -1015,16 +1024,14 @@ This method must return the root of the tree of [Markdom nodes](#domain-node) th
 
 ###### `getIndex` {#api-dom-node-getindex}
 
-A `Node` object must have a method with signature `Integer getIndex()`.
+A `Node` object must have a method with signature `Integer? getIndex()`.
 
 This method must return the index of the `Node` object in the [`Iterable`] object of [child](#api-dom-node-getchildren) `Node` object of the parent `Node`.
 
-Specifically, this method must return 
+Specifically, this method must return
 * the index in the companion [`Sequence`] object of the [`BlockParent`] object it is currently attached to, if the `Node` object is a [`Block`] object, or
 * the index in the companion [`Sequence`] object of the [`ListBlock`] object it is currently attached to, if the `Node` object is a [`ListItem`] object, or
 * the index in the companion [`Sequence`] object of the [`ContentParent`] object it is currently attached to, if the `Node` object is a [`Content`] object.
-
-This method must fail if the `Node` object doesn't [have](#api-dom-node-hasparent) a [parent](#api-dom-node-getparent) `Node` object.
 
 ###### `hasChildren` {#api-dom-node-haschildren}
 
@@ -1078,7 +1085,7 @@ For convenience, an implementation of `OrderedListBlock` should have a construct
 
 ###### getStartIndex {#api-dom-orderedlistblock-getstartindex}
 
-An `OrderedListBlock` object must have a method with signature `Integer getStratIndex()`.
+An `OrderedListBlock` object must have a method with signature `Integer getStartIndex()`.
 
 This method must return the value of the `startIndex` parameter of the represented [*ordered Markdom list block*].
 
@@ -1087,11 +1094,11 @@ This method must return the value of the `startIndex` parameter of the represent
 An `OrderedListBlock` object must have a method with signature `setStartIndex(Integer startIndex)`.
 
 This method must set the value of the `startIndex` parameter of the represented [*ordered Markdom list block*].
-  
-This method must fail if `startIndex` is not present. 
- 
+
+This method must fail if `startIndex` is not present.
+
 This method must fail if value of the `startIndex` is negative.
-  
+
 ##### `ParagraphBlock` {#api-dom-paragraphblock}
 
 A `ParagraphBlock` object is a [`ContentParentBlock`] object that represents a [*Markdom paragraph block*].
@@ -1111,7 +1118,7 @@ A `QuoteBlock` object is a [`Block`] object and a [`BlockParent`] object that re
 An implementation of `QuoteBlock` should have a constructor with signature `QuoteBlock()`.
 
 For convenience, an implementation of `QuoteBlock` should have a constructor with signature `QuoteBlock(Block... blocks)` that delegates to `BlockParent#addBlocks(Block... blocks)`.
-    
+
 ##### `TextContent` {#api-dom-textcontent}
 
 A `TextContent` object is [`ContentParentContent`] object that represents a [*Markdom text content*].
@@ -1121,7 +1128,7 @@ The initial value of the `text` parameter should be the empty string.
 ###### Constructors {#api-dom-textcontent-constructor}
 
 An implementation of `TextContent` should have a constructor with signature `TextContent()`.
-   
+
 For convenience, an implementation of `TextContent` should have a constructor with signature `TextContent(String text)` that delegates to `setText(String text)`.
 
 ###### `getText` {#api-dom-textcontent-gettext}
@@ -1135,9 +1142,9 @@ This method must return the value of the `text` parameter of the represented [*M
 A `TextContent` object must have a method with signature `setText(String text)`.
 
 This method must set the value of the `text` parameter of the represented [*Markdom text content*].
-  
+
 This method must fail if `text` is not present.
-   
+
 ##### `UnorderedListBlock` {#api-dom-unorderedlistblock}
 
 An `UnorderedListBlock` object is a [`ListBlock`] object that represents an *unordered Markdom list block*.
@@ -1145,27 +1152,27 @@ An `UnorderedListBlock` object is a [`ListBlock`] object that represents an *uno
 ###### Constructors {#api-dom-unorderedlistblock-constructor}
 
 An implementation of `UnorderedListBlock` should have a constructor with signature `UnorderedListBlock()`.
-   
+
 For convenience, an implementation of `UnorderedListBlock` should have a constructor with signature `UnorderedListBlock(ListItem... items)` that delegates to  `ListBlock#addItems(ListItem... items)`.
 
 #### Enumerations {#api-enumerations}
 
 The [Domain Model API](#api-dom) has the following enumerations:
 
-##### `BlockParentType` {#api-dom-blockparenttype}  
+##### `BlockParentType` {#api-dom-blockparenttype}
 
 The `BlockParentType` enum indicates the type of a [`BlockParent`] object and has the following constants:
 
 * `DOCUMENT`,
-* `QUOTE_BLOCK`, 
+* `QUOTE_BLOCK`,
 * `LIST_ITEM`.
 
-##### `ContentParentType` {#api-dom-contentparenttype}  
+##### `ContentParentType` {#api-dom-contentparenttype}
 
 The `ContentParentType` enum indicates the type of a [`ContentParent`] object and has the following constants:
 
 * `HEADING_BLOCK`,
-* `PARAGRAPH_BLOCK`, 
+* `PARAGRAPH_BLOCK`,
 * `EMPHASIS_CONTENT`,
 * `LINK_CONTENT`.
 
@@ -1178,14 +1185,14 @@ The `NodeType` enum indicates the type of a [`Node`] object and has the followin
 * `LIST_ITEM`,
 * `CONTENT`.
 
-##### `ListBlockType` {#api-dom-listblocktype}  
+##### `ListBlockType` {#api-dom-listblocktype}
 
 The `ListBlockType` enum indicates the type of a [`ListBlock`] object and has the following constants:
 
 * `ORDERED`,
 * `UNORDERED`.
 
-#### Example Document {#api-dom-example}  
+#### Example Document {#api-dom-example}
 
 The following [Domain Model API](#api-dom) object graph represents the [example document](#example):
 
@@ -1207,7 +1214,7 @@ Every [`Node`] object in a [Domain Model API](#api-dom) object graph that is not
 
 Depending on the kind of the parent, either `getBlockParentType`, `getListBlockType` or `getContentParentType` can be used to find out the actual type of the parent.
 
-For example: Consider a method that gets leaf [`Node`] object as a parameter without any knowledge about it. Calling `getNodeType` reveals that is it a [`Content`] object. Calling `getContentType()` reveals that it is a [`TextContent`] object. Calling `getParent()` returns the parent as a [`ContentParent`] object. Calling `getContentParentType()` on the parent reveals that the parent is en [`EmphasisContent`] object.
+For example: Consider a method that gets a leaf [`Node`] object as a parameter without any knowledge about it. Calling `getNodeType()` reveals that is it a [`Content`] object. Calling `getContentType()` reveals that it is a [`TextContent`] object. Calling `getParent()` returns the parent as a [`ContentParent`] object. Calling `getContentParentType()` on the parent reveals that the parent is an [`EmphasisContent`] object; and so on.
 
 Each [`Node`] object in a Domain Model API object graph can, through its predecessors, retrieve the root [`Document`] object. Each [`Content`] object in a Domain Model API object graph can, through its predecessors, retrieve its [`Block`] object.
 
@@ -1219,7 +1226,7 @@ The following image shows the possible methods to navigate from an [`Node`] obje
 
 Every [`Node`] object in a [Domain Model API](#api-dom) object graph that is parent object has a reference to its companion [`Sequence`] object which has references to the [children](#api-dom-node-getchildren) of the [`Node`] object.
 
-For example: Consider a method that gets the root `Node` as a parameter without any knowledge about it. Calling `getNodeType()` reveals that is it a [`Document`] object. Calling `getBlocks` returns the companion [`Sequence`] object. Calling `size` reveals that the companion `Sequence` object contains three [`Block`] objects. Calling `get(1)` returns the second child. Calling `getBlockType()` on the second child reveals that it is a [`OrderedListBlock`] object.
+For example: Consider a method that gets the root `Node` as a parameter without any knowledge about it. Calling `getNodeType()` reveals that is it a [`Document`] object. Calling `getBlocks` returns the companion [`Sequence`] object. Calling `getSize()` reveals that the companion `Sequence` object contains three [`Block`] objects. Calling `get(1)` returns the second child. Calling `getBlockType()` on the second child reveals that it is an [`OrderedListBlock`] object; and so on.
 
 #### Detecting cycles {#api-dom-detectingcycles}
 
@@ -1241,7 +1248,7 @@ The Handler API represents a [*Markdom document*] as a succession of events.
 
 #### Events {#api-handler-events}
 
-The Handler API defines several events and the order in which the must occur to successfully describe a [*Markdom document*].
+The Handler API defines several events and the order in which these must occur to successfully describe a [*Markdom document*].
 
 To help different handler implementations to process the described [*Markdom document*] easily, some of the events carry redundant information:
  * Every event concerning a [*Markdom node*] of a polymorph kind (i.e. [*Markdom blocks*] and [*Markdom contents*]) is reported twice. Once in a general form and once in a specific form with the specific parameters. This allows to execute general or specific behavior when necessary.
@@ -1249,7 +1256,7 @@ To help different handler implementations to process the described [*Markdom doc
 
 ##### Document {#api-handler-document}
 
-A [*Markdom document*] is represented by an `onDocumentBegin` event and an `onDocumentEnd` event that frame the events that describe the sequence of [*Markdom blocks*] the described [*Markdom document*] consists of. 
+A [*Markdom document*] is represented by an `onDocumentBegin` event and an `onDocumentEnd` event that frame the events that describe the sequence of [*Markdom blocks*] the described [*Markdom document*] consists of.
 
 ![](resource/markdom-events-document.png)
 
@@ -1282,7 +1289,7 @@ A sequence of [*Markdom list items*] is represented by an `onListItemsBegin` eve
 
 ##### List Item {#api-handler-listitem}
 
-A [*Markdom list item*] is represented by an `onListItemBegin` event and an `onListItemEnd` event that frame the events that describe the sequence of [*Markdom blocks*] the described [*Markdom list item*] consists of. 
+A [*Markdom list item*] is represented by an `onListItemBegin` event and an `onListItemEnd` event that frame the events that describe the sequence of [*Markdom blocks*] the described [*Markdom list item*] consists of.
 
 ![](resource/markdom-events-listitem.png)
 
@@ -1314,11 +1321,11 @@ A `Dispatcher` object is a component that is able to describe a [*Markdom docume
 A `Dispatcher` object must have a method with signature `Object handle(Handler handler)`.
 
 This method must dispatch [*Markdom events*] that describe the [*Markdom document*] to `handler` in the correct order.
-  
+
 This method must return the [result](#api-handler-handler-getresult) of `handler`.
 
-Calling this method multiple times on a `Dispatcher` object that is not [repeatable](#api-handler-isrepeatable) has an undefined behavior, unless explicitly stated otherwise.
-  
+Calling this method multiple times on a `Dispatcher` object that is not [reussable](#api-handler-isreusable) has an undefined behavior, unless explicitly stated otherwise.
+
 This method must fail if `handler` is not present.
 
 This method must fail if the `Dispatcher` object is not [reussable](#api-handler-dispatcher-isreusable) and has already been used.
@@ -1326,11 +1333,11 @@ This method must fail if the `Dispatcher` object is not [reussable](#api-handler
 ###### `isReusable` {#api-handler-dispatcher-isreusable}
 
 A `Dispatcher` object must have a method with signature `Boolean isReusable()`.
-  
+
 This method must return whether the `Dispatcher` object is able to [describe](#api-handler-dispatcher-handle) [*Markdom documents*] to multiple [`Handler`] objects (e.g. a [`Document`] object can describe itself multiple times, but a CommonMark parsing [`Handler`] object that consumes its input can't).
 
-If the `Dispatcher` object is able to [describe](#api-handler-dispatcher-handle) [*Markdom documents*] to multiple [`Handler`] objects, it is not guaranteed that the described [*Markdom documents*] are equal because the underlying data source (e.g. a [`Document`] object) may have been modified. 
-  
+If the `Dispatcher` object is able to [describe](#api-handler-dispatcher-handle) [*Markdom documents*] to multiple [`Handler`] objects, it is not guaranteed that the described [*Markdom documents*] are equal because the underlying data source (e.g. a [`Document`] object) may have been modified.
+
 ##### `Handler` {#api-handler-handler}
 
 A `Handler` object is a component that is able to receive a a sequence of [*Markdom events*] that describe a [*Markdom document*] (e.g. from a [`Dispatcher`] object) and calculate a result or causes side effects that corresponds to the described [*Markdom document*] (e.g. a `Handler` object can generate a [`Document`] object or write CommonMark text into a file).
@@ -1351,7 +1358,7 @@ A `Handler` object must have a method with signature `onBlockBegin(BlockType typ
 
 This event represents the general form of the begin of a [*Markdom block*]. The `type` parameter determines the type of the represented [*Markdom block*].
 
-Calling this method must be must be, depending on the value of the `type` parameter, followed by a call to `onCodeBlock` or `onCommentBlock` or `onHeadingBlockBegin` or `onDivisionBlock` or `onOrderedListBlockBegin` or `onParagraphBlockBegin` or `onQuoteBlockBegin` or `onUnorderedListBlockBegin`. A corresponding call to `onBlockEnd` with the same `type` value must eventually occur.
+Calling this method must be, depending on the value of the `type` parameter, followed by a call to `onCodeBlock` or `onCommentBlock` or `onHeadingBlockBegin` or `onDivisionBlock` or `onOrderedListBlockBegin` or `onParagraphBlockBegin` or `onQuoteBlockBegin` or `onUnorderedListBlockBegin`. A corresponding call to `onBlockEnd` with the same `type` value must eventually occur.
 
 The behavior of this method is undefined, if `type` is not present.
 
@@ -1371,7 +1378,7 @@ A `Handler` object must have a method with signature `onBlocksBegin()`.
 
 This event represents the begin of a sequence ob [*Markdom blocks*].
 
-Calling this method must be must be followed by a call to `onBlockBegin` or `onBlocksEnd`. A corresponding call to `onBlocksEnd` must eventually occur.
+Calling this method must be followed by a call to `onBlockBegin` or `onBlocksEnd`. A corresponding call to `onBlocksEnd` must eventually occur.
 
 ###### `onBlocksEnd` {#api-handler-handler-onblocksend}
 
@@ -1387,7 +1394,7 @@ A `Handler` object must have a method with signature `onCodeBlock(String code, S
 
 This event represents a [*Markdom code block*] with the given values for the `code` and `hint` parameters.
 
-Calling this method must be must be followed by a call to `onBlockEnd`.
+Calling this method must be followed by a call to `onBlockEnd`.
 
 The behavior of this method is undefined, if `code` is not present.
 
@@ -1397,7 +1404,7 @@ A `Handler` object must have a method with signature `onCodeContent(String code)
 
 This event represents a [*Markdom code content*] with the given value for the `code` parameter.
 
-Calling this method must be must be followed by a call to `onContentEnd`.
+Calling this method must be followed by a call to `onContentEnd`.
 
 The behavior of this method is undefined, if `code` is not present.
 
@@ -1407,7 +1414,7 @@ A `Handler` object must have a method with signature `onCommentBlock(String comm
 
 This event represents a [*Markdom comment block*] with the given value for the `comment` parameter.
 
-Calling this method must be must be followed by a call to `onBlockEnd`.
+Calling this method must be followed by a call to `onBlockEnd`.
 
 The behavior of this method is undefined, if `code` is not present.
 
@@ -1417,7 +1424,7 @@ A `Handler` object must have a method with signature `onContenBegin(ContentType 
 
 This event represents the general form of the begin of a [*Markdom content*]. The `type` parameter determines the type of the represented [*Markdom content*].
 
-Calling this method must be must be, depending on the value of the `type` parameter, followed by a call to `onCodeContent` or `onEmphasisContentBegin` or `onImageContent` or `onLineBreakContent` or `onLinkContentBegin` or `onTextContent`. A corresponding call to `onContentEnd` with the same `type` value must eventually occur.
+Calling this method must be, depending on the value of the `type` parameter, followed by a call to `onCodeContent` or `onEmphasisContentBegin` or `onImageContent` or `onLineBreakContent` or `onLinkContentBegin` or `onTextContent`. A corresponding call to `onContentEnd` with the same `type` value must eventually occur.
 
 The behavior of this method is undefined, if `type` is not present.
 
@@ -1437,7 +1444,7 @@ A `Handler` object must have a method with signature `onContentsBegin()`.
 
 This event represents the begin of a sequence ob [*Markdom contents*].
 
-Calling this method must be must be followed by a call to `onContentBEgin` or `onContentsEnd`. A corresponding call to `onContentsEnd` must eventually occur.
+Calling this method must be followed by a call to `onContentBEgin` or `onContentsEnd`. A corresponding call to `onContentsEnd` must eventually occur.
 
 ###### `onContentsEnd` {#api-handler-handler-oncontentsend}
 
@@ -1453,7 +1460,7 @@ A `Handler` object must have a method with signature `onDivisionBlock()`.
 
 This event represents a [*Markdom division block*].
 
-Calling this method must be must be followed by a call to `onBlockEnd`.
+Calling this method must be followed by a call to `onBlockEnd`.
 
 ###### `onDocumentBegin` {#api-handler-handler-ondocumentbegin}
 
@@ -1461,7 +1468,7 @@ A `Handler` object must have a method with signature `onDocumentBegin()`.
 
 This event represents the begin of a [*Markdom document*].
 
-This is the first method that must be called. Calling this method must be must be followed by a call to `onBlocksBegin`. A corresponding call to `onDocumentEnd` must eventually occur.
+This is the first method that must be called. Calling this method must be followed by a call to `onBlocksBegin`. A corresponding call to `onDocumentEnd` must eventually occur.
 
 ###### `onDocumentEnd` {#api-handler-handler-ondocumentend}
 
@@ -1477,7 +1484,7 @@ A `Handler` object must have a method with signature `onHeadingBlockBegin(Headin
 
 This event represents the begin of a [*Markdom heading block*] with the given value for the `level` parameter.
 
-Calling this method must be must be followed by a call to `onContentsBegin`. A corresponding call to `onHeadingBlockEnd` with the same `level` value must eventually occur.
+Calling this method must be followed by a call to `onContentsBegin`. A corresponding call to `onHeadingBlockEnd` with the same `level` value must eventually occur.
 
 The behavior of this method is undefined, if `level` is not present.
 
@@ -1497,7 +1504,7 @@ A `Handler` object must have a method with signature `onEmphasisContentBegin(Emp
 
 This event represents the begin of a [*Markdom emphasis content*] with the given value for the `level` parameter.
 
-Calling this method must be must be followed by a call to `onContentsBegin`. A corresponding call to `onEmphasisContentEnd` with the same `level` value must eventually occur.
+Calling this method must be followed by a call to `onContentsBegin`. A corresponding call to `onEmphasisContentEnd` with the same `level` value must eventually occur.
 
 The behavior of this method is undefined, if `level` is not present.
 
@@ -1517,11 +1524,11 @@ A `Handler` object must have a method with signature `onImageContent(Uri uri, St
 
 This event represents a [*Markdom image content*] with the given values for the `uri`, `title` and `alternative` parameters.
 
-Calling this method must be must be followed by a call to `onContentEnd`.
+Calling this method must be followed by a call to `onContentEnd`.
 
 The behavior of this method is undefined, if `uri` is not present.
 
-The behavior of this method is undefined, if `uri` is not a valid URI reference.
+The behavior of this method is undefined, if `uri` is not a valid [URI reference](https://tools.ietf.org/html/rfc3986#section-4.1).
 
 ###### `onLineBreakContent` {#api-handler-handler-onlinebreakcontent}
 
@@ -1529,7 +1536,7 @@ A `Handler` object must have a method with signature `onLineBreakContent(Boolean
 
 This event represents a [*Markdom line break content*] with the given value for the `hard` parameter.
 
-Calling this method must be must be followed by a call to `onContentEnd`.
+Calling this method must be followed by a call to `onContentEnd`.
 
 The behavior of this method is undefined, if `hard` is not present.
 
@@ -1539,11 +1546,11 @@ A `Handler` object must have a method with signature `onLinkContentBegin(Uri uri
 
 This event represents the begin of a [*Markdom link content*] with the given value for the `uri` and `title` parameters.
 
-Calling this method must be must be followed by a call to `onContentsBegin`. A corresponding call to `onLinkContentEnd` with the same `uri` value must eventually occur.
+Calling this method must be followed by a call to `onContentsBegin`. A corresponding call to `onLinkContentEnd` with the same `uri` value must eventually occur.
 
 The behavior of this method is undefined, if `uri` is not present.
 
-The behavior of this method is undefined, if `uri` is not a valid URI reference.
+The behavior of this method is undefined, if `uri` is not a valid [URI reference](https://tools.ietf.org/html/rfc3986#section-4.1).
 
 ###### `onLinkContentEnd` {#api-handler-handler-onlincontentend}
 
@@ -1555,7 +1562,7 @@ A corresponding call to `onLinkContentBegin` with the same `uri` value and the s
 
 The behavior of this method is undefined, if `uri` is not present.
 
-The behavior of this method is undefined, if `uri` is not a valid URI reference.
+The behavior of this method is undefined, if `uri` is not a valid [URI reference](https://tools.ietf.org/html/rfc3986#section-4.1).
 
 ###### `onListItemBegin` {#api-handler-handler-onlistitembegin}
 
@@ -1563,7 +1570,7 @@ A `Handler` object must have a method with signature `onListItemBegin()`.
 
 This event represents the begin of a [*Markdom list item*].
 
-Calling this method must be must be followed by a call to `onBlocksBegin`. A corresponding call to `onListItemEnd` must eventually occur.
+Calling this method must be followed by a call to `onBlocksBegin`. A corresponding call to `onListItemEnd` must eventually occur.
 
 ###### `onListItemEnd` {#api-handler-handler-onlistitemend}
 
@@ -1579,7 +1586,7 @@ A `Handler` object must have a method with signature `onListItemsBegin()`.
 
 This event represents the begin of a sequence of [*Markdom list items*].
 
-Calling this method must be must be followed by a call to `onListItemBegin` or `onListItemsEnd`. A corresponding call to `onListItemsEnd` must eventually occur.
+Calling this method must be followed by a call to `onListItemBegin` or `onListItemsEnd`. A corresponding call to `onListItemsEnd` must eventually occur.
 
 ###### `onListItemsEnd` {#api-handler-handler-onlistitemsend}
 
@@ -1595,7 +1602,7 @@ A `Handler` object must have a method with signature `onNextBlock()`.
 
 This event represents the continuation of a sequence of [*Markdom blocks*].
 
-Calling this method must be must be followed by a call to `onBlockBegin`.
+Calling this method must be followed by a call to `onBlockBegin`.
 
 ###### `onNextContent` {#api-handler-handler-onnextcontent}
 
@@ -1603,7 +1610,7 @@ A `Handler` object must have a method with signature `onNextContent()`.
 
 This event represents the continuation of a sequence of [*Markdom contents*].
 
-Calling this method must be must be followed by a call to `onContentBegin`.
+Calling this method must be followed by a call to `onContentBegin`.
 
 ###### `onNextListItem` {#api-handler-handler-onnextlistitem}
 
@@ -1611,7 +1618,7 @@ A `Handler` object must have a method with signature `onNextListItem()`.
 
 This event represents the continuation of a sequence of [*Markdom list items*].
 
-Calling this method must be must be followed by a call to `onListItemBegin`.
+Calling this method must be followed by a call to `onListItemBegin`.
 
 ###### `onOrderedListBlockBegin` {#api-handler-handler-onorderedlistblockbegin}
 
@@ -1619,7 +1626,7 @@ A `Handler` object must have a method with signature `onOrderedListBlockBegin(In
 
 This event represents the begin of an [*ordered Markdom list block*] with the given value for the `startIndex` parameter.
 
-Calling this method must be must be followed by a call to `onListItemsBegin`. A corresponding call to `onOrderedListBlockEnd`  with the same `startIndex` value must eventually occur.
+Calling this method must be followed by a call to `onListItemsBegin`. A corresponding call to `onOrderedListBlockEnd`  with the same `startIndex` value must eventually occur.
 
 The behavior of this method is undefined, if `startIndex` is not present.
 
@@ -1643,7 +1650,7 @@ A `Handler` object must have a method with signature `onParagraphBlockBegin()`.
 
 This event represents the begin of a [*Markdom paragraph block*].
 
-Calling this method must be must be followed by a call to `onContentsBegin`. A corresponding call to `onParagraphBlockEnd` must eventually occur.
+Calling this method must be followed by a call to `onContentsBegin`. A corresponding call to `onParagraphBlockEnd` must eventually occur.
 
 ###### `onParagraphBlockEnd` {#api-handler-handler-onquoteblockend}
 
@@ -1659,7 +1666,7 @@ A `Handler` object must have a method with signature `onQuoteBlockBegin()`.
 
 This event represents the begin of a [*Markdom quote block*].
 
-Calling this method must be must be followed by a call to `onBlocksBegin`. A corresponding call to `onQuoteBlockEnd` must eventually occur.
+Calling this method must be followed by a call to `onBlocksBegin`. A corresponding call to `onQuoteBlockEnd` must eventually occur.
 
 ###### `onQuoteBlockEnd` {#api-handler-handler-onquoteblockend}
 
@@ -1675,7 +1682,7 @@ A `Handler` object must have a method with signature `onTextContent(String text)
 
 This event represents a [*Markdom text content*] with the given value for the `text`.
 
-Calling this method must be must be followed by a call to `onBlockEnd`.
+Calling this method must be followed by a call to `onBlockEnd`.
 
 The behavior of this method is undefined, if `text` is not present.
 
@@ -1685,7 +1692,7 @@ A `Handler` object must have a method with signature `onUnorderedListBlockBegin(
 
 This event represents the begin of an *unordered Markdom list block*.
 
-Calling this method must be must be followed by a call to `onListItemsBegin`. A corresponding call to `onUnorderedListBlockEnd` must eventually occur.
+Calling this method must be followed by a call to `onListItemsBegin`. A corresponding call to `onUnorderedListBlockEnd` must eventually occur.
 
 ###### `onUnorderedListBlockEnd` {#api-handler-handler-onunorderedlistblockend}
 
@@ -1795,11 +1802,11 @@ onDocumentEnd()
 
 ## Data representations {#data}
 
-Formats that are eligible to be used as a data exchange format must have a well known and publicly documented syntax that leaves no leeway for in ambiguity. Representation and interpretation of such formats are always possible. This specification defines representations of [*Markdom documents*] for some data exchange formats. 
+Formats that are eligible to be used as a data exchange format must have a well known and publicly documented syntax that leaves no leeway for in ambiguity. Representation and interpretation of such formats are always possible. This specification defines representations of [*Markdom documents*] for some data exchange formats.
 
 ### JSON {#data-json}
 
-[JSON](http://www.json.org/) is a  data exchange format. The following sections describe how to represent a [*Markdom document*] as a JSON document. Interpreting a JSON document as a a [*Markdom document*] is always possible, if the JSON document is well-formed and a valid representation of a [*Markdom document*]. 
+[JSON](http://www.json.org/) is a  data exchange format. The following sections describe how to represent a [*Markdom document*] as a JSON document. Interpreting a JSON document as a a [*Markdom document*] is always possible, if the JSON document is well-formed and a valid representation of a [*Markdom document*].
 
 #### Schema {#data-json-schema}
 
@@ -1809,7 +1816,7 @@ A [JSON](http://json-schema.org/documentation.html) schema for JSON documents th
 
 A [*Markdom document*] must be represented as a JSON object.
 
-The JSON object may have an entry with name `$schema` and value `http://schema.markdom.io/markdom-1.0.json#"` that allows automated schema validation. 
+The JSON object may have an entry with name `$schema` and value `http://schema.markdom.io/markdom-1.0.json#"` that allows automated schema validation.
 
 The JSON object must have an entry with name `version` and value `1.0`.
 
@@ -2050,9 +2057,9 @@ The following JSON document represents the [example document](#example):
 
 ### YAML {#data-yaml}
 
-[YAML](http://yaml.org/) is a data exchange format that is a superset of JSON. The description of[JSON representation](#data-json) is therefore also a description for YAML representations and can be used as such. 
+[YAML](http://yaml.org/) is a data exchange format that is a superset of JSON. The description of[JSON representation](#data-json) is therefore also a description for YAML representations and can be used as such.
 
-Any JSON document that represents a [*Markdom document*] is also a YAML document that represents the [*Markdom document*]. Interpreting a YAML document as a a [*Markdom document*] is always possible, if the YAML document is well-formed and a valid representation of a [*Markdom document*]. 
+Any JSON document that represents a [*Markdom document*] is also a YAML document that represents the [*Markdom document*]. Interpreting a YAML document as a a [*Markdom document*] is always possible, if the YAML document is well-formed and a valid representation of a [*Markdom document*].
 
 #### Tags {#data-tag}
 
@@ -2111,7 +2118,7 @@ blocks:
 
 ### XML {#data-xml}
 
-[XML](https://www.w3.org/XML/) is a markup language that is commonly used as a data exchange format. The following sections describe how to represent a [*Markdom document*] as a XML document. Interpreting a XML document as a a [*Markdom document*] is always possible, if the XML document is well-formed and a valid representation of a [*Markdom document*]. 
+[XML](https://www.w3.org/XML/) is a markup language that is commonly used as a data exchange format. The following sections describe how to represent a [*Markdom document*] as a XML document. Interpreting a XML document as a a [*Markdom document*] is always possible, if the XML document is well-formed and a valid representation of a [*Markdom document*].
 
 #### Schema {#data-json-schema}
 
@@ -2310,7 +2317,7 @@ Assume an [*unordered Markdom list block*] that is followed by a [*Markdom code 
 
 
     * foo
-    
+
     ```
     	bar
     baz
@@ -2337,7 +2344,7 @@ Representing a [*Markdom code block*] as a fenced code block is always possible.
 
 A [*comment division block*] should be represented as a [HTML blocks](http://spec.commonmark.org/0.26/#html-blocks) containing a HTML comment.
 
-[Control](http://www.fileformat.info/info/unicode/category/Cc/list.htm) characters other then `LINE_FEED` (`\n`) or `CHARACTER_TABULATION` (`\t`) should be removed or replaced. Any appearance of the closing HTML comment delimiter (`-->`) must be modified, replaced or ignored. 
+[Control](http://www.fileformat.info/info/unicode/category/Cc/list.htm) characters other then `LINE_FEED` (`\n`) or `CHARACTER_TABULATION` (`\t`) should be removed or replaced. Any appearance of the closing HTML comment delimiter (`-->`) must be modified, replaced or ignored.
 
 ##### Division Block {#markup-cm-divisionblock}
 
@@ -2440,15 +2447,15 @@ The representation of the content of a [*Markdom paragraph block*] should not be
 Assume an [*unordered Markdom list block*] hat is followed by a [*Markdom paragraph block*] with content that starts with two space characters. [This](http://spec.commonmark.org/dingus/?text=*%20foo%0A%0Abar) representation yields the expected output:
 
     * foo
-    
+
     bar
 
 [This](http://spec.commonmark.org/dingus/?text=*%20foo%0A%0A%20%20bar) representation doesn't yield the expected output:
 
     * foo
-    
+
       bar
-      
+
 For consistency, whitespace that follows a [*Markdom line break content*] should also be removed.
 
 ##### Whitespace shift {#markup-cm-interpretation-whitespace-shift}
@@ -2458,7 +2465,7 @@ Because of manner the [delimiter run](http://spec.commonmark.org/0.26/#delimiter
 Assuming a [*Markdom emphasis content*] contains a [*Markdom text content*] with `⎵bar⎵` (`⎵` indicates a space character) as the value, surrounded by other [*Markdom text contents*]. This shouldn't be represented as
 
     `foo* bar *baz`
-    
+
 but should be corrected to
 
     `foo *bar* baz`
@@ -2478,18 +2485,18 @@ It is generally possible to interpret CommonMark text as a [*Markdom document*] 
 
 ##### HTML  {#markup-cm-interpretation-html}
 
-CommonMark allows [HTML blocks](http://spec.commonmark.org/0.26/#html-blocks) and [raw HTML](http://spec.commonmark.org/0.26/#raw-html) as part of a CommonMark document while Markdom explicitly doesn't. 
+CommonMark allows [HTML blocks](http://spec.commonmark.org/0.26/#html-blocks) and [raw HTML](http://spec.commonmark.org/0.26/#raw-html) as part of a CommonMark document while Markdom explicitly doesn't.
 
 A HTML block containing only a HTML comment should be interpreted as a [*Markdom comment block*].
 
 How to handle a CommonMark document that contains any other HTML is application dependent. Possibilities include
-* rejecting the CommonMark document (e.g. display an error message to the editor), 
+* rejecting the CommonMark document (e.g. display an error message to the editor),
 * treat the raw HTML as a [*Markdom code content*] or [*Markdom text content*], or
 * removing the HTML altogether.
 
 ##### Image description {#markup-cm-interpretation-imagedescription}
 
-CommonMark allows arbitrary [inline](http://spec.commonmark.org/0.26/#inline) elements as an [image description](http://spec.commonmark.org/0.26/#image-description) while Markdom only allows plain text as the value of the `alternative` attribute of a [*Markdom image content*]. 
+CommonMark allows arbitrary [inline](http://spec.commonmark.org/0.26/#inline) elements as an [image description](http://spec.commonmark.org/0.26/#image-description) while Markdom only allows plain text as the value of the `alternative` attribute of a [*Markdom image content*].
 
 The image description should be reduced to plain text as if it would be used as the `alt` attribute of an `img` element when converting the CommonMark document to HTML.
 
@@ -2499,12 +2506,12 @@ The following CommonMark document represents the [example document](#example):
 
     # Markdom
     
-    1. 
+    1.
        [Foo](#Bar)
-    2. 
-       Lorem ipsum  
+    2.
+       Lorem ipsum
        `dolor sit amet`
-    3. 
+    3.
        > *Baz*
     
     ```
