@@ -2444,7 +2444,7 @@ Consecutive whitespace characters should be compressed to a single space charact
 
 The representation of the content of a [*Markdom paragraph block*] should not begin with whitespace, because the additional indentation can lead to unintended side effects.
 
-Assume an [*unordered Markdom list block*] hat is followed by a [*Markdom paragraph block*] with content that starts with two space characters. [This](http://spec.commonmark.org/dingus/?text=*%20foo%0A%0Abar) representation yields the expected output:
+Assume an [*unordered Markdom list block*] that is followed by a [*Markdom paragraph block*] with content that starts with two space characters. [This](http://spec.commonmark.org/dingus/?text=*%20foo%0A%0Abar) representation yields the expected output:
 
     * foo
 
